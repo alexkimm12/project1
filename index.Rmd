@@ -19,7 +19,7 @@ tidy=TRUE, tidy.opts=list(width.cutoff=60), R.options=list(max.print=100))
 
 ## Data Wrangling, Exploration, Visualization
 
-### Name and EID here
+### Alex Kim UT Eid: ak37642
 
 #### Introduction 
 
@@ -27,8 +27,19 @@ Paragraph or two introducing your datasets and variables, why they are interesti
 
 ```{R}
 # read your datasets in here, e.g., with read_csv()
-
+library(tidyverse)
+library(readr)
+install.packages("fivethirtyeight")
+library(fivethirtyeight)
+data1 <- bad_drivers
+data2 <- read_csv("~/project1/County_Health_Rankings.csv", skip = 1)
 ```
+
+As I was looking through the different datasets, I saw the bad_drivers dataset. This was interesting because I also wanted to look at how the different factors tied into traffic deaths, more specifically the factors of speeding, texting, alcohol use, etc during driving. These were interesting to me because I drive a lot in both my hometown of Houston and here in Austin. There are many times when I'll see people driving while texting or seeing news articles of people experiencing car accidents because they were under the influence or distracted while driving. Furthermore, I wanted to look at the different health indicators in each state, and how this is different. I was really interested in taking a look at how these health indicators tie into other aspects like transportation statistics. I was able to find a county dataset that essentially listed out all of the health indicators for specific counties in each state, which is under the "Count_Health_Rankings" dataset. 
+
+Some of the variables in my first dataset of "bad_drivers" include number of drivers involved in fatal collisions, percentage of those speeding, alcohol-impaired, not distracted, no prior accidents before this collision, cost of car insurance, and losses experienced by insurance companies across all 50 states. I found the "bad_drivers" dataset from the "fivethirtyeight" package. Furthermore, I wanted to tie this into how the different life stages differed across states. Some of the variables for my second dataset of "County_Health_Rankings" include life expectancy, child mortality rates, deaths, and infant mortality rates, drug overdose mortality rates, and more across counties in the 50 states in the United States. I found this dataset from Countyhealthratings.org under the Rankings data and documentation page. ****** I would expect to see that if there were more traffic accidents in one place, we may see a slight decrease/difference in life expectancy and a slight increase in death rate.
+
+ Expand on potential associations you may expect, if any.
 
 #### Tidying: Reshaping
 
@@ -36,6 +47,13 @@ If your datasets are tidy already, demonstrate that you can reshape data with pi
 
 ```{R}
 # your tidying code (if applicable; can also wait until wrangling section)
+datajoined2 <- full_join(data1, hate_crimes, by="state")
+datajoined2
+
+longdata2 <- datajoined2 %>% pivot_longer(cols=c("share_unemp_seas":"share_white_poverty"), names_to="name3") %>% separate(name3, into=c("emp", "hs", "sepname4"), sep=("_")) %>% pivot_wider(names_from="sepname4", values_from="value")
+
+longdata2
+
 ```
 
     
@@ -43,8 +61,35 @@ If your datasets are tidy already, demonstrate that you can reshape data with pi
 
 ```{R}
 # your joining code
+dim(data1)
+dim(data2)
+joineddata <-full_join(data1, data2, by=c("state"="State"))
+glimpse(joineddata)
+joineddata1 <- full_join(data2, data1, by=c("State"="state"))
+joineddata1
+
+dim(data1)
+dim(data3)
+joineddata <-full_join(data1, data3, by=c("state"="State/Territory"))
+glimpse(joineddata)
+joineddata1 <- full_join(data3, data1, by=c("State/Territory"="state"))
+joineddata1 %>% glimpse()
 
 # your joining code
+not_in_data1 <- anti_join(data1, data2, by=c("state"="State"))
+not_in_data2 <- anti_join(data2, data1, by=c("State"="state"))
+
+not_in_data1
+not_in_data2
+
+not_in_data1 <- anti_join(data1, data3, by=c("state"="State/Territory"))
+not_in_data3 <- anti_join(data3, data1, by=c("State/Territory"="state"))
+
+not_in_data1
+not_in_data3
+
+not_in_hatecrimes <- anti_join(hate_crimes, data1, by="state")
+notindat1 <- anti_join(data1, hate_crimes, by="state")
 ```
 
 Discussions of joining here. Feel encouraged to break up into more than once code chunk and discuss each in turn.
@@ -53,7 +98,9 @@ Discussions of joining here. Feel encouraged to break up into more than once cod
 
 ```{R}
 # your wrangling code
+joineddata %>% group_by(state) %>% summarize(avg_LE=mean(`Life Expectancy`, na.rm=TRUE), avg_deaths=mean(`# Deaths`, na.rm=TRUE), avg_uninsured=mean(`# Uninsured` , na.rm=TRUE), avg_gradrate=mean(`High School Graduation Rate`, na.rm=TRUE), avg_income= mean(`Median Household Income`, na.rm=TRUE), avg_homicide=mean(`Homicide Rate`, na.rm=TRUE), avg_firearmrate=mean(`# Firearm Fatalities`, na.rm=TRUE), avg_homeowners=mean(`# Homeowners`, na.rm=TRUE), avg_pop=mean(Population, na.rm=TRUE), avg_under18=mean(`% Less Than 18 Years of Age`, na.rm=TRUE)) %>% knitr :: kable()
 
+joineddata %>% group_by(state) %>% 
 # your wrangling code
 
 # your wrangling code
