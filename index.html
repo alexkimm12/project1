@@ -1540,20 +1540,13 @@ div.tocify {
 <p>Paragraph or two introducing your datasets and variables, why they are interesting to you, etc.</p>
 <pre class="r"><code># read your datasets in here, e.g., with read_csv()
 library(tidyverse)
-
-data1 &lt;- read_csv(&quot;annualhealthcare.csv&quot;)
-data2 &lt;- read_csv(&quot;maternalmortalityrate.csv&quot;)
-
-head(data1)</code></pre>
-<pre><code>## # A tibble: 6 x 4
-##   Entity     Code   Year `Health expenditure per capita, PPP (constant 2011 int…
-##   &lt;chr&gt;      &lt;chr&gt; &lt;dbl&gt;                                                   &lt;dbl&gt;
-## 1 Afghanist… AFG    2002                                                    76.0
-## 2 Afghanist… AFG    2003                                                    89.4
-## 3 Afghanist… AFG    2004                                                    87.5
-## 4 Afghanist… AFG    2005                                                    88.3
-## 5 Afghanist… AFG    2006                                                    86.9
-## 6 Afghanist… AFG    2007                                                    88.7</code></pre>
+library(readr)
+library(fivethirtyeight)
+data1 &lt;- bad_drivers
+data2 &lt;- read_csv(&quot;~/project1/County_Health_Rankings.csv&quot;, skip = 1)</code></pre>
+<p>As I was looking through the different datasets, I saw the bad_drivers dataset. This was interesting because I also wanted to look at how the different factors tied into traffic deaths, more specifically the factors of speeding, texting, alcohol use, etc during driving. These were interesting to me because I drive a lot in both my hometown of Houston and here in Austin. There are many times when I’ll see people driving while texting or seeing news articles of people experiencing car accidents because they were under the influence or distracted while driving. Furthermore, I wanted to look at the different health indicators in each state, and how this is different. I was really interested in taking a look at how these health indicators tie into other aspects like transportation statistics. I was able to find a county dataset that essentially listed out all of the health indicators for specific counties in each state, which is under the “Count_Health_Rankings” dataset.</p>
+<p>Some of the variables in my first dataset of “bad_drivers” include number of drivers involved in fatal collisions, percentage of those speeding, alcohol-impaired, not distracted, no prior accidents before this collision, cost of car insurance, and losses experienced by insurance companies across all 50 states. I found the “bad_drivers” dataset from the “fivethirtyeight” package. Furthermore, I wanted to tie this into how the different life stages differed across states. Some of the variables for my second dataset of “County_Health_Rankings” include life expectancy, child mortality rates, deaths, and infant mortality rates, drug overdose mortality rates, and more across counties in the 50 states in the United States. I found this dataset from Countyhealthratings.org under the Rankings data and documentation page. ****** I would expect to see that if there were more traffic accidents in one place, we may see a slight decrease/difference in life expectancy and a slight increase in death rate.</p>
+<p>Expand on potential associations you may expect, if any.</p>
 </div>
 <div id="tidying-reshaping" class="section level4">
 <h4>Tidying: Reshaping</h4>
@@ -1564,15 +1557,1149 @@ head(data1)</code></pre>
 <div id="joiningmerging" class="section level4">
 <h4>Joining/Merging</h4>
 <pre class="r"><code># your joining code
+dim(data1)</code></pre>
+<pre><code>## [1] 51  8</code></pre>
+<pre class="r"><code>dim(data2)</code></pre>
+<pre><code>## [1] 3193  277</code></pre>
+<pre class="r"><code>joineddata &lt;- full_join(data1, data2, by = c(state = &quot;State&quot;))
+glimpse(joineddata)</code></pre>
+<pre><code>## Rows: 3,193
+## Columns: 284
+## $ state                                                   &lt;chr&gt; &quot;Alabama&quot;, &quot;A…
+## $ num_drivers                                             &lt;dbl&gt; 18.8, 18.8, 1…
+## $ perc_speeding                                           &lt;int&gt; 39, 39, 39, 3…
+## $ perc_alcohol                                            &lt;int&gt; 30, 30, 30, 3…
+## $ perc_not_distracted                                     &lt;int&gt; 96, 96, 96, 9…
+## $ perc_no_previous                                        &lt;int&gt; 80, 80, 80, 8…
+## $ insurance_premiums                                      &lt;dbl&gt; 784.55, 784.5…
+## $ losses                                                  &lt;dbl&gt; 145.08, 145.0…
+## $ FIPS                                                    &lt;chr&gt; &quot;01000&quot;, &quot;010…
+## $ County                                                  &lt;chr&gt; NA, &quot;Autauga&quot;…
+## $ `Life Expectancy`                                       &lt;dbl&gt; 75.5, 77.2, 7…
+## $ `95% CI - Low`                                          &lt;dbl&gt; 75.5, 76.4, 7…
+## $ `95% CI - High`                                         &lt;dbl&gt; 75.6, 77.9, 7…
+## $ `Life Expectancy (AIAN)`                                &lt;dbl&gt; 114.5, NA, NA…
+## $ `Life Expectancy (AIAN) 95% CI - Low`                   &lt;dbl&gt; 100.2, NA, NA…
+## $ `Life Expectancy (AIAN) 95% CI - High`                  &lt;dbl&gt; 128.8, NA, NA…
+## $ `Life Expectancy (Asian)`                               &lt;dbl&gt; 88.1, NA, 83.…
+## $ `Life Expectancy (Asian) 95% CI - Low`                  &lt;dbl&gt; 86.5, NA, 79.…
+## $ `Life Expectancy (Asian) 95% CI - High`                 &lt;dbl&gt; 89.8, NA, 86.…
+## $ `Life Expectancy (Black)`                               &lt;dbl&gt; 73.6, 74.9, 7…
+## $ `Life Expectancy (Black) 95% CI - Low`                  &lt;dbl&gt; 73.5, 72.9, 7…
+## $ `Life Expectancy (Black) 95% CI - High`                 &lt;dbl&gt; 73.8, 76.8, 7…
+## $ `Life Expectancy (Hispanic)`                            &lt;dbl&gt; 97.7, NA, 91.…
+## $ `Life Expectancy (Hispanic) 95% CI - Low`               &lt;dbl&gt; 94.6, NA, 84.…
+## $ `Life Expectancy (Hispanic) 95% CI - High`              &lt;dbl&gt; 100.8, NA, 98…
+## $ `Life Expectancy (White)`                               &lt;dbl&gt; 75.9, 77.5, 7…
+## $ `Life Expectancy (White) 95% CI - Low`                  &lt;dbl&gt; 75.8, 76.6, 7…
+## $ `Life Expectancy (White) 95% CI - High`                 &lt;dbl&gt; 76.0, 78.4, 7…
+## $ `# Deaths`                                              &lt;dbl&gt; 82249, 787, 3…
+## $ `Age-Adjusted Death Rate`                               &lt;dbl&gt; 472, 409, 366…
+## $ `95% CI - Low_1`                                        &lt;dbl&gt; 468, 380, 352…
+## $ `95% CI - High_1`                                       &lt;dbl&gt; 475, 438, 379…
+## $ `Age-Adjusted Mortality (AIAN)`                         &lt;dbl&gt; 206, NA, NA, …
+## $ `Age-Adjusted Mortality (AIAN) 95% CI - Low`            &lt;dbl&gt; 178, NA, NA, …
+## $ `Age-Adjusted Mortality (AIAN) 95% CI - High`           &lt;dbl&gt; 234, NA, NA, …
+## $ `Age-Adjusted Mortality (Asian)`                        &lt;dbl&gt; 166, NA, NA, …
+## $ `Age-Adjusted Mortality (Asian) 95% CI - Low`           &lt;dbl&gt; 149, NA, NA, …
+## $ `Age-Adjusted Mortality (Asian) 95% CI - High`          &lt;dbl&gt; 183, NA, NA, …
+## $ `Age-Adjusted Mortality (Black)`                        &lt;dbl&gt; 565, 527, 498…
+## $ `Age-Adjusted Mortality (Black) 95% CI - Low`           &lt;dbl&gt; 557, 449, 441…
+## $ `Age-Adjusted Mortality (Black) 95% CI - High`          &lt;dbl&gt; 572, 606, 556…
+## $ `Age-Adjusted Mortality (Hispanic)`                     &lt;dbl&gt; 173, NA, 180,…
+## $ `Age-Adjusted Mortality (Hispanic) 95% CI - Low`        &lt;dbl&gt; 160, NA, 129,…
+## $ `Age-Adjusted Mortality (Hispanic) 95% CI - High`       &lt;dbl&gt; 186, NA, 244,…
+## $ `Age-Adjusted Mortality (White)`                        &lt;dbl&gt; 455, 388, 364…
+## $ `Age-Adjusted Mortality (White) 95% CI - Low`           &lt;dbl&gt; 451, 356, 349…
+## $ `Age-Adjusted Mortality (White) 95% CI - High`          &lt;dbl&gt; 459, 420, 379…
+## $ `# Deaths_1`                                            &lt;dbl&gt; 3042, 30, 95,…
+## $ `Child Mortality Rate`                                  &lt;dbl&gt; 70, 57, 51, 7…
+## $ `95% CI - Low_2`                                        &lt;dbl&gt; 67, 38, 41, 4…
+## $ `95% CI - High_2`                                       &lt;dbl&gt; 72, 81, 62, 1…
+## $ `Child Mortality Rate (AIAN)`                           &lt;dbl&gt; 76, NA, NA, N…
+## $ `Child Mortality Rate (AIAN) 95% CI - Low`              &lt;dbl&gt; 45, NA, NA, N…
+## $ `Child Mortality Rate (AIAN) 95% CI - High`             &lt;dbl&gt; 121, NA, NA, …
+## $ `Child Mortality Rate (Asian)`                          &lt;dbl&gt; 43, NA, NA, N…
+## $ `Child Mortality Rate (Asian) 95% CI - Low`             &lt;dbl&gt; 29, NA, NA, N…
+## $ `Child Mortality Rate (Asian) 95% CI - High`            &lt;dbl&gt; 61, NA, NA, N…
+## $ `Child Mortality Rate (Black)`                          &lt;dbl&gt; 101, 93, 61, …
+## $ `Child Mortality Rate (Black) 95% CI - Low`             &lt;dbl&gt; 96, 46, 33, N…
+## $ `Child Mortality Rate (Black) 95% CI - High`            &lt;dbl&gt; 107, 167, 104…
+## $ `Child Mortality Rate (Hispanic)`                       &lt;dbl&gt; 53, NA, NA, N…
+## $ `Child Mortality Rate (Hispanic) 95% CI - Low`          &lt;dbl&gt; 45, NA, NA, N…
+## $ `Child Mortality Rate (Hispanic) 95% CI - High`         &lt;dbl&gt; 61, NA, NA, N…
+## $ `Child Mortality Rate (White)`                          &lt;dbl&gt; 56, 50, 52, N…
+## $ `Child Mortality Rate (White) 95% CI - Low`             &lt;dbl&gt; 53, 30, 41, N…
+## $ `Child Mortality Rate (White) 95% CI - High`            &lt;dbl&gt; 58, 78, 65, N…
+## $ `# Deaths_2`                                            &lt;dbl&gt; 3337, 32, 92,…
+## $ `Infant Mortality Rate`                                 &lt;dbl&gt; 8, 7, 6, NA, …
+## $ `95% CI - Low_3`                                        &lt;dbl&gt; 8, 5, 5, NA, …
+## $ `95% CI - High_3`                                       &lt;dbl&gt; 9, 10, 7, NA,…
+## $ `Infant Mortality Rate (AIAN)`                          &lt;dbl&gt; NA, NA, NA, N…
+## $ `Infant Mortality Rate (AIAN) 95% CI - Low`             &lt;dbl&gt; NA, NA, NA, N…
+## $ `Infant Mortality Rate (AIAN) 95% CI - High`            &lt;dbl&gt; NA, NA, NA, N…
+## $ `Infant Mortality Rate (Asian)`                         &lt;dbl&gt; 5, NA, NA, NA…
+## $ `Infant Mortality Rate (Asian) 95% CI - Low`            &lt;dbl&gt; 3, NA, NA, NA…
+## $ `Infant Mortality Rate (Asian) 95% CI - High`           &lt;dbl&gt; 7, NA, NA, NA…
+## $ `Infant Mortality Rate (Black)`                         &lt;dbl&gt; 12, NA, 9, NA…
+## $ `Infant Mortality Rate (Black) 95% CI - Low`            &lt;dbl&gt; 12, NA, 6, NA…
+## $ `Infant Mortality Rate (Black) 95% CI - High`           &lt;dbl&gt; 13, NA, 15, N…
+## $ `Infant Mortality Rate (Hispanic)`                      &lt;dbl&gt; 5, NA, NA, NA…
+## $ `Infant Mortality Rate (Hispanic) 95% CI - Low`         &lt;dbl&gt; 5, NA, NA, NA…
+## $ `Infant Mortality Rate (Hispanic) 95% CI - High`        &lt;dbl&gt; 6, NA, NA, NA…
+## $ `Infant Mortality Rate (White)`                         &lt;dbl&gt; 6, NA, 6, NA,…
+## $ `Infant Mortality Rate (White) 95% CI - Low`            &lt;dbl&gt; 6, NA, 4, NA,…
+## $ `Infant Mortality Rate (White) 95% CI - High`           &lt;dbl&gt; 7, NA, 7, NA,…
+## $ `% Frequent Physical Distress`                          &lt;dbl&gt; 14, 13, 12, 1…
+## $ `95% CI - Low_4`                                        &lt;dbl&gt; 13, 12, 10, 1…
+## $ `95% CI - High_4`                                       &lt;dbl&gt; 15, 15, 13, 1…
+## $ `% Frequent Mental Distress`                            &lt;dbl&gt; 16, 16, 15, 1…
+## $ `95% CI - Low_5`                                        &lt;dbl&gt; 15, 14, 13, 1…
+## $ `95% CI - High_5`                                       &lt;dbl&gt; 17, 17, 16, 2…
+## $ `% Adults with Diabetes`                                &lt;dbl&gt; 15, 13, 10, 1…
+## $ `95% CI - Low_6`                                        &lt;dbl&gt; NA, 9, 9, 12,…
+## $ `95% CI - High_6`                                       &lt;dbl&gt; NA, 17, 12, 2…
+## $ `# HIV Cases`                                           &lt;dbl&gt; 13579, 107, 3…
+## $ `HIV Prevalence Rate`                                   &lt;dbl&gt; 330, 230, 169…
+## $ `# Food Insecure`                                       &lt;dbl&gt; 829220, 8620,…
+## $ `% Food Insecure`                                       &lt;dbl&gt; 17, 16, 13, 2…
+## $ `# Limited Access`                                      &lt;dbl&gt; 378623, 6544,…
+## $ `% Limited Access to Healthy Foods`                     &lt;dbl&gt; 8, 12, 5, 11,…
+## $ `# Drug Overdose Deaths`                                &lt;dbl&gt; 2378, 14, 82,…
+## $ `Drug Overdose Mortality Rate`                          &lt;dbl&gt; 16, 8, 13, NA…
+## $ `95% CI - Low_7`                                        &lt;dbl&gt; 16, 5, 10, NA…
+## $ `95% CI - High_7`                                       &lt;dbl&gt; 17, 14, 16, N…
+## $ `Drug Overdose Mortality Rate (AIAN)`                   &lt;dbl&gt; NA, NA, NA, N…
+## $ `Drug Overdose Mortality Rate (AIAN) 95% CI - Low`      &lt;dbl&gt; NA, NA, NA, N…
+## $ `Drug Overdose Mortality Rate (AIAN) 95% CI - High`     &lt;dbl&gt; NA, NA, NA, N…
+## $ `Drug Overdose Mortality Rate (Asian)`                  &lt;dbl&gt; NA, NA, NA, N…
+## $ `Drug Overdose Mortality Rate (Asian) 95% CI - Low`     &lt;dbl&gt; NA, NA, NA, N…
+## $ `Drug Overdose Mortality Rate (Asian) 95% CI - High`    &lt;dbl&gt; NA, NA, NA, N…
+## $ `Drug Overdose Mortality Rate (Black)`                  &lt;dbl&gt; 10, NA, NA, N…
+## $ `Drug Overdose Mortality Rate (Black) 95% CI - Low`     &lt;dbl&gt; 9, NA, NA, NA…
+## $ `Drug Overdose Mortality Rate (Black) 95% CI - High`    &lt;dbl&gt; 10, NA, NA, N…
+## $ `Drug Overdose Mortality Rate (Hispanic)`               &lt;dbl&gt; 4, NA, NA, NA…
+## $ `Drug Overdose Mortality Rate (Hispanic) 95% CI - Low`  &lt;dbl&gt; 2, NA, NA, NA…
+## $ `Drug Overdose Mortality Rate (Hispanic) 95% CI - High` &lt;dbl&gt; 6, NA, NA, NA…
+## $ `Drug Overdose Mortality Rate (White)`                  &lt;dbl&gt; 20, NA, NA, N…
+## $ `Drug Overdose Mortality Rate (White) 95% CI - Low`     &lt;dbl&gt; 19, NA, NA, N…
+## $ `Drug Overdose Mortality Rate (White) 95% CI - High`    &lt;dbl&gt; 21, NA, NA, N…
+## $ `# Motor Vehicle Deaths`                                &lt;dbl&gt; 6828, 77, 252…
+## $ `Motor Vehicle Mortality Rate`                          &lt;dbl&gt; 20, 20, 17, 2…
+## $ `95% CI - Low_8`                                        &lt;dbl&gt; 20, 16, 15, 2…
+## $ `95% CI - High_8`                                       &lt;dbl&gt; 21, 25, 19, 3…
+## $ `MV Mortality Rate (AIAN)`                              &lt;dbl&gt; 12, NA, NA, N…
+## $ `MV Mortality Rate (AIAN) 95% CI - Low`                 &lt;dbl&gt; 7, NA, NA, NA…
+## $ `MV Mortality Rate (AIAN) 95% CI - High`                &lt;dbl&gt; 17, NA, NA, N…
+## $ `MV Mortality Rate (Asian)`                             &lt;dbl&gt; 6, NA, NA, NA…
+## $ `MV Mortality Rate (Asian) 95% CI - Low`                &lt;dbl&gt; 4, NA, NA, NA…
+## $ `MV Mortality Rate (Asian) 95% CI - High`               &lt;dbl&gt; 9, NA, NA, NA…
+## $ `MV Mortality Rate (Black)`                             &lt;dbl&gt; 20, 18, 17, 2…
+## $ `MV Mortality Rate (Black) 95% CI - Low`                &lt;dbl&gt; 19, 10, 11, 1…
+## $ `MV Mortality Rate (Black) 95% CI - High`               &lt;dbl&gt; 21, 31, 26, 4…
+## $ `MV Mortality Rate (Hispanic)`                          &lt;dbl&gt; 15, NA, NA, N…
+## $ `MV Mortality Rate (Hispanic) 95% CI - Low`             &lt;dbl&gt; 13, NA, NA, N…
+## $ `MV Mortality Rate (Hispanic) 95% CI - High`            &lt;dbl&gt; 17, NA, NA, N…
+## $ `MV Mortality Rate (White)`                             &lt;dbl&gt; 21, 21, 18, 2…
+## $ `MV Mortality Rate (White) 95% CI - Low`                &lt;dbl&gt; 20, 16, 16, 1…
+## $ `MV Mortality Rate (White) 95% CI - High`               &lt;dbl&gt; 21, 27, 20, 3…
+## $ `% Insufficient Sleep`                                  &lt;dbl&gt; 40, 38, 36, 4…
+## $ `95% CI - Low_9`                                        &lt;dbl&gt; 38, 37, 35, 4…
+## $ `95% CI - High_9`                                       &lt;dbl&gt; 41, 40, 38, 4…
+## $ `# Uninsured`                                           &lt;dbl&gt; 437392, 4379,…
+## $ `% Uninsured`                                           &lt;dbl&gt; 15, 13, 17, 1…
+## $ `95% CI - Low_10`                                       &lt;dbl&gt; 15, 11, 15, 1…
+## $ `95% CI - High_10`                                      &lt;dbl&gt; 16, 15, 19, 2…
+## $ `# Uninsured_1`                                         &lt;dbl&gt; 36123, 350, 1…
+## $ `% Uninsured_1`                                         &lt;dbl&gt; 3, 3, 4, 3, 3…
+## $ `95% CI - Low_11`                                       &lt;dbl&gt; 3, 2, 3, 2, 2…
+## $ `95% CI - High_11`                                      &lt;dbl&gt; 4, 3, 5, 5, 4…
+## $ `Other Primary Care Provider Rate`                      &lt;dbl&gt; 93, 41, 65, 5…
+## $ `Other Primary Care Provider Ratio`                     &lt;chr&gt; &quot;1071:1&quot;, &quot;24…
+## $ `Cohort Size`                                           &lt;dbl&gt; 55151, 652, 2…
+## $ `High School Graduation Rate`                           &lt;dbl&gt; 90, 89, 88, 8…
+## $ `% Disconnected Youth`                                  &lt;dbl&gt; 8, NA, 6, NA,…
+## $ `95% CI - Low_12`                                       &lt;dbl&gt; 7, NA, 4, NA,…
+## $ `95% CI - High_12`                                      &lt;dbl&gt; 8, NA, 9, NA,…
+## $ `Average Grade Performance`                             &lt;dbl&gt; 2.9, 3.1, 3.2…
+## $ `Average Grade Performance (Asian)`                     &lt;dbl&gt; 3.3, NA, NA, …
+## $ `Average Grade Performance (Black)`                     &lt;dbl&gt; 2.5, 2.6, 2.6…
+## $ `Average Grade Performance (Hispanic)`                  &lt;dbl&gt; 2.4, NA, 2.7,…
+## $ `Average Grade Performance (White)`                     &lt;dbl&gt; 3.2, 3.3, 3.4…
+## $ `Average Grade Performance_1`                           &lt;dbl&gt; 2.7, 2.9, 3.0…
+## $ `Average Grade Performance (Asian)_1`                   &lt;dbl&gt; 3.5, NA, NA, …
+## $ `Average Grade Performance (Black)_1`                   &lt;dbl&gt; 2.3, 2.4, 2.3…
+## $ `Average Grade Performance (Hispanic)_1`                &lt;dbl&gt; 2.5, 2.9, 2.7…
+## $ `Average Grade Performance (White)_1`                   &lt;dbl&gt; 3.0, 3.1, 3.2…
+## $ `Median Household Income`                               &lt;dbl&gt; 51771, 58233,…
+## $ `95% CI - Low_13`                                       &lt;dbl&gt; 51066, 51422,…
+## $ `95% CI - High_13`                                      &lt;dbl&gt; 52476, 65044,…
+## $ `Household Income (AIAN)`                               &lt;dbl&gt; 50114, NA, 42…
+## $ `Household Income (AIAN) 95% CI - Low`                  &lt;dbl&gt; 44047, NA, 27…
+## $ `Household Income (AIAN) 95% CI - High`                 &lt;dbl&gt; 56181, NA, 56…
+## $ `Household Income (Asian)`                              &lt;dbl&gt; 63149, NA, 47…
+## $ `Household Income (Asian) 95% CI - Low`                 &lt;dbl&gt; 58615, NA, 29…
+## $ `Household Income (Asian) 95% CI - High`                &lt;dbl&gt; 67683, NA, 64…
+## $ `Household Income (Black)`                              &lt;dbl&gt; 33928, 28808,…
+## $ `Household Income (Black) 95% CI - Low`                 &lt;dbl&gt; 33358, 24068,…
+## $ `Household Income (Black) 95% CI - High`                &lt;dbl&gt; 34498, 33548,…
+## $ `Household Income (Hispanic)`                           &lt;dbl&gt; 41584, 86220,…
+## $ `Household Income (Hispanic) 95% CI - Low`              &lt;dbl&gt; 39868, 56718,…
+## $ `Household Income (Hispanic) 95% CI - High`             &lt;dbl&gt; 43300, 115722…
+## $ `Household Income (White)`                              &lt;dbl&gt; 57935, 65992,…
+## $ `Household Income (White) 95% CI - Low`                 &lt;dbl&gt; 57469, 61810,…
+## $ `Household Income (White) 95% CI - High`                &lt;dbl&gt; 58401, 70174,…
+## $ `% Enrolled in Free or Reduced Lunch`                   &lt;dbl&gt; 55, 47, 40, 6…
+## $ `Segregation index`                                     &lt;dbl&gt; 57, 25, 42, 2…
+## $ `Segregation Index`                                     &lt;dbl&gt; 51, 24, 32, 2…
+## $ `Homicide Rate`                                         &lt;dbl&gt; 10, 5, 3, 10,…
+## $ `95% CI - Low_14`                                       &lt;dbl&gt; 10, 3, 2, 6, …
+## $ `95% CI - High_14`                                      &lt;dbl&gt; 11, 8, 4, 16,…
+## $ `Homicide Rate (AIAN)`                                  &lt;dbl&gt; NA, NA, NA, N…
+## $ `Homicide Rate (AIAN) 95% CI - Low`                     &lt;dbl&gt; NA, NA, NA, N…
+## $ `Homicide Rate (AIAN) 95% CI - High`                    &lt;dbl&gt; NA, NA, NA, N…
+## $ `Homicide Rate (Asian)`                                 &lt;dbl&gt; NA, NA, NA, N…
+## $ `Homicide Rate (Asian) 95% CI - Low`                    &lt;dbl&gt; NA, NA, NA, N…
+## $ `Homicide Rate (Asian) 95% CI - High`                   &lt;dbl&gt; NA, NA, NA, N…
+## $ `Homicide Rate (Black)`                                 &lt;dbl&gt; 26, 14, 8, NA…
+## $ `Homicide Rate (Black) 95% CI - Low`                    &lt;dbl&gt; 25, 7, 4, NA,…
+## $ `Homicide Rate (Black) 95% CI - High`                   &lt;dbl&gt; 27, 26, 14, N…
+## $ `Homicide Rate (Hispanic)`                              &lt;dbl&gt; 6, NA, NA, NA…
+## $ `Homicide Rate (Hispanic) 95% CI - Low`                 &lt;dbl&gt; 5, NA, NA, NA…
+## $ `Homicide Rate (Hispanic) 95% CI - High`                &lt;dbl&gt; 7, NA, NA, NA…
+## $ `Homicide Rate (White)`                                 &lt;dbl&gt; 5, 3, 3, NA, …
+## $ `Homicide Rate (White) 95% CI - Low`                    &lt;dbl&gt; 4, 2, 2, NA, …
+## $ `Homicide Rate (White) 95% CI - High`                   &lt;dbl&gt; 5, 6, 4, NA, …
+## $ `# Deaths_3`                                            &lt;dbl&gt; 4000, 54, 208…
+## $ `Suicide Rate (Age-Adjusted)`                           &lt;dbl&gt; 16, 18, 19, 1…
+## $ `95% CI - Low_15`                                       &lt;dbl&gt; 15, 14, 17, 6…
+## $ `95% CI - High_15`                                      &lt;dbl&gt; 16, 24, 22, 1…
+## $ `Crude Rate`                                            &lt;dbl&gt; 16, 19, 20, 1…
+## $ `Suicide Rate (AIAN)`                                   &lt;dbl&gt; NA, NA, NA, N…
+## $ `Suicide Rate (AIAN) 95% CI - Low`                      &lt;dbl&gt; NA, NA, NA, N…
+## $ `Suicide Rate (AIAN) 95% CI - High`                     &lt;dbl&gt; NA, NA, NA, N…
+## $ `Suicide Rate (Asian)`                                  &lt;dbl&gt; 7, NA, NA, NA…
+## $ `Suicide Rate (Asian) 95% CI - Low`                     &lt;dbl&gt; 4, NA, NA, NA…
+## $ `Suicide Rate (Asian) 95% CI - High`                    &lt;dbl&gt; 10, NA, NA, N…
+## $ `Suicide Rate (Black)`                                  &lt;dbl&gt; 6, NA, NA, NA…
+## $ `Suicide Rate (Black) 95% CI - Low`                     &lt;dbl&gt; 5, NA, NA, NA…
+## $ `Suicide Rate (Black) 95% CI - High`                    &lt;dbl&gt; 6, NA, NA, NA…
+## $ `Suicide Rate (Hispanic)`                               &lt;dbl&gt; 6, NA, NA, NA…
+## $ `Suicide Rate (Hispanic) 95% CI - Low`                  &lt;dbl&gt; 5, NA, NA, NA…
+## $ `Suicide Rate (Hispanic) 95% CI - High`                 &lt;dbl&gt; 8, NA, NA, NA…
+## $ `Suicide Rate (White)`                                  &lt;dbl&gt; 21, NA, NA, N…
+## $ `Suicide Rate (White) 95% CI - Low`                     &lt;dbl&gt; 20, NA, NA, N…
+## $ `Suicide Rate (White) 95% CI - High`                    &lt;dbl&gt; 21, NA, NA, N…
+## $ `# Firearm Fatalities`                                  &lt;dbl&gt; 5268, 46, 153…
+## $ `Firearm Fatalities Rate`                               &lt;dbl&gt; 22, 17, 14, 2…
+## $ `95% CI - Low_16`                                       &lt;dbl&gt; 21, 12, 12, 1…
+## $ `95% CI - High_16`                                      &lt;dbl&gt; 22, 22, 17, 3…
+## $ `Firearm Fatalities Rate (AIAN)`                        &lt;dbl&gt; 7, NA, NA, NA…
+## $ `Firearm Fatalities Rate (AIAN) 95% CI - Low`           &lt;dbl&gt; 4, NA, NA, NA…
+## $ `Firearm Fatalities Rate (AIAN) 95% CI - High`          &lt;dbl&gt; 13, NA, NA, N…
+## $ `Firearm Fatalities Rate (Asian)`                       &lt;dbl&gt; 4, NA, NA, NA…
+## $ `Firearm Fatalities Rate (Asian) 95% CI - Low`          &lt;dbl&gt; 3, NA, NA, NA…
+## $ `Firearm Fatalities Rate (Asian) 95% CI - High`         &lt;dbl&gt; 7, NA, NA, NA…
+## $ `Firearm Fatalities Rate (Black)`                       &lt;dbl&gt; 30, NA, NA, 1…
+## $ `Firearm Fatalities Rate (Black) 95% CI - Low`          &lt;dbl&gt; 28, NA, NA, 1…
+## $ `Firearm Fatalities Rate (Black) 95% CI - High`         &lt;dbl&gt; 31, NA, NA, 3…
+## $ `Firearm Fatalities Rate (Hispanic)`                    &lt;dbl&gt; 8, NA, NA, NA…
+## $ `Firearm Fatalities Rate (Hispanic) 95% CI - Low`       &lt;dbl&gt; 7, NA, NA, NA…
+## $ `Firearm Fatalities Rate (Hispanic) 95% CI - High`      &lt;dbl&gt; 10, NA, NA, N…
+## $ `Firearm Fatalities Rate (White)`                       &lt;dbl&gt; 20, NA, NA, 2…
+## $ `Firearm Fatalities Rate (White) 95% CI - Low`          &lt;dbl&gt; 19, NA, NA, 1…
+## $ `Firearm Fatalities Rate (White) 95% CI - High`         &lt;dbl&gt; 20, NA, NA, 4…
+## $ `Non-Petitioned Cases`                                  &lt;chr&gt; &quot;1977&quot;, &quot;1-4&quot;…
+## $ `Petitioned Cases`                                      &lt;chr&gt; &quot;7374&quot;, &quot;68&quot;,…
+## $ Denominator                                             &lt;dbl&gt; 498700, 6400,…
+## $ `Juvenile Arrest Rate`                                  &lt;dbl&gt; NA, NA, 28, N…
+## $ `Traffic Volume`                                        &lt;dbl&gt; 220, 155, 134…
+## $ `# Homeowners`                                          &lt;dbl&gt; 1284748, 1568…
+## $ `% Homeowners`                                          &lt;dbl&gt; 69, 73, 75, 6…
+## $ `95% CI - Low_17`                                       &lt;dbl&gt; 68, 71, 74, 5…
+## $ `95% CI - High_17`                                      &lt;dbl&gt; 69, 76, 76, 6…
+## $ `# Households with Severe Cost Burden`                  &lt;dbl&gt; 213551, 2745,…
+## $ `% Severe Housing Cost Burden`                          &lt;dbl&gt; 12, 13, 11, 1…
+## $ `95% CI - Low_18`                                       &lt;dbl&gt; 12, 11, 10, 1…
+## $ `95% CI - High_18`                                      &lt;dbl&gt; 12, 16, 13, 1…
+## $ `% Broadband Access`                                    &lt;dbl&gt; 76, 81, 82, 6…
+## $ Numerator                                               &lt;dbl&gt; 1427054, 1723…
+## $ `95% CI - Low_19`                                       &lt;dbl&gt; 76, 78, 81, 5…
+## $ `95% CI - High_19`                                      &lt;dbl&gt; 77, 83, 83, 6…
+## $ Population                                              &lt;dbl&gt; 4903185, 5586…
+## $ `% Less Than 18 Years of Age`                           &lt;dbl&gt; 22.2, 23.2, 2…
+## $ `% 65 and Over`                                         &lt;dbl&gt; 17.3, 16.0, 2…
+## $ `# Black`                                               &lt;dbl&gt; 1297775, 1109…
+## $ `% Black`                                               &lt;dbl&gt; 26.5, 19.9, 8…
+## $ `# American Indian &amp; Alaska Native`                     &lt;dbl&gt; 34799, 266, 1…
+## $ `% American Indian &amp; Alaska Native`                     &lt;dbl&gt; 0.7, 0.5, 0.8…
+## $ `# Asian`                                               &lt;dbl&gt; 73715, 656, 2…
+## $ `% Asian`                                               &lt;dbl&gt; 1.5, 1.2, 1.1…
+## $ `# Native Hawaiian/Other Pacific Islander`              &lt;dbl&gt; 5110, 58, 154…
+## $ `% Native Hawaiian/Other Pacific Islander`              &lt;dbl&gt; 0.1, 0.1, 0.1…
+## $ `# Hispanic`                                            &lt;dbl&gt; 223278, 1671,…
+## $ `% Hispanic`                                            &lt;dbl&gt; 4.6, 3.0, 4.7…
+## $ `# Non-Hispanic White`                                  &lt;dbl&gt; 3200828, 4121…
+## $ `% Non-Hispanic White`                                  &lt;dbl&gt; 65.3, 73.8, 8…
+## $ `# Not Proficient in English`                           &lt;dbl&gt; 50445, 419, 1…
+## $ `% Not Proficient in English`                           &lt;dbl&gt; 1, 1, 1, 2, 0…
+## $ `95% CI - Low_20`                                       &lt;dbl&gt; 1, 0, 0, 1, 0…
+## $ `95% CI - High_20`                                      &lt;dbl&gt; 1, 1, 1, 3, 1…
+## $ `% Female`                                              &lt;dbl&gt; 51.7, 51.5, 5…
+## $ `# Rural`                                               &lt;dbl&gt; 1957932, 2292…
+## $ `% Rural`                                               &lt;dbl&gt; 41.0, 42.0, 4…
+## $ X277                                                    &lt;lgl&gt; NA, NA, NA, N…</code></pre>
+<pre class="r"><code>joineddata1 &lt;- full_join(data2, data1, by = c(State = &quot;state&quot;))
+joineddata1</code></pre>
+<pre><code>## # A tibble: 3,193 x 284
+##    FIPS  State County `Life Expectanc… `95% CI - Low` `95% CI - High`
+##    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;             &lt;dbl&gt;          &lt;dbl&gt;           &lt;dbl&gt;
+##  1 01000 Alab… &lt;NA&gt;               75.5           75.5            75.6
+##  2 01001 Alab… Autau…             77.2           76.4            77.9
+##  3 01003 Alab… Baldw…             78.2           77.8            78.6
+##  4 01005 Alab… Barbo…             74.1           72.9            75.2
+##  5 01007 Alab… Bibb               73.4           72.1            74.7
+##  6 01009 Alab… Blount             74.4           73.6            75.2
+##  7 01011 Alab… Bullo…             74.4           72.6            76.3
+##  8 01013 Alab… Butler             74.2           72.7            75.6
+##  9 01015 Alab… Calho…             73.5           72.9            74  
+## 10 01017 Alab… Chamb…             75             74              76  
+## # … with 3,183 more rows, and 278 more variables: `Life Expectancy
+## #   (AIAN)` &lt;dbl&gt;, `Life Expectancy (AIAN) 95% CI - Low` &lt;dbl&gt;, `Life
+## #   Expectancy (AIAN) 95% CI - High` &lt;dbl&gt;, `Life Expectancy (Asian)` &lt;dbl&gt;,
+## #   `Life Expectancy (Asian) 95% CI - Low` &lt;dbl&gt;, `Life Expectancy (Asian) 95%
+## #   CI - High` &lt;dbl&gt;, `Life Expectancy (Black)` &lt;dbl&gt;, `Life Expectancy (Black)
+## #   95% CI - Low` &lt;dbl&gt;, `Life Expectancy (Black) 95% CI - High` &lt;dbl&gt;, `Life
+## #   Expectancy (Hispanic)` &lt;dbl&gt;, `Life Expectancy (Hispanic) 95% CI -
+## #   Low` &lt;dbl&gt;, `Life Expectancy (Hispanic) 95% CI - High` &lt;dbl&gt;, `Life
+## #   Expectancy (White)` &lt;dbl&gt;, `Life Expectancy (White) 95% CI - Low` &lt;dbl&gt;,
+## #   `Life Expectancy (White) 95% CI - High` &lt;dbl&gt;, `# Deaths` &lt;dbl&gt;,
+## #   `Age-Adjusted Death Rate` &lt;dbl&gt;, `95% CI - Low_1` &lt;dbl&gt;, `95% CI -
+## #   High_1` &lt;dbl&gt;, `Age-Adjusted Mortality (AIAN)` &lt;dbl&gt;, `Age-Adjusted
+## #   Mortality (AIAN) 95% CI - Low` &lt;dbl&gt;, `Age-Adjusted Mortality (AIAN) 95% CI
+## #   - High` &lt;dbl&gt;, `Age-Adjusted Mortality (Asian)` &lt;dbl&gt;, `Age-Adjusted
+## #   Mortality (Asian) 95% CI - Low` &lt;dbl&gt;, `Age-Adjusted Mortality (Asian) 95%
+## #   CI - High` &lt;dbl&gt;, `Age-Adjusted Mortality (Black)` &lt;dbl&gt;, `Age-Adjusted
+## #   Mortality (Black) 95% CI - Low` &lt;dbl&gt;, `Age-Adjusted Mortality (Black) 95%
+## #   CI - High` &lt;dbl&gt;, `Age-Adjusted Mortality (Hispanic)` &lt;dbl&gt;, `Age-Adjusted
+## #   Mortality (Hispanic) 95% CI - Low` &lt;dbl&gt;, `Age-Adjusted Mortality
+## #   (Hispanic) 95% CI - High` &lt;dbl&gt;, `Age-Adjusted Mortality (White)` &lt;dbl&gt;,
+## #   `Age-Adjusted Mortality (White) 95% CI - Low` &lt;dbl&gt;, `Age-Adjusted
+## #   Mortality (White) 95% CI - High` &lt;dbl&gt;, `# Deaths_1` &lt;dbl&gt;, `Child
+## #   Mortality Rate` &lt;dbl&gt;, `95% CI - Low_2` &lt;dbl&gt;, `95% CI - High_2` &lt;dbl&gt;,
+## #   `Child Mortality Rate (AIAN)` &lt;dbl&gt;, `Child Mortality Rate (AIAN) 95% CI -
+## #   Low` &lt;dbl&gt;, `Child Mortality Rate (AIAN) 95% CI - High` &lt;dbl&gt;, `Child
+## #   Mortality Rate (Asian)` &lt;dbl&gt;, `Child Mortality Rate (Asian) 95% CI -
+## #   Low` &lt;dbl&gt;, `Child Mortality Rate (Asian) 95% CI - High` &lt;dbl&gt;, `Child
+## #   Mortality Rate (Black)` &lt;dbl&gt;, `Child Mortality Rate (Black) 95% CI -
+## #   Low` &lt;dbl&gt;, `Child Mortality Rate (Black) 95% CI - High` &lt;dbl&gt;, `Child
+## #   Mortality Rate (Hispanic)` &lt;dbl&gt;, `Child Mortality Rate (Hispanic) 95% CI -
+## #   Low` &lt;dbl&gt;, `Child Mortality Rate (Hispanic) 95% CI - High` &lt;dbl&gt;, `Child
+## #   Mortality Rate (White)` &lt;dbl&gt;, `Child Mortality Rate (White) 95% CI -
+## #   Low` &lt;dbl&gt;, `Child Mortality Rate (White) 95% CI - High` &lt;dbl&gt;, `#
+## #   Deaths_2` &lt;dbl&gt;, `Infant Mortality Rate` &lt;dbl&gt;, `95% CI - Low_3` &lt;dbl&gt;,
+## #   `95% CI - High_3` &lt;dbl&gt;, `Infant Mortality Rate (AIAN)` &lt;dbl&gt;, `Infant
+## #   Mortality Rate (AIAN) 95% CI - Low` &lt;dbl&gt;, `Infant Mortality Rate (AIAN)
+## #   95% CI - High` &lt;dbl&gt;, `Infant Mortality Rate (Asian)` &lt;dbl&gt;, `Infant
+## #   Mortality Rate (Asian) 95% CI - Low` &lt;dbl&gt;, `Infant Mortality Rate (Asian)
+## #   95% CI - High` &lt;dbl&gt;, `Infant Mortality Rate (Black)` &lt;dbl&gt;, `Infant
+## #   Mortality Rate (Black) 95% CI - Low` &lt;dbl&gt;, `Infant Mortality Rate (Black)
+## #   95% CI - High` &lt;dbl&gt;, `Infant Mortality Rate (Hispanic)` &lt;dbl&gt;, `Infant
+## #   Mortality Rate (Hispanic) 95% CI - Low` &lt;dbl&gt;, `Infant Mortality Rate
+## #   (Hispanic) 95% CI - High` &lt;dbl&gt;, `Infant Mortality Rate (White)` &lt;dbl&gt;,
+## #   `Infant Mortality Rate (White) 95% CI - Low` &lt;dbl&gt;, `Infant Mortality Rate
+## #   (White) 95% CI - High` &lt;dbl&gt;, `% Frequent Physical Distress` &lt;dbl&gt;, `95% CI
+## #   - Low_4` &lt;dbl&gt;, `95% CI - High_4` &lt;dbl&gt;, `% Frequent Mental
+## #   Distress` &lt;dbl&gt;, `95% CI - Low_5` &lt;dbl&gt;, `95% CI - High_5` &lt;dbl&gt;, `% Adults
+## #   with Diabetes` &lt;dbl&gt;, `95% CI - Low_6` &lt;dbl&gt;, `95% CI - High_6` &lt;dbl&gt;, `#
+## #   HIV Cases` &lt;dbl&gt;, `HIV Prevalence Rate` &lt;dbl&gt;, `# Food Insecure` &lt;dbl&gt;, `%
+## #   Food Insecure` &lt;dbl&gt;, `# Limited Access` &lt;dbl&gt;, `% Limited Access to
+## #   Healthy Foods` &lt;dbl&gt;, `# Drug Overdose Deaths` &lt;dbl&gt;, `Drug Overdose
+## #   Mortality Rate` &lt;dbl&gt;, `95% CI - Low_7` &lt;dbl&gt;, `95% CI - High_7` &lt;dbl&gt;,
+## #   `Drug Overdose Mortality Rate (AIAN)` &lt;dbl&gt;, `Drug Overdose Mortality Rate
+## #   (AIAN) 95% CI - Low` &lt;dbl&gt;, `Drug Overdose Mortality Rate (AIAN) 95% CI -
+## #   High` &lt;dbl&gt;, `Drug Overdose Mortality Rate (Asian)` &lt;dbl&gt;, `Drug Overdose
+## #   Mortality Rate (Asian) 95% CI - Low` &lt;dbl&gt;, `Drug Overdose Mortality Rate
+## #   (Asian) 95% CI - High` &lt;dbl&gt;, `Drug Overdose Mortality Rate (Black)` &lt;dbl&gt;,
+## #   `Drug Overdose Mortality Rate (Black) 95% CI - Low` &lt;dbl&gt;, `Drug Overdose
+## #   Mortality Rate (Black) 95% CI - High` &lt;dbl&gt;, …</code></pre>
+<pre class="r"><code># your joining code
+not_in_data1 &lt;- anti_join(data1, data2, by = c(state = &quot;State&quot;))
+not_in_data2 &lt;- anti_join(data2, data1, by = c(State = &quot;state&quot;))
 
-# your joining code</code></pre>
+not_in_data1</code></pre>
+<pre><code>## # A tibble: 0 x 8
+## # … with 8 variables: state &lt;chr&gt;, num_drivers &lt;dbl&gt;, perc_speeding &lt;int&gt;,
+## #   perc_alcohol &lt;int&gt;, perc_not_distracted &lt;int&gt;, perc_no_previous &lt;int&gt;,
+## #   insurance_premiums &lt;dbl&gt;, losses &lt;dbl&gt;</code></pre>
+<pre class="r"><code>not_in_data2</code></pre>
+<pre><code>## # A tibble: 0 x 277
+## # … with 277 variables: FIPS &lt;chr&gt;, State &lt;chr&gt;, County &lt;chr&gt;, `Life
+## #   Expectancy` &lt;dbl&gt;, `95% CI - Low` &lt;dbl&gt;, `95% CI - High` &lt;dbl&gt;, `Life
+## #   Expectancy (AIAN)` &lt;dbl&gt;, `Life Expectancy (AIAN) 95% CI - Low` &lt;dbl&gt;,
+## #   `Life Expectancy (AIAN) 95% CI - High` &lt;dbl&gt;, `Life Expectancy
+## #   (Asian)` &lt;dbl&gt;, `Life Expectancy (Asian) 95% CI - Low` &lt;dbl&gt;, `Life
+## #   Expectancy (Asian) 95% CI - High` &lt;dbl&gt;, `Life Expectancy (Black)` &lt;dbl&gt;,
+## #   `Life Expectancy (Black) 95% CI - Low` &lt;dbl&gt;, `Life Expectancy (Black) 95%
+## #   CI - High` &lt;dbl&gt;, `Life Expectancy (Hispanic)` &lt;dbl&gt;, `Life Expectancy
+## #   (Hispanic) 95% CI - Low` &lt;dbl&gt;, `Life Expectancy (Hispanic) 95% CI -
+## #   High` &lt;dbl&gt;, `Life Expectancy (White)` &lt;dbl&gt;, `Life Expectancy (White) 95%
+## #   CI - Low` &lt;dbl&gt;, `Life Expectancy (White) 95% CI - High` &lt;dbl&gt;, `#
+## #   Deaths` &lt;dbl&gt;, `Age-Adjusted Death Rate` &lt;dbl&gt;, `95% CI - Low_1` &lt;dbl&gt;,
+## #   `95% CI - High_1` &lt;dbl&gt;, `Age-Adjusted Mortality (AIAN)` &lt;dbl&gt;,
+## #   `Age-Adjusted Mortality (AIAN) 95% CI - Low` &lt;dbl&gt;, `Age-Adjusted Mortality
+## #   (AIAN) 95% CI - High` &lt;dbl&gt;, `Age-Adjusted Mortality (Asian)` &lt;dbl&gt;,
+## #   `Age-Adjusted Mortality (Asian) 95% CI - Low` &lt;dbl&gt;, `Age-Adjusted
+## #   Mortality (Asian) 95% CI - High` &lt;dbl&gt;, `Age-Adjusted Mortality
+## #   (Black)` &lt;dbl&gt;, `Age-Adjusted Mortality (Black) 95% CI - Low` &lt;dbl&gt;,
+## #   `Age-Adjusted Mortality (Black) 95% CI - High` &lt;dbl&gt;, `Age-Adjusted
+## #   Mortality (Hispanic)` &lt;dbl&gt;, `Age-Adjusted Mortality (Hispanic) 95% CI -
+## #   Low` &lt;dbl&gt;, `Age-Adjusted Mortality (Hispanic) 95% CI - High` &lt;dbl&gt;,
+## #   `Age-Adjusted Mortality (White)` &lt;dbl&gt;, `Age-Adjusted Mortality (White) 95%
+## #   CI - Low` &lt;dbl&gt;, `Age-Adjusted Mortality (White) 95% CI - High` &lt;dbl&gt;, `#
+## #   Deaths_1` &lt;dbl&gt;, `Child Mortality Rate` &lt;dbl&gt;, `95% CI - Low_2` &lt;dbl&gt;, `95%
+## #   CI - High_2` &lt;dbl&gt;, `Child Mortality Rate (AIAN)` &lt;dbl&gt;, `Child Mortality
+## #   Rate (AIAN) 95% CI - Low` &lt;dbl&gt;, `Child Mortality Rate (AIAN) 95% CI -
+## #   High` &lt;dbl&gt;, `Child Mortality Rate (Asian)` &lt;dbl&gt;, `Child Mortality Rate
+## #   (Asian) 95% CI - Low` &lt;dbl&gt;, `Child Mortality Rate (Asian) 95% CI -
+## #   High` &lt;dbl&gt;, `Child Mortality Rate (Black)` &lt;dbl&gt;, `Child Mortality Rate
+## #   (Black) 95% CI - Low` &lt;dbl&gt;, `Child Mortality Rate (Black) 95% CI -
+## #   High` &lt;dbl&gt;, `Child Mortality Rate (Hispanic)` &lt;dbl&gt;, `Child Mortality Rate
+## #   (Hispanic) 95% CI - Low` &lt;dbl&gt;, `Child Mortality Rate (Hispanic) 95% CI -
+## #   High` &lt;dbl&gt;, `Child Mortality Rate (White)` &lt;dbl&gt;, `Child Mortality Rate
+## #   (White) 95% CI - Low` &lt;dbl&gt;, `Child Mortality Rate (White) 95% CI -
+## #   High` &lt;dbl&gt;, `# Deaths_2` &lt;dbl&gt;, `Infant Mortality Rate` &lt;dbl&gt;, `95% CI -
+## #   Low_3` &lt;dbl&gt;, `95% CI - High_3` &lt;dbl&gt;, `Infant Mortality Rate
+## #   (AIAN)` &lt;dbl&gt;, `Infant Mortality Rate (AIAN) 95% CI - Low` &lt;dbl&gt;, `Infant
+## #   Mortality Rate (AIAN) 95% CI - High` &lt;dbl&gt;, `Infant Mortality Rate
+## #   (Asian)` &lt;dbl&gt;, `Infant Mortality Rate (Asian) 95% CI - Low` &lt;dbl&gt;, `Infant
+## #   Mortality Rate (Asian) 95% CI - High` &lt;dbl&gt;, `Infant Mortality Rate
+## #   (Black)` &lt;dbl&gt;, `Infant Mortality Rate (Black) 95% CI - Low` &lt;dbl&gt;, `Infant
+## #   Mortality Rate (Black) 95% CI - High` &lt;dbl&gt;, `Infant Mortality Rate
+## #   (Hispanic)` &lt;dbl&gt;, `Infant Mortality Rate (Hispanic) 95% CI - Low` &lt;dbl&gt;,
+## #   `Infant Mortality Rate (Hispanic) 95% CI - High` &lt;dbl&gt;, `Infant Mortality
+## #   Rate (White)` &lt;dbl&gt;, `Infant Mortality Rate (White) 95% CI - Low` &lt;dbl&gt;,
+## #   `Infant Mortality Rate (White) 95% CI - High` &lt;dbl&gt;, `% Frequent Physical
+## #   Distress` &lt;dbl&gt;, `95% CI - Low_4` &lt;dbl&gt;, `95% CI - High_4` &lt;dbl&gt;, `%
+## #   Frequent Mental Distress` &lt;dbl&gt;, `95% CI - Low_5` &lt;dbl&gt;, `95% CI -
+## #   High_5` &lt;dbl&gt;, `% Adults with Diabetes` &lt;dbl&gt;, `95% CI - Low_6` &lt;dbl&gt;, `95%
+## #   CI - High_6` &lt;dbl&gt;, `# HIV Cases` &lt;dbl&gt;, `HIV Prevalence Rate` &lt;dbl&gt;, `#
+## #   Food Insecure` &lt;dbl&gt;, `% Food Insecure` &lt;dbl&gt;, `# Limited Access` &lt;dbl&gt;, `%
+## #   Limited Access to Healthy Foods` &lt;dbl&gt;, `# Drug Overdose Deaths` &lt;dbl&gt;,
+## #   `Drug Overdose Mortality Rate` &lt;dbl&gt;, `95% CI - Low_7` &lt;dbl&gt;, `95% CI -
+## #   High_7` &lt;dbl&gt;, `Drug Overdose Mortality Rate (AIAN)` &lt;dbl&gt;, `Drug Overdose
+## #   Mortality Rate (AIAN) 95% CI - Low` &lt;dbl&gt;, `Drug Overdose Mortality Rate
+## #   (AIAN) 95% CI - High` &lt;dbl&gt;, …</code></pre>
 <p>Discussions of joining here. Feel encouraged to break up into more than once code chunk and discuss each in turn.</p>
 </div>
 <div id="wrangling" class="section level4">
 <h4>Wrangling</h4>
 <pre class="r"><code># your wrangling code
-
-# your wrangling code
+joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectancy`, 
+    na.rm = TRUE), avg_deaths = mean(`# Deaths`, na.rm = TRUE), 
+    avg_uninsured = mean(`# Uninsured`, na.rm = TRUE), avg_gradrate = mean(`High School Graduation Rate`, 
+        na.rm = TRUE), avg_income = mean(`Median Household Income`, 
+        na.rm = TRUE), avg_homicide = mean(`Homicide Rate`, na.rm = TRUE), 
+    avg_firearmrate = mean(`# Firearm Fatalities`, na.rm = TRUE), 
+    avg_homeowners = mean(`# Homeowners`, na.rm = TRUE), avg_pop = mean(Population, 
+        na.rm = TRUE), avg_under18 = mean(`% Less Than 18 Years of Age`, 
+        na.rm = TRUE)) %&gt;% knitr::kable()</code></pre>
+<table style="width:100%;">
+<colgroup>
+<col width="14%"></col>
+<col width="6%"></col>
+<col width="7%"></col>
+<col width="9%"></col>
+<col width="8%"></col>
+<col width="7%"></col>
+<col width="8%"></col>
+<col width="10%"></col>
+<col width="10%"></col>
+<col width="7%"></col>
+<col width="8%"></col>
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">state</th>
+<th align="right">avg_LE</th>
+<th align="right">avg_deaths</th>
+<th align="right">avg_uninsured</th>
+<th align="right">avg_gradrate</th>
+<th align="right">avg_income</th>
+<th align="right">avg_homicide</th>
+<th align="right">avg_firearmrate</th>
+<th align="right">avg_homeowners</th>
+<th align="right">avg_pop</th>
+<th align="right">avg_under18</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Alabama</td>
+<td align="right">74.69706</td>
+<td align="right">2419.0882</td>
+<td align="right">12864.471</td>
+<td align="right">90.22059</td>
+<td align="right">46229.16</td>
+<td align="right">10.436364</td>
+<td align="right">159.45455</td>
+<td align="right">37786.706</td>
+<td align="right">144211.32</td>
+<td align="right">21.63529</td>
+</tr>
+<tr class="even">
+<td align="left">Alaska</td>
+<td align="right">79.43462</td>
+<td align="right">636.1154</td>
+<td align="right">4862.600</td>
+<td align="right">77.26667</td>
+<td align="right">67924.17</td>
+<td align="right">11.666667</td>
+<td align="right">129.23077</td>
+<td align="right">10866.400</td>
+<td align="right">48769.67</td>
+<td align="right">23.57000</td>
+</tr>
+<tr class="odd">
+<td align="left">Arizona</td>
+<td align="right">78.66250</td>
+<td align="right">10204.7500</td>
+<td align="right">75973.000</td>
+<td align="right">82.62500</td>
+<td align="right">52174.12</td>
+<td align="right">6.400000</td>
+<td align="right">730.66667</td>
+<td align="right">207094.500</td>
+<td align="right">909839.62</td>
+<td align="right">22.35625</td>
+</tr>
+<tr class="even">
+<td align="left">Arkansas</td>
+<td align="right">75.01579</td>
+<td align="right">1269.8158</td>
+<td align="right">5402.816</td>
+<td align="right">90.48485</td>
+<td align="right">44155.22</td>
+<td align="right">9.868421</td>
+<td align="right">88.28571</td>
+<td align="right">19985.658</td>
+<td align="right">79415.89</td>
+<td align="right">22.18684</td>
+</tr>
+<tr class="odd">
+<td align="left">California</td>
+<td align="right">80.53793</td>
+<td align="right">11885.1525</td>
+<td align="right">85125.288</td>
+<td align="right">87.42105</td>
+<td align="right">71197.44</td>
+<td align="right">5.117647</td>
+<td align="right">571.59259</td>
+<td align="right">242528.136</td>
+<td align="right">1339397.39</td>
+<td align="right">21.87288</td>
+</tr>
+<tr class="even">
+<td align="left">Colorado</td>
+<td align="right">81.08167</td>
+<td align="right">1766.5246</td>
+<td align="right">11157.723</td>
+<td align="right">83.65854</td>
+<td align="right">62882.68</td>
+<td align="right">4.176471</td>
+<td align="right">199.02500</td>
+<td align="right">43130.308</td>
+<td align="right">177191.88</td>
+<td align="right">19.99538</td>
+</tr>
+<tr class="odd">
+<td align="left">Connecticut</td>
+<td align="right">80.56667</td>
+<td align="right">7938.6667</td>
+<td align="right">35794.667</td>
+<td align="right">89.33333</td>
+<td align="right">79151.22</td>
+<td align="right">2.333333</td>
+<td align="right">205.55556</td>
+<td align="right">201262.444</td>
+<td align="right">792286.00</td>
+<td align="right">19.43333</td>
+</tr>
+<tr class="even">
+<td align="left">Delaware</td>
+<td align="right">78.35000</td>
+<td align="right">6428.5000</td>
+<td align="right">22441.000</td>
+<td align="right">87.25000</td>
+<td align="right">67516.75</td>
+<td align="right">5.250000</td>
+<td align="right">267.00000</td>
+<td align="right">129390.000</td>
+<td align="right">486882.00</td>
+<td align="right">20.85000</td>
+</tr>
+<tr class="odd">
+<td align="left">District of Columbia</td>
+<td align="right">79.00000</td>
+<td align="right">8280.0000</td>
+<td align="right">18731.000</td>
+<td align="right">70.00000</td>
+<td align="right">90395.00</td>
+<td align="right">18.000000</td>
+<td align="right">593.00000</td>
+<td align="right">118367.000</td>
+<td align="right">705749.00</td>
+<td align="right">18.20000</td>
+</tr>
+<tr class="even">
+<td align="left">Florida</td>
+<td align="right">78.13529</td>
+<td align="right">7842.8529</td>
+<td align="right">69941.265</td>
+<td align="right">85.10294</td>
+<td align="right">54362.15</td>
+<td align="right">6.033333</td>
+<td align="right">429.60938</td>
+<td align="right">148789.441</td>
+<td align="right">631698.15</td>
+<td align="right">19.17794</td>
+</tr>
+<tr class="odd">
+<td align="left">Georgia</td>
+<td align="right">76.30314</td>
+<td align="right">1663.5625</td>
+<td align="right">15152.725</td>
+<td align="right">86.98630</td>
+<td align="right">50282.28</td>
+<td align="right">7.818182</td>
+<td align="right">129.75410</td>
+<td align="right">29722.162</td>
+<td align="right">132717.79</td>
+<td align="right">22.21000</td>
+</tr>
+<tr class="even">
+<td align="left">Hawaii</td>
+<td align="right">82.06000</td>
+<td align="right">5766.0000</td>
+<td align="right">18338.000</td>
+<td align="right">85.00000</td>
+<td align="right">77202.60</td>
+<td align="right">2.200000</td>
+<td align="right">112.40000</td>
+<td align="right">90125.667</td>
+<td align="right">471957.33</td>
+<td align="right">17.81667</td>
+</tr>
+<tr class="odd">
+<td align="left">Idaho</td>
+<td align="right">79.22558</td>
+<td align="right">830.2955</td>
+<td align="right">7310.711</td>
+<td align="right">82.45714</td>
+<td align="right">55355.73</td>
+<td align="right">2.250000</td>
+<td align="right">88.13793</td>
+<td align="right">19587.378</td>
+<td align="right">79425.11</td>
+<td align="right">24.31556</td>
+</tr>
+<tr class="even">
+<td align="left">Illinois</td>
+<td align="right">77.99320</td>
+<td align="right">2800.6019</td>
+<td align="right">14851.417</td>
+<td align="right">88.90217</td>
+<td align="right">59044.76</td>
+<td align="right">5.323529</td>
+<td align="right">225.88525</td>
+<td align="right">62188.641</td>
+<td align="right">246054.78</td>
+<td align="right">21.35049</td>
+</tr>
+<tr class="odd">
+<td align="left">Indiana</td>
+<td align="right">76.99785</td>
+<td align="right">1983.4624</td>
+<td align="right">9347.978</td>
+<td align="right">92.48352</td>
+<td align="right">58535.41</td>
+<td align="right">4.843750</td>
+<td align="right">118.86250</td>
+<td align="right">38197.462</td>
+<td align="right">144778.90</td>
+<td align="right">22.68925</td>
+</tr>
+<tr class="even">
+<td align="left">Iowa</td>
+<td align="right">79.13000</td>
+<td align="right">715.5800</td>
+<td align="right">2478.560</td>
+<td align="right">92.34884</td>
+<td align="right">59755.50</td>
+<td align="right">3.666667</td>
+<td align="right">72.14706</td>
+<td align="right">17984.460</td>
+<td align="right">63101.40</td>
+<td align="right">22.77000</td>
+</tr>
+<tr class="odd">
+<td align="left">Kansas</td>
+<td align="right">77.58252</td>
+<td align="right">668.5238</td>
+<td align="right">3921.547</td>
+<td align="right">87.51786</td>
+<td align="right">55039.05</td>
+<td align="right">5.388889</td>
+<td align="right">116.40625</td>
+<td align="right">14115.528</td>
+<td align="right">54968.19</td>
+<td align="right">23.50472</td>
+</tr>
+<tr class="even">
+<td align="left">Kentucky</td>
+<td align="right">74.63306</td>
+<td align="right">1228.7769</td>
+<td align="right">3410.628</td>
+<td align="right">93.95652</td>
+<td align="right">47490.40</td>
+<td align="right">5.647059</td>
+<td align="right">74.94737</td>
+<td align="right">19273.240</td>
+<td align="right">73845.83</td>
+<td align="right">22.23388</td>
+</tr>
+<tr class="odd">
+<td align="left">Louisiana</td>
+<td align="right">75.54462</td>
+<td align="right">2218.4308</td>
+<td align="right">9895.600</td>
+<td align="right">86.38095</td>
+<td align="right">48126.60</td>
+<td align="right">11.083333</td>
+<td align="right">169.94828</td>
+<td align="right">35114.000</td>
+<td align="right">143039.82</td>
+<td align="right">23.16615</td>
+</tr>
+<tr class="even">
+<td align="left">Maine</td>
+<td align="right">78.37647</td>
+<td align="right">2158.8235</td>
+<td align="right">10895.765</td>
+<td align="right">85.20000</td>
+<td align="right">54490.18</td>
+<td align="right">2.000000</td>
+<td align="right">89.52941</td>
+<td align="right">47618.706</td>
+<td align="right">158142.59</td>
+<td align="right">18.30000</td>
+</tr>
+<tr class="odd">
+<td align="left">Maryland</td>
+<td align="right">78.51200</td>
+<td align="right">5671.8400</td>
+<td align="right">24510.240</td>
+<td align="right">89.44000</td>
+<td align="right">79316.04</td>
+<td align="right">6.444444</td>
+<td align="right">314.21739</td>
+<td align="right">118011.920</td>
+<td align="right">483654.40</td>
+<td align="right">21.14000</td>
+</tr>
+<tr class="even">
+<td align="left">Massachusetts</td>
+<td align="right">80.44667</td>
+<td align="right">9129.7333</td>
+<td align="right">22317.733</td>
+<td align="right">86.93333</td>
+<td align="right">80279.07</td>
+<td align="right">2.363636</td>
+<td align="right">187.23077</td>
+<td align="right">217702.000</td>
+<td align="right">919000.40</td>
+<td align="right">18.86000</td>
+</tr>
+<tr class="odd">
+<td align="left">Michigan</td>
+<td align="right">78.10000</td>
+<td align="right">3148.1190</td>
+<td align="right">10916.571</td>
+<td align="right">81.48611</td>
+<td align="right">53695.44</td>
+<td align="right">4.307692</td>
+<td align="right">176.95588</td>
+<td align="right">66730.929</td>
+<td align="right">237782.31</td>
+<td align="right">19.58690</td>
+</tr>
+<tr class="even">
+<td align="left">Minnesota</td>
+<td align="right">80.18068</td>
+<td align="right">1184.6591</td>
+<td align="right">4501.545</td>
+<td align="right">86.12857</td>
+<td align="right">64448.90</td>
+<td align="right">2.666667</td>
+<td align="right">84.88000</td>
+<td align="right">35565.227</td>
+<td align="right">128173.45</td>
+<td align="right">22.95227</td>
+</tr>
+<tr class="odd">
+<td align="left">Mississippi</td>
+<td align="right">74.15000</td>
+<td align="right">1242.6265</td>
+<td align="right">7696.602</td>
+<td align="right">83.73171</td>
+<td align="right">41753.66</td>
+<td align="right">14.517241</td>
+<td align="right">86.75342</td>
+<td align="right">18140.747</td>
+<td align="right">71714.43</td>
+<td align="right">22.99518</td>
+</tr>
+<tr class="even">
+<td align="left">Missouri</td>
+<td align="right">76.76638</td>
+<td align="right">1501.3793</td>
+<td align="right">8421.793</td>
+<td align="right">91.74725</td>
+<td align="right">49391.31</td>
+<td align="right">7.368421</td>
+<td align="right">137.29545</td>
+<td align="right">27792.862</td>
+<td align="right">105817.72</td>
+<td align="right">22.34138</td>
+</tr>
+<tr class="odd">
+<td align="left">Montana</td>
+<td align="right">78.97000</td>
+<td align="right">537.7551</td>
+<td align="right">2562.175</td>
+<td align="right">83.45455</td>
+<td align="right">51629.21</td>
+<td align="right">6.818182</td>
+<td align="right">84.26087</td>
+<td align="right">10227.053</td>
+<td align="right">37500.98</td>
+<td align="right">21.29474</td>
+</tr>
+<tr class="even">
+<td align="left">Nebraska</td>
+<td align="right">79.25875</td>
+<td align="right">507.3625</td>
+<td align="right">2703.149</td>
+<td align="right">88.73529</td>
+<td align="right">56105.59</td>
+<td align="right">3.250000</td>
+<td align="right">83.36842</td>
+<td align="right">10674.021</td>
+<td align="right">41157.62</td>
+<td align="right">22.93723</td>
+</tr>
+<tr class="odd">
+<td align="left">Nevada</td>
+<td align="right">78.42353</td>
+<td align="right">4544.3529</td>
+<td align="right">30440.556</td>
+<td align="right">83.15385</td>
+<td align="right">64713.17</td>
+<td align="right">5.125000</td>
+<td align="right">450.54545</td>
+<td align="right">68733.889</td>
+<td align="right">342239.56</td>
+<td align="right">20.59444</td>
+</tr>
+<tr class="even">
+<td align="left">New Hampshire</td>
+<td align="right">79.26364</td>
+<td align="right">2888.9091</td>
+<td align="right">12830.000</td>
+<td align="right">88.27273</td>
+<td align="right">70350.00</td>
+<td align="right">1.714286</td>
+<td align="right">129.09091</td>
+<td align="right">68759.636</td>
+<td align="right">247220.18</td>
+<td align="right">17.93636</td>
+</tr>
+<tr class="odd">
+<td align="left">New Jersey</td>
+<td align="right">79.90455</td>
+<td align="right">8325.9091</td>
+<td align="right">52096.182</td>
+<td align="right">91.36364</td>
+<td align="right">85192.68</td>
+<td align="right">4.368421</td>
+<td align="right">202.36364</td>
+<td align="right">187658.182</td>
+<td align="right">807471.82</td>
+<td align="right">21.38182</td>
+</tr>
+<tr class="even">
+<td align="left">New Mexico</td>
+<td align="right">77.53030</td>
+<td align="right">1731.3030</td>
+<td align="right">10036.941</td>
+<td align="right">76.07692</td>
+<td align="right">46632.91</td>
+<td align="right">8.863636</td>
+<td align="right">158.19231</td>
+<td align="right">31052.706</td>
+<td align="right">123342.88</td>
+<td align="right">21.48529</td>
+</tr>
+<tr class="odd">
+<td align="left">New York</td>
+<td align="right">79.67937</td>
+<td align="right">6069.6825</td>
+<td align="right">29026.603</td>
+<td align="right">85.19355</td>
+<td align="right">64162.84</td>
+<td align="right">3.000000</td>
+<td align="right">140.16949</td>
+<td align="right">125644.508</td>
+<td align="right">617573.37</td>
+<td align="right">19.88730</td>
+</tr>
+<tr class="even">
+<td align="left">North Carolina</td>
+<td align="right">77.08416</td>
+<td align="right">2691.5248</td>
+<td align="right">19056.693</td>
+<td align="right">86.30303</td>
+<td align="right">51698.40</td>
+<td align="right">7.283784</td>
+<td align="right">147.30851</td>
+<td align="right">51206.614</td>
+<td align="right">207684.83</td>
+<td align="right">20.46436</td>
+</tr>
+<tr class="odd">
+<td align="left">North Dakota</td>
+<td align="right">79.74510</td>
+<td align="right">331.2553</td>
+<td align="right">1467.074</td>
+<td align="right">85.86667</td>
+<td align="right">61698.94</td>
+<td align="right">2.200000</td>
+<td align="right">58.50000</td>
+<td align="right">7351.185</td>
+<td align="right">28224.52</td>
+<td align="right">23.27963</td>
+</tr>
+<tr class="even">
+<td align="left">Ohio</td>
+<td align="right">76.83371</td>
+<td align="right">3799.9326</td>
+<td align="right">13749.753</td>
+<td align="right">87.22472</td>
+<td align="right">58045.24</td>
+<td align="right">4.574468</td>
+<td align="right">187.93827</td>
+<td align="right">69416.764</td>
+<td align="right">262676.40</td>
+<td align="right">22.17640</td>
+</tr>
+<tr class="odd">
+<td align="left">Oklahoma</td>
+<td align="right">75.28077</td>
+<td align="right">1560.4359</td>
+<td align="right">11854.026</td>
+<td align="right">82.73333</td>
+<td align="right">49900.10</td>
+<td align="right">7.046512</td>
+<td align="right">118.76271</td>
+<td align="right">24900.564</td>
+<td align="right">101460.79</td>
+<td align="right">23.68718</td>
+</tr>
+<tr class="even">
+<td align="left">Oregon</td>
+<td align="right">79.34444</td>
+<td align="right">2702.9429</td>
+<td align="right">13965.081</td>
+<td align="right">77.59375</td>
+<td align="right">58568.57</td>
+<td align="right">3.823529</td>
+<td align="right">172.83333</td>
+<td align="right">54372.757</td>
+<td align="right">227985.78</td>
+<td align="right">20.31351</td>
+</tr>
+<tr class="odd">
+<td align="left">Pennsylvania</td>
+<td align="right">78.28235</td>
+<td align="right">4866.4706</td>
+<td align="right">16755.059</td>
+<td align="right">89.49231</td>
+<td align="right">58940.63</td>
+<td align="right">3.577778</td>
+<td align="right">241.95385</td>
+<td align="right">102381.706</td>
+<td align="right">376529.09</td>
+<td align="right">19.60882</td>
+</tr>
+<tr class="even">
+<td align="left">Rhode Island</td>
+<td align="right">80.41667</td>
+<td align="right">3894.3333</td>
+<td align="right">12120.333</td>
+<td align="right">87.00000</td>
+<td align="right">77002.67</td>
+<td align="right">2.333333</td>
+<td align="right">90.20000</td>
+<td align="right">83164.000</td>
+<td align="right">353120.33</td>
+<td align="right">18.31667</td>
+</tr>
+<tr class="odd">
+<td align="left">South Carolina</td>
+<td align="right">75.61064</td>
+<td align="right">3248.1277</td>
+<td align="right">19826.340</td>
+<td align="right">83.08696</td>
+<td align="right">49452.64</td>
+<td align="right">10.931818</td>
+<td align="right">193.23404</td>
+<td align="right">56759.106</td>
+<td align="right">219094.21</td>
+<td align="right">21.04255</td>
+</tr>
+<tr class="even">
+<td align="left">South Dakota</td>
+<td align="right">78.00484</td>
+<td align="right">324.6452</td>
+<td align="right">2031.134</td>
+<td align="right">80.26923</td>
+<td align="right">55070.91</td>
+<td align="right">10.166667</td>
+<td align="right">74.41667</td>
+<td align="right">6973.343</td>
+<td align="right">26407.73</td>
+<td align="right">25.22985</td>
+</tr>
+<tr class="odd">
+<td align="left">Tennessee</td>
+<td align="right">74.94479</td>
+<td align="right">2262.8125</td>
+<td align="right">12306.792</td>
+<td align="right">93.14894</td>
+<td align="right">50045.72</td>
+<td align="right">5.921569</td>
+<td align="right">139.68235</td>
+<td align="right">35880.146</td>
+<td align="right">142274.46</td>
+<td align="right">21.03958</td>
+</tr>
+<tr class="even">
+<td align="left">Texas</td>
+<td align="right">77.48445</td>
+<td align="right">2478.4672</td>
+<td align="right">32209.686</td>
+<td align="right">92.84896</td>
+<td align="right">54993.81</td>
+<td align="right">5.376344</td>
+<td align="right">225.92715</td>
+<td align="right">47096.486</td>
+<td align="right">227418.67</td>
+<td align="right">23.75451</td>
+</tr>
+<tr class="odd">
+<td align="left">Utah</td>
+<td align="right">79.32500</td>
+<td align="right">1704.3793</td>
+<td align="right">14989.667</td>
+<td align="right">NaN</td>
+<td align="right">66796.87</td>
+<td align="right">2.500000</td>
+<td align="right">167.34783</td>
+<td align="right">45713.267</td>
+<td align="right">213730.53</td>
+<td align="right">28.47000</td>
+</tr>
+<tr class="even">
+<td align="left">Vermont</td>
+<td align="right">79.43333</td>
+<td align="right">987.7333</td>
+<td align="right">2913.200</td>
+<td align="right">85.07692</td>
+<td align="right">60085.87</td>
+<td align="right">2.250000</td>
+<td align="right">55.38462</td>
+<td align="right">24533.200</td>
+<td align="right">83198.53</td>
+<td align="right">18.41333</td>
+</tr>
+<tr class="odd">
+<td align="left">Virginia</td>
+<td align="right">77.40821</td>
+<td align="right">1423.0149</td>
+<td align="right">9232.119</td>
+<td align="right">87.74797</td>
+<td align="right">62534.67</td>
+<td align="right">7.140000</td>
+<td align="right">98.07843</td>
+<td align="right">31159.866</td>
+<td align="right">127395.81</td>
+<td align="right">19.91642</td>
+</tr>
+<tr class="even">
+<td align="left">Washington</td>
+<td align="right">79.99000</td>
+<td align="right">3814.5500</td>
+<td align="right">21307.150</td>
+<td align="right">89.08571</td>
+<td align="right">63475.40</td>
+<td align="right">3.478261</td>
+<td align="right">235.48485</td>
+<td align="right">89661.950</td>
+<td align="right">380744.65</td>
+<td align="right">21.09000</td>
+</tr>
+<tr class="odd">
+<td align="left">West Virginia</td>
+<td align="right">75.17500</td>
+<td align="right">1238.8929</td>
+<td align="right">3495.571</td>
+<td align="right">91.85714</td>
+<td align="right">46672.48</td>
+<td align="right">6.388889</td>
+<td align="right">66.82979</td>
+<td align="right">19148.321</td>
+<td align="right">64005.25</td>
+<td align="right">19.59107</td>
+</tr>
+<tr class="even">
+<td align="left">Wisconsin</td>
+<td align="right">79.31233</td>
+<td align="right">1773.8356</td>
+<td align="right">7138.521</td>
+<td align="right">91.52174</td>
+<td align="right">61084.95</td>
+<td align="right">3.000000</td>
+<td align="right">97.69841</td>
+<td align="right">43313.397</td>
+<td align="right">159518.74</td>
+<td align="right">20.94795</td>
+</tr>
+<tr class="odd">
+<td align="left">Wyoming</td>
+<td align="right">79.37500</td>
+<td align="right">587.6667</td>
+<td align="right">4160.250</td>
+<td align="right">83.68182</td>
+<td align="right">64830.75</td>
+<td align="right">5.750000</td>
+<td align="right">66.05882</td>
+<td align="right">13497.667</td>
+<td align="right">48229.92</td>
+<td align="right">22.50833</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code># your wrangling code
 
 # your wrangling code</code></pre>
 <p>Your discussion of wrangling section here. Feel encouraged to break up into more than once code chunk and discuss each in turn.</p>
