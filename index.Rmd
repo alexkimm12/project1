@@ -31,7 +31,8 @@ library(tidyverse)
 library(readr)
 library(fivethirtyeight)
 data1 <- bad_drivers
-data2 <- read_csv("~/project1/County_Health_Rankings.csv", skip = 1)
+data2 <- read_csv("~/project1/2021 County Health Rankings Data - v1.csv", 
+    skip = 1)
 ```
 
 As I was looking through the different datasets, I saw the bad_drivers dataset. This was interesting because I also wanted to look at how the different factors tied into traffic deaths, more specifically the factors of speeding, texting, alcohol use, etc during driving. These were interesting to me because I drive a lot in both my hometown of Houston and here in Austin. There are many times when I'll see people driving while texting or seeing news articles of people experiencing car accidents because they were under the influence or distracted while driving. Furthermore, I wanted to look at the different health indicators in each state, and how this is different. I was really interested in taking a look at how these health indicators tie into other aspects like transportation statistics. I was able to find a county dataset that essentially listed out all of the health indicators for specific counties in each state, which is under the "Count_Health_Rankings" dataset. 
@@ -59,18 +60,11 @@ dim(data1)
 dim(data2)
 joineddata <-full_join(data1, data2, by=c("state"="State"))
 glimpse(joineddata)
-joineddata1 <- full_join(data2, data1, by=c("State"="state"))
-joineddata1
 
 
 # your joining code
 not_in_data1 <- anti_join(data1, data2, by=c("state"="State"))
 not_in_data2 <- anti_join(data2, data1, by=c("State"="state"))
-
-not_in_data1
-not_in_data2
-
-
 ```
 
 Discussions of joining here. Feel encouraged to break up into more than once code chunk and discuss each in turn.
@@ -81,6 +75,8 @@ Discussions of joining here. Feel encouraged to break up into more than once cod
 # your wrangling code
 joineddata %>% group_by(state) %>% summarize(avg_LE=mean(`Life Expectancy`, na.rm=TRUE), avg_deaths=mean(`# Deaths`, na.rm=TRUE), avg_uninsured=mean(`# Uninsured` , na.rm=TRUE), avg_gradrate=mean(`High School Graduation Rate`, na.rm=TRUE), avg_income= mean(`Median Household Income`, na.rm=TRUE), avg_homicide=mean(`Homicide Rate`, na.rm=TRUE), avg_firearmrate=mean(`# Firearm Fatalities`, na.rm=TRUE), avg_homeowners=mean(`# Homeowners`, na.rm=TRUE), avg_pop=mean(Population, na.rm=TRUE), avg_under18=mean(`% Less Than 18 Years of Age`, na.rm=TRUE)) %>% knitr :: kable()
 
+dim(joineddata)
+joineddata %>% group_by(state) %>% summarize_all(mean, na.rm=TRUE) %>% knitr::kable()
 # your wrangling code
 
 # your wrangling code

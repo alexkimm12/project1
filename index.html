@@ -1543,7 +1543,8 @@ library(tidyverse)
 library(readr)
 library(fivethirtyeight)
 data1 &lt;- bad_drivers
-data2 &lt;- read_csv(&quot;~/project1/County_Health_Rankings.csv&quot;, skip = 1)</code></pre>
+data2 &lt;- read_csv(&quot;~/project1/2021 County Health Rankings Data - v1.csv&quot;, 
+    skip = 1)</code></pre>
 <p>As I was looking through the different datasets, I saw the bad_drivers dataset. This was interesting because I also wanted to look at how the different factors tied into traffic deaths, more specifically the factors of speeding, texting, alcohol use, etc during driving. These were interesting to me because I drive a lot in both my hometown of Houston and here in Austin. There are many times when I’ll see people driving while texting or seeing news articles of people experiencing car accidents because they were under the influence or distracted while driving. Furthermore, I wanted to look at the different health indicators in each state, and how this is different. I was really interested in taking a look at how these health indicators tie into other aspects like transportation statistics. I was able to find a county dataset that essentially listed out all of the health indicators for specific counties in each state, which is under the “Count_Health_Rankings” dataset.</p>
 <p>Some of the variables in my first dataset of “bad_drivers” include number of drivers involved in fatal collisions, percentage of those speeding, alcohol-impaired, not distracted, no prior accidents before this collision, cost of car insurance, and losses experienced by insurance companies across all 50 states. I found the “bad_drivers” dataset from the “fivethirtyeight” package. Furthermore, I wanted to tie this into how the different life stages differed across states. Some of the variables for my second dataset of “County_Health_Rankings” include life expectancy, child mortality rates, deaths, and infant mortality rates, drug overdose mortality rates, and more across counties in the 50 states in the United States. I found this dataset from Countyhealthratings.org under the Rankings data and documentation page. ****** I would expect to see that if there were more traffic accidents in one place, we may see a slight decrease/difference in life expectancy and a slight increase in death rate.</p>
 <p>Expand on potential associations you may expect, if any.</p>
@@ -1560,436 +1561,86 @@ data2 &lt;- read_csv(&quot;~/project1/County_Health_Rankings.csv&quot;, skip = 1
 dim(data1)</code></pre>
 <pre><code>## [1] 51  8</code></pre>
 <pre class="r"><code>dim(data2)</code></pre>
-<pre><code>## [1] 3193  277</code></pre>
+<pre><code>## [1] 3193   65</code></pre>
 <pre class="r"><code>joineddata &lt;- full_join(data1, data2, by = c(state = &quot;State&quot;))
 glimpse(joineddata)</code></pre>
 <pre><code>## Rows: 3,193
-## Columns: 284
-## $ state                                                   &lt;chr&gt; &quot;Alabama&quot;, &quot;A…
-## $ num_drivers                                             &lt;dbl&gt; 18.8, 18.8, 1…
-## $ perc_speeding                                           &lt;int&gt; 39, 39, 39, 3…
-## $ perc_alcohol                                            &lt;int&gt; 30, 30, 30, 3…
-## $ perc_not_distracted                                     &lt;int&gt; 96, 96, 96, 9…
-## $ perc_no_previous                                        &lt;int&gt; 80, 80, 80, 8…
-## $ insurance_premiums                                      &lt;dbl&gt; 784.55, 784.5…
-## $ losses                                                  &lt;dbl&gt; 145.08, 145.0…
-## $ FIPS                                                    &lt;chr&gt; &quot;01000&quot;, &quot;010…
-## $ County                                                  &lt;chr&gt; NA, &quot;Autauga&quot;…
-## $ `Life Expectancy`                                       &lt;dbl&gt; 75.5, 77.2, 7…
-## $ `95% CI - Low`                                          &lt;dbl&gt; 75.5, 76.4, 7…
-## $ `95% CI - High`                                         &lt;dbl&gt; 75.6, 77.9, 7…
-## $ `Life Expectancy (AIAN)`                                &lt;dbl&gt; 114.5, NA, NA…
-## $ `Life Expectancy (AIAN) 95% CI - Low`                   &lt;dbl&gt; 100.2, NA, NA…
-## $ `Life Expectancy (AIAN) 95% CI - High`                  &lt;dbl&gt; 128.8, NA, NA…
-## $ `Life Expectancy (Asian)`                               &lt;dbl&gt; 88.1, NA, 83.…
-## $ `Life Expectancy (Asian) 95% CI - Low`                  &lt;dbl&gt; 86.5, NA, 79.…
-## $ `Life Expectancy (Asian) 95% CI - High`                 &lt;dbl&gt; 89.8, NA, 86.…
-## $ `Life Expectancy (Black)`                               &lt;dbl&gt; 73.6, 74.9, 7…
-## $ `Life Expectancy (Black) 95% CI - Low`                  &lt;dbl&gt; 73.5, 72.9, 7…
-## $ `Life Expectancy (Black) 95% CI - High`                 &lt;dbl&gt; 73.8, 76.8, 7…
-## $ `Life Expectancy (Hispanic)`                            &lt;dbl&gt; 97.7, NA, 91.…
-## $ `Life Expectancy (Hispanic) 95% CI - Low`               &lt;dbl&gt; 94.6, NA, 84.…
-## $ `Life Expectancy (Hispanic) 95% CI - High`              &lt;dbl&gt; 100.8, NA, 98…
-## $ `Life Expectancy (White)`                               &lt;dbl&gt; 75.9, 77.5, 7…
-## $ `Life Expectancy (White) 95% CI - Low`                  &lt;dbl&gt; 75.8, 76.6, 7…
-## $ `Life Expectancy (White) 95% CI - High`                 &lt;dbl&gt; 76.0, 78.4, 7…
-## $ `# Deaths`                                              &lt;dbl&gt; 82249, 787, 3…
-## $ `Age-Adjusted Death Rate`                               &lt;dbl&gt; 472, 409, 366…
-## $ `95% CI - Low_1`                                        &lt;dbl&gt; 468, 380, 352…
-## $ `95% CI - High_1`                                       &lt;dbl&gt; 475, 438, 379…
-## $ `Age-Adjusted Mortality (AIAN)`                         &lt;dbl&gt; 206, NA, NA, …
-## $ `Age-Adjusted Mortality (AIAN) 95% CI - Low`            &lt;dbl&gt; 178, NA, NA, …
-## $ `Age-Adjusted Mortality (AIAN) 95% CI - High`           &lt;dbl&gt; 234, NA, NA, …
-## $ `Age-Adjusted Mortality (Asian)`                        &lt;dbl&gt; 166, NA, NA, …
-## $ `Age-Adjusted Mortality (Asian) 95% CI - Low`           &lt;dbl&gt; 149, NA, NA, …
-## $ `Age-Adjusted Mortality (Asian) 95% CI - High`          &lt;dbl&gt; 183, NA, NA, …
-## $ `Age-Adjusted Mortality (Black)`                        &lt;dbl&gt; 565, 527, 498…
-## $ `Age-Adjusted Mortality (Black) 95% CI - Low`           &lt;dbl&gt; 557, 449, 441…
-## $ `Age-Adjusted Mortality (Black) 95% CI - High`          &lt;dbl&gt; 572, 606, 556…
-## $ `Age-Adjusted Mortality (Hispanic)`                     &lt;dbl&gt; 173, NA, 180,…
-## $ `Age-Adjusted Mortality (Hispanic) 95% CI - Low`        &lt;dbl&gt; 160, NA, 129,…
-## $ `Age-Adjusted Mortality (Hispanic) 95% CI - High`       &lt;dbl&gt; 186, NA, 244,…
-## $ `Age-Adjusted Mortality (White)`                        &lt;dbl&gt; 455, 388, 364…
-## $ `Age-Adjusted Mortality (White) 95% CI - Low`           &lt;dbl&gt; 451, 356, 349…
-## $ `Age-Adjusted Mortality (White) 95% CI - High`          &lt;dbl&gt; 459, 420, 379…
-## $ `# Deaths_1`                                            &lt;dbl&gt; 3042, 30, 95,…
-## $ `Child Mortality Rate`                                  &lt;dbl&gt; 70, 57, 51, 7…
-## $ `95% CI - Low_2`                                        &lt;dbl&gt; 67, 38, 41, 4…
-## $ `95% CI - High_2`                                       &lt;dbl&gt; 72, 81, 62, 1…
-## $ `Child Mortality Rate (AIAN)`                           &lt;dbl&gt; 76, NA, NA, N…
-## $ `Child Mortality Rate (AIAN) 95% CI - Low`              &lt;dbl&gt; 45, NA, NA, N…
-## $ `Child Mortality Rate (AIAN) 95% CI - High`             &lt;dbl&gt; 121, NA, NA, …
-## $ `Child Mortality Rate (Asian)`                          &lt;dbl&gt; 43, NA, NA, N…
-## $ `Child Mortality Rate (Asian) 95% CI - Low`             &lt;dbl&gt; 29, NA, NA, N…
-## $ `Child Mortality Rate (Asian) 95% CI - High`            &lt;dbl&gt; 61, NA, NA, N…
-## $ `Child Mortality Rate (Black)`                          &lt;dbl&gt; 101, 93, 61, …
-## $ `Child Mortality Rate (Black) 95% CI - Low`             &lt;dbl&gt; 96, 46, 33, N…
-## $ `Child Mortality Rate (Black) 95% CI - High`            &lt;dbl&gt; 107, 167, 104…
-## $ `Child Mortality Rate (Hispanic)`                       &lt;dbl&gt; 53, NA, NA, N…
-## $ `Child Mortality Rate (Hispanic) 95% CI - Low`          &lt;dbl&gt; 45, NA, NA, N…
-## $ `Child Mortality Rate (Hispanic) 95% CI - High`         &lt;dbl&gt; 61, NA, NA, N…
-## $ `Child Mortality Rate (White)`                          &lt;dbl&gt; 56, 50, 52, N…
-## $ `Child Mortality Rate (White) 95% CI - Low`             &lt;dbl&gt; 53, 30, 41, N…
-## $ `Child Mortality Rate (White) 95% CI - High`            &lt;dbl&gt; 58, 78, 65, N…
-## $ `# Deaths_2`                                            &lt;dbl&gt; 3337, 32, 92,…
-## $ `Infant Mortality Rate`                                 &lt;dbl&gt; 8, 7, 6, NA, …
-## $ `95% CI - Low_3`                                        &lt;dbl&gt; 8, 5, 5, NA, …
-## $ `95% CI - High_3`                                       &lt;dbl&gt; 9, 10, 7, NA,…
-## $ `Infant Mortality Rate (AIAN)`                          &lt;dbl&gt; NA, NA, NA, N…
-## $ `Infant Mortality Rate (AIAN) 95% CI - Low`             &lt;dbl&gt; NA, NA, NA, N…
-## $ `Infant Mortality Rate (AIAN) 95% CI - High`            &lt;dbl&gt; NA, NA, NA, N…
-## $ `Infant Mortality Rate (Asian)`                         &lt;dbl&gt; 5, NA, NA, NA…
-## $ `Infant Mortality Rate (Asian) 95% CI - Low`            &lt;dbl&gt; 3, NA, NA, NA…
-## $ `Infant Mortality Rate (Asian) 95% CI - High`           &lt;dbl&gt; 7, NA, NA, NA…
-## $ `Infant Mortality Rate (Black)`                         &lt;dbl&gt; 12, NA, 9, NA…
-## $ `Infant Mortality Rate (Black) 95% CI - Low`            &lt;dbl&gt; 12, NA, 6, NA…
-## $ `Infant Mortality Rate (Black) 95% CI - High`           &lt;dbl&gt; 13, NA, 15, N…
-## $ `Infant Mortality Rate (Hispanic)`                      &lt;dbl&gt; 5, NA, NA, NA…
-## $ `Infant Mortality Rate (Hispanic) 95% CI - Low`         &lt;dbl&gt; 5, NA, NA, NA…
-## $ `Infant Mortality Rate (Hispanic) 95% CI - High`        &lt;dbl&gt; 6, NA, NA, NA…
-## $ `Infant Mortality Rate (White)`                         &lt;dbl&gt; 6, NA, 6, NA,…
-## $ `Infant Mortality Rate (White) 95% CI - Low`            &lt;dbl&gt; 6, NA, 4, NA,…
-## $ `Infant Mortality Rate (White) 95% CI - High`           &lt;dbl&gt; 7, NA, 7, NA,…
-## $ `% Frequent Physical Distress`                          &lt;dbl&gt; 14, 13, 12, 1…
-## $ `95% CI - Low_4`                                        &lt;dbl&gt; 13, 12, 10, 1…
-## $ `95% CI - High_4`                                       &lt;dbl&gt; 15, 15, 13, 1…
-## $ `% Frequent Mental Distress`                            &lt;dbl&gt; 16, 16, 15, 1…
-## $ `95% CI - Low_5`                                        &lt;dbl&gt; 15, 14, 13, 1…
-## $ `95% CI - High_5`                                       &lt;dbl&gt; 17, 17, 16, 2…
-## $ `% Adults with Diabetes`                                &lt;dbl&gt; 15, 13, 10, 1…
-## $ `95% CI - Low_6`                                        &lt;dbl&gt; NA, 9, 9, 12,…
-## $ `95% CI - High_6`                                       &lt;dbl&gt; NA, 17, 12, 2…
-## $ `# HIV Cases`                                           &lt;dbl&gt; 13579, 107, 3…
-## $ `HIV Prevalence Rate`                                   &lt;dbl&gt; 330, 230, 169…
-## $ `# Food Insecure`                                       &lt;dbl&gt; 829220, 8620,…
-## $ `% Food Insecure`                                       &lt;dbl&gt; 17, 16, 13, 2…
-## $ `# Limited Access`                                      &lt;dbl&gt; 378623, 6544,…
-## $ `% Limited Access to Healthy Foods`                     &lt;dbl&gt; 8, 12, 5, 11,…
-## $ `# Drug Overdose Deaths`                                &lt;dbl&gt; 2378, 14, 82,…
-## $ `Drug Overdose Mortality Rate`                          &lt;dbl&gt; 16, 8, 13, NA…
-## $ `95% CI - Low_7`                                        &lt;dbl&gt; 16, 5, 10, NA…
-## $ `95% CI - High_7`                                       &lt;dbl&gt; 17, 14, 16, N…
-## $ `Drug Overdose Mortality Rate (AIAN)`                   &lt;dbl&gt; NA, NA, NA, N…
-## $ `Drug Overdose Mortality Rate (AIAN) 95% CI - Low`      &lt;dbl&gt; NA, NA, NA, N…
-## $ `Drug Overdose Mortality Rate (AIAN) 95% CI - High`     &lt;dbl&gt; NA, NA, NA, N…
-## $ `Drug Overdose Mortality Rate (Asian)`                  &lt;dbl&gt; NA, NA, NA, N…
-## $ `Drug Overdose Mortality Rate (Asian) 95% CI - Low`     &lt;dbl&gt; NA, NA, NA, N…
-## $ `Drug Overdose Mortality Rate (Asian) 95% CI - High`    &lt;dbl&gt; NA, NA, NA, N…
-## $ `Drug Overdose Mortality Rate (Black)`                  &lt;dbl&gt; 10, NA, NA, N…
-## $ `Drug Overdose Mortality Rate (Black) 95% CI - Low`     &lt;dbl&gt; 9, NA, NA, NA…
-## $ `Drug Overdose Mortality Rate (Black) 95% CI - High`    &lt;dbl&gt; 10, NA, NA, N…
-## $ `Drug Overdose Mortality Rate (Hispanic)`               &lt;dbl&gt; 4, NA, NA, NA…
-## $ `Drug Overdose Mortality Rate (Hispanic) 95% CI - Low`  &lt;dbl&gt; 2, NA, NA, NA…
-## $ `Drug Overdose Mortality Rate (Hispanic) 95% CI - High` &lt;dbl&gt; 6, NA, NA, NA…
-## $ `Drug Overdose Mortality Rate (White)`                  &lt;dbl&gt; 20, NA, NA, N…
-## $ `Drug Overdose Mortality Rate (White) 95% CI - Low`     &lt;dbl&gt; 19, NA, NA, N…
-## $ `Drug Overdose Mortality Rate (White) 95% CI - High`    &lt;dbl&gt; 21, NA, NA, N…
-## $ `# Motor Vehicle Deaths`                                &lt;dbl&gt; 6828, 77, 252…
-## $ `Motor Vehicle Mortality Rate`                          &lt;dbl&gt; 20, 20, 17, 2…
-## $ `95% CI - Low_8`                                        &lt;dbl&gt; 20, 16, 15, 2…
-## $ `95% CI - High_8`                                       &lt;dbl&gt; 21, 25, 19, 3…
-## $ `MV Mortality Rate (AIAN)`                              &lt;dbl&gt; 12, NA, NA, N…
-## $ `MV Mortality Rate (AIAN) 95% CI - Low`                 &lt;dbl&gt; 7, NA, NA, NA…
-## $ `MV Mortality Rate (AIAN) 95% CI - High`                &lt;dbl&gt; 17, NA, NA, N…
-## $ `MV Mortality Rate (Asian)`                             &lt;dbl&gt; 6, NA, NA, NA…
-## $ `MV Mortality Rate (Asian) 95% CI - Low`                &lt;dbl&gt; 4, NA, NA, NA…
-## $ `MV Mortality Rate (Asian) 95% CI - High`               &lt;dbl&gt; 9, NA, NA, NA…
-## $ `MV Mortality Rate (Black)`                             &lt;dbl&gt; 20, 18, 17, 2…
-## $ `MV Mortality Rate (Black) 95% CI - Low`                &lt;dbl&gt; 19, 10, 11, 1…
-## $ `MV Mortality Rate (Black) 95% CI - High`               &lt;dbl&gt; 21, 31, 26, 4…
-## $ `MV Mortality Rate (Hispanic)`                          &lt;dbl&gt; 15, NA, NA, N…
-## $ `MV Mortality Rate (Hispanic) 95% CI - Low`             &lt;dbl&gt; 13, NA, NA, N…
-## $ `MV Mortality Rate (Hispanic) 95% CI - High`            &lt;dbl&gt; 17, NA, NA, N…
-## $ `MV Mortality Rate (White)`                             &lt;dbl&gt; 21, 21, 18, 2…
-## $ `MV Mortality Rate (White) 95% CI - Low`                &lt;dbl&gt; 20, 16, 16, 1…
-## $ `MV Mortality Rate (White) 95% CI - High`               &lt;dbl&gt; 21, 27, 20, 3…
-## $ `% Insufficient Sleep`                                  &lt;dbl&gt; 40, 38, 36, 4…
-## $ `95% CI - Low_9`                                        &lt;dbl&gt; 38, 37, 35, 4…
-## $ `95% CI - High_9`                                       &lt;dbl&gt; 41, 40, 38, 4…
-## $ `# Uninsured`                                           &lt;dbl&gt; 437392, 4379,…
-## $ `% Uninsured`                                           &lt;dbl&gt; 15, 13, 17, 1…
-## $ `95% CI - Low_10`                                       &lt;dbl&gt; 15, 11, 15, 1…
-## $ `95% CI - High_10`                                      &lt;dbl&gt; 16, 15, 19, 2…
-## $ `# Uninsured_1`                                         &lt;dbl&gt; 36123, 350, 1…
-## $ `% Uninsured_1`                                         &lt;dbl&gt; 3, 3, 4, 3, 3…
-## $ `95% CI - Low_11`                                       &lt;dbl&gt; 3, 2, 3, 2, 2…
-## $ `95% CI - High_11`                                      &lt;dbl&gt; 4, 3, 5, 5, 4…
-## $ `Other Primary Care Provider Rate`                      &lt;dbl&gt; 93, 41, 65, 5…
-## $ `Other Primary Care Provider Ratio`                     &lt;chr&gt; &quot;1071:1&quot;, &quot;24…
-## $ `Cohort Size`                                           &lt;dbl&gt; 55151, 652, 2…
-## $ `High School Graduation Rate`                           &lt;dbl&gt; 90, 89, 88, 8…
-## $ `% Disconnected Youth`                                  &lt;dbl&gt; 8, NA, 6, NA,…
-## $ `95% CI - Low_12`                                       &lt;dbl&gt; 7, NA, 4, NA,…
-## $ `95% CI - High_12`                                      &lt;dbl&gt; 8, NA, 9, NA,…
-## $ `Average Grade Performance`                             &lt;dbl&gt; 2.9, 3.1, 3.2…
-## $ `Average Grade Performance (Asian)`                     &lt;dbl&gt; 3.3, NA, NA, …
-## $ `Average Grade Performance (Black)`                     &lt;dbl&gt; 2.5, 2.6, 2.6…
-## $ `Average Grade Performance (Hispanic)`                  &lt;dbl&gt; 2.4, NA, 2.7,…
-## $ `Average Grade Performance (White)`                     &lt;dbl&gt; 3.2, 3.3, 3.4…
-## $ `Average Grade Performance_1`                           &lt;dbl&gt; 2.7, 2.9, 3.0…
-## $ `Average Grade Performance (Asian)_1`                   &lt;dbl&gt; 3.5, NA, NA, …
-## $ `Average Grade Performance (Black)_1`                   &lt;dbl&gt; 2.3, 2.4, 2.3…
-## $ `Average Grade Performance (Hispanic)_1`                &lt;dbl&gt; 2.5, 2.9, 2.7…
-## $ `Average Grade Performance (White)_1`                   &lt;dbl&gt; 3.0, 3.1, 3.2…
-## $ `Median Household Income`                               &lt;dbl&gt; 51771, 58233,…
-## $ `95% CI - Low_13`                                       &lt;dbl&gt; 51066, 51422,…
-## $ `95% CI - High_13`                                      &lt;dbl&gt; 52476, 65044,…
-## $ `Household Income (AIAN)`                               &lt;dbl&gt; 50114, NA, 42…
-## $ `Household Income (AIAN) 95% CI - Low`                  &lt;dbl&gt; 44047, NA, 27…
-## $ `Household Income (AIAN) 95% CI - High`                 &lt;dbl&gt; 56181, NA, 56…
-## $ `Household Income (Asian)`                              &lt;dbl&gt; 63149, NA, 47…
-## $ `Household Income (Asian) 95% CI - Low`                 &lt;dbl&gt; 58615, NA, 29…
-## $ `Household Income (Asian) 95% CI - High`                &lt;dbl&gt; 67683, NA, 64…
-## $ `Household Income (Black)`                              &lt;dbl&gt; 33928, 28808,…
-## $ `Household Income (Black) 95% CI - Low`                 &lt;dbl&gt; 33358, 24068,…
-## $ `Household Income (Black) 95% CI - High`                &lt;dbl&gt; 34498, 33548,…
-## $ `Household Income (Hispanic)`                           &lt;dbl&gt; 41584, 86220,…
-## $ `Household Income (Hispanic) 95% CI - Low`              &lt;dbl&gt; 39868, 56718,…
-## $ `Household Income (Hispanic) 95% CI - High`             &lt;dbl&gt; 43300, 115722…
-## $ `Household Income (White)`                              &lt;dbl&gt; 57935, 65992,…
-## $ `Household Income (White) 95% CI - Low`                 &lt;dbl&gt; 57469, 61810,…
-## $ `Household Income (White) 95% CI - High`                &lt;dbl&gt; 58401, 70174,…
-## $ `% Enrolled in Free or Reduced Lunch`                   &lt;dbl&gt; 55, 47, 40, 6…
-## $ `Segregation index`                                     &lt;dbl&gt; 57, 25, 42, 2…
-## $ `Segregation Index`                                     &lt;dbl&gt; 51, 24, 32, 2…
-## $ `Homicide Rate`                                         &lt;dbl&gt; 10, 5, 3, 10,…
-## $ `95% CI - Low_14`                                       &lt;dbl&gt; 10, 3, 2, 6, …
-## $ `95% CI - High_14`                                      &lt;dbl&gt; 11, 8, 4, 16,…
-## $ `Homicide Rate (AIAN)`                                  &lt;dbl&gt; NA, NA, NA, N…
-## $ `Homicide Rate (AIAN) 95% CI - Low`                     &lt;dbl&gt; NA, NA, NA, N…
-## $ `Homicide Rate (AIAN) 95% CI - High`                    &lt;dbl&gt; NA, NA, NA, N…
-## $ `Homicide Rate (Asian)`                                 &lt;dbl&gt; NA, NA, NA, N…
-## $ `Homicide Rate (Asian) 95% CI - Low`                    &lt;dbl&gt; NA, NA, NA, N…
-## $ `Homicide Rate (Asian) 95% CI - High`                   &lt;dbl&gt; NA, NA, NA, N…
-## $ `Homicide Rate (Black)`                                 &lt;dbl&gt; 26, 14, 8, NA…
-## $ `Homicide Rate (Black) 95% CI - Low`                    &lt;dbl&gt; 25, 7, 4, NA,…
-## $ `Homicide Rate (Black) 95% CI - High`                   &lt;dbl&gt; 27, 26, 14, N…
-## $ `Homicide Rate (Hispanic)`                              &lt;dbl&gt; 6, NA, NA, NA…
-## $ `Homicide Rate (Hispanic) 95% CI - Low`                 &lt;dbl&gt; 5, NA, NA, NA…
-## $ `Homicide Rate (Hispanic) 95% CI - High`                &lt;dbl&gt; 7, NA, NA, NA…
-## $ `Homicide Rate (White)`                                 &lt;dbl&gt; 5, 3, 3, NA, …
-## $ `Homicide Rate (White) 95% CI - Low`                    &lt;dbl&gt; 4, 2, 2, NA, …
-## $ `Homicide Rate (White) 95% CI - High`                   &lt;dbl&gt; 5, 6, 4, NA, …
-## $ `# Deaths_3`                                            &lt;dbl&gt; 4000, 54, 208…
-## $ `Suicide Rate (Age-Adjusted)`                           &lt;dbl&gt; 16, 18, 19, 1…
-## $ `95% CI - Low_15`                                       &lt;dbl&gt; 15, 14, 17, 6…
-## $ `95% CI - High_15`                                      &lt;dbl&gt; 16, 24, 22, 1…
-## $ `Crude Rate`                                            &lt;dbl&gt; 16, 19, 20, 1…
-## $ `Suicide Rate (AIAN)`                                   &lt;dbl&gt; NA, NA, NA, N…
-## $ `Suicide Rate (AIAN) 95% CI - Low`                      &lt;dbl&gt; NA, NA, NA, N…
-## $ `Suicide Rate (AIAN) 95% CI - High`                     &lt;dbl&gt; NA, NA, NA, N…
-## $ `Suicide Rate (Asian)`                                  &lt;dbl&gt; 7, NA, NA, NA…
-## $ `Suicide Rate (Asian) 95% CI - Low`                     &lt;dbl&gt; 4, NA, NA, NA…
-## $ `Suicide Rate (Asian) 95% CI - High`                    &lt;dbl&gt; 10, NA, NA, N…
-## $ `Suicide Rate (Black)`                                  &lt;dbl&gt; 6, NA, NA, NA…
-## $ `Suicide Rate (Black) 95% CI - Low`                     &lt;dbl&gt; 5, NA, NA, NA…
-## $ `Suicide Rate (Black) 95% CI - High`                    &lt;dbl&gt; 6, NA, NA, NA…
-## $ `Suicide Rate (Hispanic)`                               &lt;dbl&gt; 6, NA, NA, NA…
-## $ `Suicide Rate (Hispanic) 95% CI - Low`                  &lt;dbl&gt; 5, NA, NA, NA…
-## $ `Suicide Rate (Hispanic) 95% CI - High`                 &lt;dbl&gt; 8, NA, NA, NA…
-## $ `Suicide Rate (White)`                                  &lt;dbl&gt; 21, NA, NA, N…
-## $ `Suicide Rate (White) 95% CI - Low`                     &lt;dbl&gt; 20, NA, NA, N…
-## $ `Suicide Rate (White) 95% CI - High`                    &lt;dbl&gt; 21, NA, NA, N…
-## $ `# Firearm Fatalities`                                  &lt;dbl&gt; 5268, 46, 153…
-## $ `Firearm Fatalities Rate`                               &lt;dbl&gt; 22, 17, 14, 2…
-## $ `95% CI - Low_16`                                       &lt;dbl&gt; 21, 12, 12, 1…
-## $ `95% CI - High_16`                                      &lt;dbl&gt; 22, 22, 17, 3…
-## $ `Firearm Fatalities Rate (AIAN)`                        &lt;dbl&gt; 7, NA, NA, NA…
-## $ `Firearm Fatalities Rate (AIAN) 95% CI - Low`           &lt;dbl&gt; 4, NA, NA, NA…
-## $ `Firearm Fatalities Rate (AIAN) 95% CI - High`          &lt;dbl&gt; 13, NA, NA, N…
-## $ `Firearm Fatalities Rate (Asian)`                       &lt;dbl&gt; 4, NA, NA, NA…
-## $ `Firearm Fatalities Rate (Asian) 95% CI - Low`          &lt;dbl&gt; 3, NA, NA, NA…
-## $ `Firearm Fatalities Rate (Asian) 95% CI - High`         &lt;dbl&gt; 7, NA, NA, NA…
-## $ `Firearm Fatalities Rate (Black)`                       &lt;dbl&gt; 30, NA, NA, 1…
-## $ `Firearm Fatalities Rate (Black) 95% CI - Low`          &lt;dbl&gt; 28, NA, NA, 1…
-## $ `Firearm Fatalities Rate (Black) 95% CI - High`         &lt;dbl&gt; 31, NA, NA, 3…
-## $ `Firearm Fatalities Rate (Hispanic)`                    &lt;dbl&gt; 8, NA, NA, NA…
-## $ `Firearm Fatalities Rate (Hispanic) 95% CI - Low`       &lt;dbl&gt; 7, NA, NA, NA…
-## $ `Firearm Fatalities Rate (Hispanic) 95% CI - High`      &lt;dbl&gt; 10, NA, NA, N…
-## $ `Firearm Fatalities Rate (White)`                       &lt;dbl&gt; 20, NA, NA, 2…
-## $ `Firearm Fatalities Rate (White) 95% CI - Low`          &lt;dbl&gt; 19, NA, NA, 1…
-## $ `Firearm Fatalities Rate (White) 95% CI - High`         &lt;dbl&gt; 20, NA, NA, 4…
-## $ `Non-Petitioned Cases`                                  &lt;chr&gt; &quot;1977&quot;, &quot;1-4&quot;…
-## $ `Petitioned Cases`                                      &lt;chr&gt; &quot;7374&quot;, &quot;68&quot;,…
-## $ Denominator                                             &lt;dbl&gt; 498700, 6400,…
-## $ `Juvenile Arrest Rate`                                  &lt;dbl&gt; NA, NA, 28, N…
-## $ `Traffic Volume`                                        &lt;dbl&gt; 220, 155, 134…
-## $ `# Homeowners`                                          &lt;dbl&gt; 1284748, 1568…
-## $ `% Homeowners`                                          &lt;dbl&gt; 69, 73, 75, 6…
-## $ `95% CI - Low_17`                                       &lt;dbl&gt; 68, 71, 74, 5…
-## $ `95% CI - High_17`                                      &lt;dbl&gt; 69, 76, 76, 6…
-## $ `# Households with Severe Cost Burden`                  &lt;dbl&gt; 213551, 2745,…
-## $ `% Severe Housing Cost Burden`                          &lt;dbl&gt; 12, 13, 11, 1…
-## $ `95% CI - Low_18`                                       &lt;dbl&gt; 12, 11, 10, 1…
-## $ `95% CI - High_18`                                      &lt;dbl&gt; 12, 16, 13, 1…
-## $ `% Broadband Access`                                    &lt;dbl&gt; 76, 81, 82, 6…
-## $ Numerator                                               &lt;dbl&gt; 1427054, 1723…
-## $ `95% CI - Low_19`                                       &lt;dbl&gt; 76, 78, 81, 5…
-## $ `95% CI - High_19`                                      &lt;dbl&gt; 77, 83, 83, 6…
-## $ Population                                              &lt;dbl&gt; 4903185, 5586…
-## $ `% Less Than 18 Years of Age`                           &lt;dbl&gt; 22.2, 23.2, 2…
-## $ `% 65 and Over`                                         &lt;dbl&gt; 17.3, 16.0, 2…
-## $ `# Black`                                               &lt;dbl&gt; 1297775, 1109…
-## $ `% Black`                                               &lt;dbl&gt; 26.5, 19.9, 8…
-## $ `# American Indian &amp; Alaska Native`                     &lt;dbl&gt; 34799, 266, 1…
-## $ `% American Indian &amp; Alaska Native`                     &lt;dbl&gt; 0.7, 0.5, 0.8…
-## $ `# Asian`                                               &lt;dbl&gt; 73715, 656, 2…
-## $ `% Asian`                                               &lt;dbl&gt; 1.5, 1.2, 1.1…
-## $ `# Native Hawaiian/Other Pacific Islander`              &lt;dbl&gt; 5110, 58, 154…
-## $ `% Native Hawaiian/Other Pacific Islander`              &lt;dbl&gt; 0.1, 0.1, 0.1…
-## $ `# Hispanic`                                            &lt;dbl&gt; 223278, 1671,…
-## $ `% Hispanic`                                            &lt;dbl&gt; 4.6, 3.0, 4.7…
-## $ `# Non-Hispanic White`                                  &lt;dbl&gt; 3200828, 4121…
-## $ `% Non-Hispanic White`                                  &lt;dbl&gt; 65.3, 73.8, 8…
-## $ `# Not Proficient in English`                           &lt;dbl&gt; 50445, 419, 1…
-## $ `% Not Proficient in English`                           &lt;dbl&gt; 1, 1, 1, 2, 0…
-## $ `95% CI - Low_20`                                       &lt;dbl&gt; 1, 0, 0, 1, 0…
-## $ `95% CI - High_20`                                      &lt;dbl&gt; 1, 1, 1, 3, 1…
-## $ `% Female`                                              &lt;dbl&gt; 51.7, 51.5, 5…
-## $ `# Rural`                                               &lt;dbl&gt; 1957932, 2292…
-## $ `% Rural`                                               &lt;dbl&gt; 41.0, 42.0, 4…
-## $ X277                                                    &lt;lgl&gt; NA, NA, NA, N…</code></pre>
-<pre class="r"><code>joineddata1 &lt;- full_join(data2, data1, by = c(State = &quot;state&quot;))
-joineddata1</code></pre>
-<pre><code>## # A tibble: 3,193 x 284
-##    FIPS  State County `Life Expectanc… `95% CI - Low` `95% CI - High`
-##    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;             &lt;dbl&gt;          &lt;dbl&gt;           &lt;dbl&gt;
-##  1 01000 Alab… &lt;NA&gt;               75.5           75.5            75.6
-##  2 01001 Alab… Autau…             77.2           76.4            77.9
-##  3 01003 Alab… Baldw…             78.2           77.8            78.6
-##  4 01005 Alab… Barbo…             74.1           72.9            75.2
-##  5 01007 Alab… Bibb               73.4           72.1            74.7
-##  6 01009 Alab… Blount             74.4           73.6            75.2
-##  7 01011 Alab… Bullo…             74.4           72.6            76.3
-##  8 01013 Alab… Butler             74.2           72.7            75.6
-##  9 01015 Alab… Calho…             73.5           72.9            74  
-## 10 01017 Alab… Chamb…             75             74              76  
-## # … with 3,183 more rows, and 278 more variables: `Life Expectancy
-## #   (AIAN)` &lt;dbl&gt;, `Life Expectancy (AIAN) 95% CI - Low` &lt;dbl&gt;, `Life
-## #   Expectancy (AIAN) 95% CI - High` &lt;dbl&gt;, `Life Expectancy (Asian)` &lt;dbl&gt;,
-## #   `Life Expectancy (Asian) 95% CI - Low` &lt;dbl&gt;, `Life Expectancy (Asian) 95%
-## #   CI - High` &lt;dbl&gt;, `Life Expectancy (Black)` &lt;dbl&gt;, `Life Expectancy (Black)
-## #   95% CI - Low` &lt;dbl&gt;, `Life Expectancy (Black) 95% CI - High` &lt;dbl&gt;, `Life
-## #   Expectancy (Hispanic)` &lt;dbl&gt;, `Life Expectancy (Hispanic) 95% CI -
-## #   Low` &lt;dbl&gt;, `Life Expectancy (Hispanic) 95% CI - High` &lt;dbl&gt;, `Life
-## #   Expectancy (White)` &lt;dbl&gt;, `Life Expectancy (White) 95% CI - Low` &lt;dbl&gt;,
-## #   `Life Expectancy (White) 95% CI - High` &lt;dbl&gt;, `# Deaths` &lt;dbl&gt;,
-## #   `Age-Adjusted Death Rate` &lt;dbl&gt;, `95% CI - Low_1` &lt;dbl&gt;, `95% CI -
-## #   High_1` &lt;dbl&gt;, `Age-Adjusted Mortality (AIAN)` &lt;dbl&gt;, `Age-Adjusted
-## #   Mortality (AIAN) 95% CI - Low` &lt;dbl&gt;, `Age-Adjusted Mortality (AIAN) 95% CI
-## #   - High` &lt;dbl&gt;, `Age-Adjusted Mortality (Asian)` &lt;dbl&gt;, `Age-Adjusted
-## #   Mortality (Asian) 95% CI - Low` &lt;dbl&gt;, `Age-Adjusted Mortality (Asian) 95%
-## #   CI - High` &lt;dbl&gt;, `Age-Adjusted Mortality (Black)` &lt;dbl&gt;, `Age-Adjusted
-## #   Mortality (Black) 95% CI - Low` &lt;dbl&gt;, `Age-Adjusted Mortality (Black) 95%
-## #   CI - High` &lt;dbl&gt;, `Age-Adjusted Mortality (Hispanic)` &lt;dbl&gt;, `Age-Adjusted
-## #   Mortality (Hispanic) 95% CI - Low` &lt;dbl&gt;, `Age-Adjusted Mortality
-## #   (Hispanic) 95% CI - High` &lt;dbl&gt;, `Age-Adjusted Mortality (White)` &lt;dbl&gt;,
-## #   `Age-Adjusted Mortality (White) 95% CI - Low` &lt;dbl&gt;, `Age-Adjusted
-## #   Mortality (White) 95% CI - High` &lt;dbl&gt;, `# Deaths_1` &lt;dbl&gt;, `Child
-## #   Mortality Rate` &lt;dbl&gt;, `95% CI - Low_2` &lt;dbl&gt;, `95% CI - High_2` &lt;dbl&gt;,
-## #   `Child Mortality Rate (AIAN)` &lt;dbl&gt;, `Child Mortality Rate (AIAN) 95% CI -
-## #   Low` &lt;dbl&gt;, `Child Mortality Rate (AIAN) 95% CI - High` &lt;dbl&gt;, `Child
-## #   Mortality Rate (Asian)` &lt;dbl&gt;, `Child Mortality Rate (Asian) 95% CI -
-## #   Low` &lt;dbl&gt;, `Child Mortality Rate (Asian) 95% CI - High` &lt;dbl&gt;, `Child
-## #   Mortality Rate (Black)` &lt;dbl&gt;, `Child Mortality Rate (Black) 95% CI -
-## #   Low` &lt;dbl&gt;, `Child Mortality Rate (Black) 95% CI - High` &lt;dbl&gt;, `Child
-## #   Mortality Rate (Hispanic)` &lt;dbl&gt;, `Child Mortality Rate (Hispanic) 95% CI -
-## #   Low` &lt;dbl&gt;, `Child Mortality Rate (Hispanic) 95% CI - High` &lt;dbl&gt;, `Child
-## #   Mortality Rate (White)` &lt;dbl&gt;, `Child Mortality Rate (White) 95% CI -
-## #   Low` &lt;dbl&gt;, `Child Mortality Rate (White) 95% CI - High` &lt;dbl&gt;, `#
-## #   Deaths_2` &lt;dbl&gt;, `Infant Mortality Rate` &lt;dbl&gt;, `95% CI - Low_3` &lt;dbl&gt;,
-## #   `95% CI - High_3` &lt;dbl&gt;, `Infant Mortality Rate (AIAN)` &lt;dbl&gt;, `Infant
-## #   Mortality Rate (AIAN) 95% CI - Low` &lt;dbl&gt;, `Infant Mortality Rate (AIAN)
-## #   95% CI - High` &lt;dbl&gt;, `Infant Mortality Rate (Asian)` &lt;dbl&gt;, `Infant
-## #   Mortality Rate (Asian) 95% CI - Low` &lt;dbl&gt;, `Infant Mortality Rate (Asian)
-## #   95% CI - High` &lt;dbl&gt;, `Infant Mortality Rate (Black)` &lt;dbl&gt;, `Infant
-## #   Mortality Rate (Black) 95% CI - Low` &lt;dbl&gt;, `Infant Mortality Rate (Black)
-## #   95% CI - High` &lt;dbl&gt;, `Infant Mortality Rate (Hispanic)` &lt;dbl&gt;, `Infant
-## #   Mortality Rate (Hispanic) 95% CI - Low` &lt;dbl&gt;, `Infant Mortality Rate
-## #   (Hispanic) 95% CI - High` &lt;dbl&gt;, `Infant Mortality Rate (White)` &lt;dbl&gt;,
-## #   `Infant Mortality Rate (White) 95% CI - Low` &lt;dbl&gt;, `Infant Mortality Rate
-## #   (White) 95% CI - High` &lt;dbl&gt;, `% Frequent Physical Distress` &lt;dbl&gt;, `95% CI
-## #   - Low_4` &lt;dbl&gt;, `95% CI - High_4` &lt;dbl&gt;, `% Frequent Mental
-## #   Distress` &lt;dbl&gt;, `95% CI - Low_5` &lt;dbl&gt;, `95% CI - High_5` &lt;dbl&gt;, `% Adults
-## #   with Diabetes` &lt;dbl&gt;, `95% CI - Low_6` &lt;dbl&gt;, `95% CI - High_6` &lt;dbl&gt;, `#
-## #   HIV Cases` &lt;dbl&gt;, `HIV Prevalence Rate` &lt;dbl&gt;, `# Food Insecure` &lt;dbl&gt;, `%
-## #   Food Insecure` &lt;dbl&gt;, `# Limited Access` &lt;dbl&gt;, `% Limited Access to
-## #   Healthy Foods` &lt;dbl&gt;, `# Drug Overdose Deaths` &lt;dbl&gt;, `Drug Overdose
-## #   Mortality Rate` &lt;dbl&gt;, `95% CI - Low_7` &lt;dbl&gt;, `95% CI - High_7` &lt;dbl&gt;,
-## #   `Drug Overdose Mortality Rate (AIAN)` &lt;dbl&gt;, `Drug Overdose Mortality Rate
-## #   (AIAN) 95% CI - Low` &lt;dbl&gt;, `Drug Overdose Mortality Rate (AIAN) 95% CI -
-## #   High` &lt;dbl&gt;, `Drug Overdose Mortality Rate (Asian)` &lt;dbl&gt;, `Drug Overdose
-## #   Mortality Rate (Asian) 95% CI - Low` &lt;dbl&gt;, `Drug Overdose Mortality Rate
-## #   (Asian) 95% CI - High` &lt;dbl&gt;, `Drug Overdose Mortality Rate (Black)` &lt;dbl&gt;,
-## #   `Drug Overdose Mortality Rate (Black) 95% CI - Low` &lt;dbl&gt;, `Drug Overdose
-## #   Mortality Rate (Black) 95% CI - High` &lt;dbl&gt;, …</code></pre>
+## Columns: 72
+## $ state                                      &lt;chr&gt; &quot;Alabama&quot;, &quot;Alabama&quot;, &quot;Ala…
+## $ num_drivers                                &lt;dbl&gt; 18.8, 18.8, 18.8, 18.8, 18…
+## $ perc_speeding                              &lt;int&gt; 39, 39, 39, 39, 39, 39, 39…
+## $ perc_alcohol                               &lt;int&gt; 30, 30, 30, 30, 30, 30, 30…
+## $ perc_not_distracted                        &lt;int&gt; 96, 96, 96, 96, 96, 96, 96…
+## $ perc_no_previous                           &lt;int&gt; 80, 80, 80, 80, 80, 80, 80…
+## $ insurance_premiums                         &lt;dbl&gt; 784.55, 784.55, 784.55, 78…
+## $ losses                                     &lt;dbl&gt; 145.08, 145.08, 145.08, 14…
+## $ FIPS                                       &lt;chr&gt; &quot;01000&quot;, &quot;01001&quot;, &quot;01003&quot;,…
+## $ County                                     &lt;chr&gt; NA, &quot;Autauga&quot;, &quot;Baldwin&quot;, …
+## $ `Life Expectancy`                          &lt;dbl&gt; 75.5, 77.2, 78.2, 74.1, 73…
+## $ `# Deaths`                                 &lt;dbl&gt; 82249, 787, 3147, 515, 476…
+## $ `Child Mortality Rate`                     &lt;dbl&gt; 70, 57, 51, 76, 103, 82, N…
+## $ `Infant Mortality Rate`                    &lt;dbl&gt; 8, 7, 6, NA, 13, 6, NA, NA…
+## $ `% Frequent Physical Distress`             &lt;dbl&gt; 14, 13, 12, 18, 15, 15, 18…
+## $ `% Frequent Mental Distress`               &lt;dbl&gt; 16, 16, 15, 19, 17, 17, 18…
+## $ `% Adults with Diabetes`                   &lt;dbl&gt; 15, 13, 10, 18, 14, 15, 30…
+## $ `# HIV Cases`                              &lt;dbl&gt; 13579, 107, 313, 100, 45, …
+## $ `HIV Prevalence Rate`                      &lt;dbl&gt; 330, 230, 169, 471, 235, 9…
+## $ `# Food Insecure`                          &lt;dbl&gt; 829220, 8620, 26860, 5650,…
+## $ `% Food Insecure`                          &lt;dbl&gt; 17, 16, 13, 22, 15, 14, 21…
+## $ `# Limited Access`                         &lt;dbl&gt; 378623, 6544, 9887, 2949, …
+## $ `% Limited Access to Healthy Foods`        &lt;dbl&gt; 8, 12, 5, 11, 3, 3, 20, 3,…
+## $ `# Drug Overdose Deaths`                   &lt;dbl&gt; 2378, 14, 82, NA, 15, 38, …
+## $ `Drug Overdose Mortality Rate`             &lt;dbl&gt; 16, 8, 13, NA, 22, 22, NA,…
+## $ `# Motor Vehicle Deaths`                   &lt;dbl&gt; 6828, 77, 252, 48, 43, 116…
+## $ `Motor Vehicle Mortality Rate`             &lt;dbl&gt; 20, 20, 17, 26, 27, 29, 48…
+## $ `% Insufficient Sleep`                     &lt;dbl&gt; 40, 38, 36, 41, 40, 39, 45…
+## $ `# Uninsured`                              &lt;dbl&gt; 36123, 350, 1857, 180, 134…
+## $ `% Uninsured`                              &lt;dbl&gt; 3, 3, 4, 3, 3, 4, 3, 3, 3,…
+## $ `Other Primary Care Provider Rate`         &lt;dbl&gt; 93, 41, 65, 57, 121, 24, 7…
+## $ `Other Primary Care Provider Ratio`        &lt;chr&gt; &quot;1071:1&quot;, &quot;2429:1&quot;, &quot;1550:…
+## $ `Cohort Size`                              &lt;dbl&gt; 55151, 652, 2305, 261, 225…
+## $ `High School Graduation Rate`              &lt;dbl&gt; 90, 89, 88, 82, 88, 93, 88…
+## $ `% Disconnected Youth`                     &lt;dbl&gt; 8, NA, 6, NA, NA, 18, NA, …
+## $ `Average Grade Performance`                &lt;dbl&gt; 2.9, 3.1, 3.2, 2.4, 2.7, 2…
+## $ `Median Household Income`                  &lt;dbl&gt; 51771, 58233, 59871, 35972…
+## $ `% Enrolled in Free or Reduced Lunch`      &lt;dbl&gt; 55, 47, 40, 61, 63, 50, 76…
+## $ `Segregation index`                        &lt;dbl&gt; 57, 25, 42, 20, 40, 43, 38…
+## $ `Segregation Index`                        &lt;dbl&gt; 51, 24, 32, 20, 40, 22, 36…
+## $ `Homicide Rate`                            &lt;dbl&gt; 10, 5, 3, 10, 10, 7, 14, 1…
+## $ `Suicide Rate (Age-Adjusted)`              &lt;dbl&gt; 16, 18, 19, 11, 17, 20, NA…
+## $ `# Firearm Fatalities`                     &lt;dbl&gt; 5268, 46, 153, 27, 23, 62,…
+## $ `Firearm Fatalities Rate`                  &lt;dbl&gt; 22, 17, 14, 21, 20, 21, 25…
+## $ `Juvenile Arrest Rate`                     &lt;dbl&gt; NA, NA, 28, NA, NA, 11, NA…
+## $ `Traffic Volume`                           &lt;dbl&gt; 220, 155, 134, 102, 27, 43…
+## $ `# Homeowners`                             &lt;dbl&gt; 1284748, 15682, 60896, 569…
+## $ `% Homeowners`                             &lt;dbl&gt; 69, 73, 75, 61, 74, 79, 71…
+## $ `# Households with Severe Cost Burden`     &lt;dbl&gt; 213551, 2745, 8700, 1223, …
+## $ `% Severe Housing Cost Burden`             &lt;dbl&gt; 12, 13, 11, 14, 9, 8, 16, …
+## $ `% Broadband Access`                       &lt;dbl&gt; 76, 81, 82, 61, 69, 73, 60…
+## $ Population                                 &lt;dbl&gt; 4903185, 55869, 223234, 24…
+## $ `% Less Than 18 Years of Age`              &lt;dbl&gt; 22.2, 23.2, 21.3, 20.6, 20…
+## $ `% 65 and Over`                            &lt;dbl&gt; 17.3, 16.0, 21.0, 19.7, 16…
+## $ `# Black`                                  &lt;dbl&gt; 1297775, 11098, 19215, 118…
+## $ `% Black`                                  &lt;dbl&gt; 26.5, 19.9, 8.6, 47.8, 21.…
+## $ `# American Indian &amp; Alaska Native`        &lt;dbl&gt; 34799, 266, 1742, 170, 103…
+## $ `% American Indian &amp; Alaska Native`        &lt;dbl&gt; 0.7, 0.5, 0.8, 0.7, 0.5, 0…
+## $ `# Asian`                                  &lt;dbl&gt; 73715, 656, 2380, 116, 48,…
+## $ `% Asian`                                  &lt;dbl&gt; 1.5, 1.2, 1.1, 0.5, 0.2, 0…
+## $ `# Native Hawaiian/Other Pacific Islander` &lt;dbl&gt; 5110, 58, 154, 52, 26, 67,…
+## $ `% Native Hawaiian/Other Pacific Islander` &lt;dbl&gt; 0.1, 0.1, 0.1, 0.2, 0.1, 0…
+## $ `# Hispanic`                               &lt;dbl&gt; 223278, 1671, 10534, 1117,…
+## $ `% Hispanic`                               &lt;dbl&gt; 4.6, 3.0, 4.7, 4.5, 2.8, 9…
+## $ `# Non-Hispanic White`                     &lt;dbl&gt; 3200828, 41215, 185747, 11…
+## $ `% Non-Hispanic White`                     &lt;dbl&gt; 65.3, 73.8, 83.2, 45.5, 74…
+## $ `# Not Proficient in English`              &lt;dbl&gt; 50445, 419, 1425, 454, 71,…
+## $ `% Not Proficient in English`              &lt;dbl&gt; 1, 1, 1, 2, 0, 2, 1, 0, 1,…
+## $ `% Female`                                 &lt;dbl&gt; 51.7, 51.5, 51.5, 47.1, 46…
+## $ `# Rural`                                  &lt;dbl&gt; 1957932, 22921, 77060, 186…
+## $ `% Rural`                                  &lt;dbl&gt; 41.0, 42.0, 42.3, 67.8, 68…
+## $ X65                                        &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA…</code></pre>
 <pre class="r"><code># your joining code
 not_in_data1 &lt;- anti_join(data1, data2, by = c(state = &quot;State&quot;))
-not_in_data2 &lt;- anti_join(data2, data1, by = c(State = &quot;state&quot;))
-
-not_in_data1</code></pre>
-<pre><code>## # A tibble: 0 x 8
-## # … with 8 variables: state &lt;chr&gt;, num_drivers &lt;dbl&gt;, perc_speeding &lt;int&gt;,
-## #   perc_alcohol &lt;int&gt;, perc_not_distracted &lt;int&gt;, perc_no_previous &lt;int&gt;,
-## #   insurance_premiums &lt;dbl&gt;, losses &lt;dbl&gt;</code></pre>
-<pre class="r"><code>not_in_data2</code></pre>
-<pre><code>## # A tibble: 0 x 277
-## # … with 277 variables: FIPS &lt;chr&gt;, State &lt;chr&gt;, County &lt;chr&gt;, `Life
-## #   Expectancy` &lt;dbl&gt;, `95% CI - Low` &lt;dbl&gt;, `95% CI - High` &lt;dbl&gt;, `Life
-## #   Expectancy (AIAN)` &lt;dbl&gt;, `Life Expectancy (AIAN) 95% CI - Low` &lt;dbl&gt;,
-## #   `Life Expectancy (AIAN) 95% CI - High` &lt;dbl&gt;, `Life Expectancy
-## #   (Asian)` &lt;dbl&gt;, `Life Expectancy (Asian) 95% CI - Low` &lt;dbl&gt;, `Life
-## #   Expectancy (Asian) 95% CI - High` &lt;dbl&gt;, `Life Expectancy (Black)` &lt;dbl&gt;,
-## #   `Life Expectancy (Black) 95% CI - Low` &lt;dbl&gt;, `Life Expectancy (Black) 95%
-## #   CI - High` &lt;dbl&gt;, `Life Expectancy (Hispanic)` &lt;dbl&gt;, `Life Expectancy
-## #   (Hispanic) 95% CI - Low` &lt;dbl&gt;, `Life Expectancy (Hispanic) 95% CI -
-## #   High` &lt;dbl&gt;, `Life Expectancy (White)` &lt;dbl&gt;, `Life Expectancy (White) 95%
-## #   CI - Low` &lt;dbl&gt;, `Life Expectancy (White) 95% CI - High` &lt;dbl&gt;, `#
-## #   Deaths` &lt;dbl&gt;, `Age-Adjusted Death Rate` &lt;dbl&gt;, `95% CI - Low_1` &lt;dbl&gt;,
-## #   `95% CI - High_1` &lt;dbl&gt;, `Age-Adjusted Mortality (AIAN)` &lt;dbl&gt;,
-## #   `Age-Adjusted Mortality (AIAN) 95% CI - Low` &lt;dbl&gt;, `Age-Adjusted Mortality
-## #   (AIAN) 95% CI - High` &lt;dbl&gt;, `Age-Adjusted Mortality (Asian)` &lt;dbl&gt;,
-## #   `Age-Adjusted Mortality (Asian) 95% CI - Low` &lt;dbl&gt;, `Age-Adjusted
-## #   Mortality (Asian) 95% CI - High` &lt;dbl&gt;, `Age-Adjusted Mortality
-## #   (Black)` &lt;dbl&gt;, `Age-Adjusted Mortality (Black) 95% CI - Low` &lt;dbl&gt;,
-## #   `Age-Adjusted Mortality (Black) 95% CI - High` &lt;dbl&gt;, `Age-Adjusted
-## #   Mortality (Hispanic)` &lt;dbl&gt;, `Age-Adjusted Mortality (Hispanic) 95% CI -
-## #   Low` &lt;dbl&gt;, `Age-Adjusted Mortality (Hispanic) 95% CI - High` &lt;dbl&gt;,
-## #   `Age-Adjusted Mortality (White)` &lt;dbl&gt;, `Age-Adjusted Mortality (White) 95%
-## #   CI - Low` &lt;dbl&gt;, `Age-Adjusted Mortality (White) 95% CI - High` &lt;dbl&gt;, `#
-## #   Deaths_1` &lt;dbl&gt;, `Child Mortality Rate` &lt;dbl&gt;, `95% CI - Low_2` &lt;dbl&gt;, `95%
-## #   CI - High_2` &lt;dbl&gt;, `Child Mortality Rate (AIAN)` &lt;dbl&gt;, `Child Mortality
-## #   Rate (AIAN) 95% CI - Low` &lt;dbl&gt;, `Child Mortality Rate (AIAN) 95% CI -
-## #   High` &lt;dbl&gt;, `Child Mortality Rate (Asian)` &lt;dbl&gt;, `Child Mortality Rate
-## #   (Asian) 95% CI - Low` &lt;dbl&gt;, `Child Mortality Rate (Asian) 95% CI -
-## #   High` &lt;dbl&gt;, `Child Mortality Rate (Black)` &lt;dbl&gt;, `Child Mortality Rate
-## #   (Black) 95% CI - Low` &lt;dbl&gt;, `Child Mortality Rate (Black) 95% CI -
-## #   High` &lt;dbl&gt;, `Child Mortality Rate (Hispanic)` &lt;dbl&gt;, `Child Mortality Rate
-## #   (Hispanic) 95% CI - Low` &lt;dbl&gt;, `Child Mortality Rate (Hispanic) 95% CI -
-## #   High` &lt;dbl&gt;, `Child Mortality Rate (White)` &lt;dbl&gt;, `Child Mortality Rate
-## #   (White) 95% CI - Low` &lt;dbl&gt;, `Child Mortality Rate (White) 95% CI -
-## #   High` &lt;dbl&gt;, `# Deaths_2` &lt;dbl&gt;, `Infant Mortality Rate` &lt;dbl&gt;, `95% CI -
-## #   Low_3` &lt;dbl&gt;, `95% CI - High_3` &lt;dbl&gt;, `Infant Mortality Rate
-## #   (AIAN)` &lt;dbl&gt;, `Infant Mortality Rate (AIAN) 95% CI - Low` &lt;dbl&gt;, `Infant
-## #   Mortality Rate (AIAN) 95% CI - High` &lt;dbl&gt;, `Infant Mortality Rate
-## #   (Asian)` &lt;dbl&gt;, `Infant Mortality Rate (Asian) 95% CI - Low` &lt;dbl&gt;, `Infant
-## #   Mortality Rate (Asian) 95% CI - High` &lt;dbl&gt;, `Infant Mortality Rate
-## #   (Black)` &lt;dbl&gt;, `Infant Mortality Rate (Black) 95% CI - Low` &lt;dbl&gt;, `Infant
-## #   Mortality Rate (Black) 95% CI - High` &lt;dbl&gt;, `Infant Mortality Rate
-## #   (Hispanic)` &lt;dbl&gt;, `Infant Mortality Rate (Hispanic) 95% CI - Low` &lt;dbl&gt;,
-## #   `Infant Mortality Rate (Hispanic) 95% CI - High` &lt;dbl&gt;, `Infant Mortality
-## #   Rate (White)` &lt;dbl&gt;, `Infant Mortality Rate (White) 95% CI - Low` &lt;dbl&gt;,
-## #   `Infant Mortality Rate (White) 95% CI - High` &lt;dbl&gt;, `% Frequent Physical
-## #   Distress` &lt;dbl&gt;, `95% CI - Low_4` &lt;dbl&gt;, `95% CI - High_4` &lt;dbl&gt;, `%
-## #   Frequent Mental Distress` &lt;dbl&gt;, `95% CI - Low_5` &lt;dbl&gt;, `95% CI -
-## #   High_5` &lt;dbl&gt;, `% Adults with Diabetes` &lt;dbl&gt;, `95% CI - Low_6` &lt;dbl&gt;, `95%
-## #   CI - High_6` &lt;dbl&gt;, `# HIV Cases` &lt;dbl&gt;, `HIV Prevalence Rate` &lt;dbl&gt;, `#
-## #   Food Insecure` &lt;dbl&gt;, `% Food Insecure` &lt;dbl&gt;, `# Limited Access` &lt;dbl&gt;, `%
-## #   Limited Access to Healthy Foods` &lt;dbl&gt;, `# Drug Overdose Deaths` &lt;dbl&gt;,
-## #   `Drug Overdose Mortality Rate` &lt;dbl&gt;, `95% CI - Low_7` &lt;dbl&gt;, `95% CI -
-## #   High_7` &lt;dbl&gt;, `Drug Overdose Mortality Rate (AIAN)` &lt;dbl&gt;, `Drug Overdose
-## #   Mortality Rate (AIAN) 95% CI - Low` &lt;dbl&gt;, `Drug Overdose Mortality Rate
-## #   (AIAN) 95% CI - High` &lt;dbl&gt;, …</code></pre>
+not_in_data2 &lt;- anti_join(data2, data1, by = c(State = &quot;state&quot;))</code></pre>
 <p>Discussions of joining here. Feel encouraged to break up into more than once code chunk and discuss each in turn.</p>
 </div>
 <div id="wrangling" class="section level4">
@@ -2038,7 +1689,7 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="left">Alabama</td>
 <td align="right">74.69706</td>
 <td align="right">2419.0882</td>
-<td align="right">12864.471</td>
+<td align="right">1062.4412</td>
 <td align="right">90.22059</td>
 <td align="right">46229.16</td>
 <td align="right">10.436364</td>
@@ -2051,7 +1702,7 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="left">Alaska</td>
 <td align="right">79.43462</td>
 <td align="right">636.1154</td>
-<td align="right">4862.600</td>
+<td align="right">1124.0667</td>
 <td align="right">77.26667</td>
 <td align="right">67924.17</td>
 <td align="right">11.666667</td>
@@ -2064,7 +1715,7 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="left">Arizona</td>
 <td align="right">78.66250</td>
 <td align="right">10204.7500</td>
-<td align="right">75973.000</td>
+<td align="right">17881.7500</td>
 <td align="right">82.62500</td>
 <td align="right">52174.12</td>
 <td align="right">6.400000</td>
@@ -2077,7 +1728,7 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="left">Arkansas</td>
 <td align="right">75.01579</td>
 <td align="right">1269.8158</td>
-<td align="right">5402.816</td>
+<td align="right">828.3421</td>
 <td align="right">90.48485</td>
 <td align="right">44155.22</td>
 <td align="right">9.868421</td>
@@ -2090,7 +1741,7 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="left">California</td>
 <td align="right">80.53793</td>
 <td align="right">11885.1525</td>
-<td align="right">85125.288</td>
+<td align="right">10038.8136</td>
 <td align="right">87.42105</td>
 <td align="right">71197.44</td>
 <td align="right">5.117647</td>
@@ -2103,7 +1754,7 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="left">Colorado</td>
 <td align="right">81.08167</td>
 <td align="right">1766.5246</td>
-<td align="right">11157.723</td>
+<td align="right">1922.8615</td>
 <td align="right">83.65854</td>
 <td align="right">62882.68</td>
 <td align="right">4.176471</td>
@@ -2116,7 +1767,7 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="left">Connecticut</td>
 <td align="right">80.56667</td>
 <td align="right">7938.6667</td>
-<td align="right">35794.667</td>
+<td align="right">4362.2222</td>
 <td align="right">89.33333</td>
 <td align="right">79151.22</td>
 <td align="right">2.333333</td>
@@ -2129,7 +1780,7 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="left">Delaware</td>
 <td align="right">78.35000</td>
 <td align="right">6428.5000</td>
-<td align="right">22441.000</td>
+<td align="right">3831.5000</td>
 <td align="right">87.25000</td>
 <td align="right">67516.75</td>
 <td align="right">5.250000</td>
@@ -2142,7 +1793,7 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="left">District of Columbia</td>
 <td align="right">79.00000</td>
 <td align="right">8280.0000</td>
-<td align="right">18731.000</td>
+<td align="right">2220.0000</td>
 <td align="right">70.00000</td>
 <td align="right">90395.00</td>
 <td align="right">18.000000</td>
@@ -2155,7 +1806,7 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="left">Florida</td>
 <td align="right">78.13529</td>
 <td align="right">7842.8529</td>
-<td align="right">69941.265</td>
+<td align="right">9740.6471</td>
 <td align="right">85.10294</td>
 <td align="right">54362.15</td>
 <td align="right">6.033333</td>
@@ -2168,7 +1819,7 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="left">Georgia</td>
 <td align="right">76.30314</td>
 <td align="right">1663.5625</td>
-<td align="right">15152.725</td>
+<td align="right">2583.0250</td>
 <td align="right">86.98630</td>
 <td align="right">50282.28</td>
 <td align="right">7.818182</td>
@@ -2181,7 +1832,7 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="left">Hawaii</td>
 <td align="right">82.06000</td>
 <td align="right">5766.0000</td>
-<td align="right">18338.000</td>
+<td align="right">3320.8000</td>
 <td align="right">85.00000</td>
 <td align="right">77202.60</td>
 <td align="right">2.200000</td>
@@ -2194,7 +1845,7 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="left">Idaho</td>
 <td align="right">79.22558</td>
 <td align="right">830.2955</td>
-<td align="right">7310.711</td>
+<td align="right">1248.4889</td>
 <td align="right">82.45714</td>
 <td align="right">55355.73</td>
 <td align="right">2.250000</td>
@@ -2207,7 +1858,7 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="left">Illinois</td>
 <td align="right">77.99320</td>
 <td align="right">2800.6019</td>
-<td align="right">14851.417</td>
+<td align="right">1927.2039</td>
 <td align="right">88.90217</td>
 <td align="right">59044.76</td>
 <td align="right">5.323529</td>
@@ -2220,7 +1871,7 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="left">Indiana</td>
 <td align="right">76.99785</td>
 <td align="right">1983.4624</td>
-<td align="right">9347.978</td>
+<td align="right">2286.7097</td>
 <td align="right">92.48352</td>
 <td align="right">58535.41</td>
 <td align="right">4.843750</td>
@@ -2233,7 +1884,7 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="left">Iowa</td>
 <td align="right">79.13000</td>
 <td align="right">715.5800</td>
-<td align="right">2478.560</td>
+<td align="right">408.2800</td>
 <td align="right">92.34884</td>
 <td align="right">59755.50</td>
 <td align="right">3.666667</td>
@@ -2246,7 +1897,7 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="left">Kansas</td>
 <td align="right">77.58252</td>
 <td align="right">668.5238</td>
-<td align="right">3921.547</td>
+<td align="right">685.4151</td>
 <td align="right">87.51786</td>
 <td align="right">55039.05</td>
 <td align="right">5.388889</td>
@@ -2259,7 +1910,7 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="left">Kentucky</td>
 <td align="right">74.63306</td>
 <td align="right">1228.7769</td>
-<td align="right">3410.628</td>
+<td align="right">639.8347</td>
 <td align="right">93.95652</td>
 <td align="right">47490.40</td>
 <td align="right">5.647059</td>
@@ -2272,7 +1923,7 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="left">Louisiana</td>
 <td align="right">75.54462</td>
 <td align="right">2218.4308</td>
-<td align="right">9895.600</td>
+<td align="right">1148.0308</td>
 <td align="right">86.38095</td>
 <td align="right">48126.60</td>
 <td align="right">11.083333</td>
@@ -2285,7 +1936,7 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="left">Maine</td>
 <td align="right">78.37647</td>
 <td align="right">2158.8235</td>
-<td align="right">10895.765</td>
+<td align="right">1715.5294</td>
 <td align="right">85.20000</td>
 <td align="right">54490.18</td>
 <td align="right">2.000000</td>
@@ -2298,7 +1949,7 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="left">Maryland</td>
 <td align="right">78.51200</td>
 <td align="right">5671.8400</td>
-<td align="right">24510.240</td>
+<td align="right">3542.5600</td>
 <td align="right">89.44000</td>
 <td align="right">79316.04</td>
 <td align="right">6.444444</td>
@@ -2311,7 +1962,7 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="left">Massachusetts</td>
 <td align="right">80.44667</td>
 <td align="right">9129.7333</td>
-<td align="right">22317.733</td>
+<td align="right">2260.1333</td>
 <td align="right">86.93333</td>
 <td align="right">80279.07</td>
 <td align="right">2.363636</td>
@@ -2324,7 +1975,7 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="left">Michigan</td>
 <td align="right">78.10000</td>
 <td align="right">3148.1190</td>
-<td align="right">10916.571</td>
+<td align="right">1779.6905</td>
 <td align="right">81.48611</td>
 <td align="right">53695.44</td>
 <td align="right">4.307692</td>
@@ -2337,7 +1988,7 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="left">Minnesota</td>
 <td align="right">80.18068</td>
 <td align="right">1184.6591</td>
-<td align="right">4501.545</td>
+<td align="right">997.5909</td>
 <td align="right">86.12857</td>
 <td align="right">64448.90</td>
 <td align="right">2.666667</td>
@@ -2350,7 +2001,7 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="left">Mississippi</td>
 <td align="right">74.15000</td>
 <td align="right">1242.6265</td>
-<td align="right">7696.602</td>
+<td align="right">813.0361</td>
 <td align="right">83.73171</td>
 <td align="right">41753.66</td>
 <td align="right">14.517241</td>
@@ -2363,7 +2014,7 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="left">Missouri</td>
 <td align="right">76.76638</td>
 <td align="right">1501.3793</td>
-<td align="right">8421.793</td>
+<td align="right">1404.4655</td>
 <td align="right">91.74725</td>
 <td align="right">49391.31</td>
 <td align="right">7.368421</td>
@@ -2376,7 +2027,7 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="left">Montana</td>
 <td align="right">78.97000</td>
 <td align="right">537.7551</td>
-<td align="right">2562.175</td>
+<td align="right">510.4561</td>
 <td align="right">83.45455</td>
 <td align="right">51629.21</td>
 <td align="right">6.818182</td>
@@ -2389,7 +2040,7 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="left">Nebraska</td>
 <td align="right">79.25875</td>
 <td align="right">507.3625</td>
-<td align="right">2703.149</td>
+<td align="right">527.8723</td>
 <td align="right">88.73529</td>
 <td align="right">56105.59</td>
 <td align="right">3.250000</td>
@@ -2402,7 +2053,7 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="left">Nevada</td>
 <td align="right">78.42353</td>
 <td align="right">4544.3529</td>
-<td align="right">30440.556</td>
+<td align="right">6360.6667</td>
 <td align="right">83.15385</td>
 <td align="right">64713.17</td>
 <td align="right">5.125000</td>
@@ -2415,7 +2066,7 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="left">New Hampshire</td>
 <td align="right">79.26364</td>
 <td align="right">2888.9091</td>
-<td align="right">12830.000</td>
+<td align="right">1142.0000</td>
 <td align="right">88.27273</td>
 <td align="right">70350.00</td>
 <td align="right">1.714286</td>
@@ -2428,7 +2079,7 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="left">New Jersey</td>
 <td align="right">79.90455</td>
 <td align="right">8325.9091</td>
-<td align="right">52096.182</td>
+<td align="right">6980.3636</td>
 <td align="right">91.36364</td>
 <td align="right">85192.68</td>
 <td align="right">4.368421</td>
@@ -2441,7 +2092,7 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="left">New Mexico</td>
 <td align="right">77.53030</td>
 <td align="right">1731.3030</td>
-<td align="right">10036.941</td>
+<td align="right">1598.8235</td>
 <td align="right">76.07692</td>
 <td align="right">46632.91</td>
 <td align="right">8.863636</td>
@@ -2454,7 +2105,7 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="left">New York</td>
 <td align="right">79.67937</td>
 <td align="right">6069.6825</td>
-<td align="right">29026.603</td>
+<td align="right">3278.6349</td>
 <td align="right">85.19355</td>
 <td align="right">64162.84</td>
 <td align="right">3.000000</td>
@@ -2467,7 +2118,7 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="left">North Carolina</td>
 <td align="right">77.08416</td>
 <td align="right">2691.5248</td>
-<td align="right">19056.693</td>
+<td align="right">2527.6238</td>
 <td align="right">86.30303</td>
 <td align="right">51698.40</td>
 <td align="right">7.283784</td>
@@ -2480,7 +2131,7 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="left">North Dakota</td>
 <td align="right">79.74510</td>
 <td align="right">331.2553</td>
-<td align="right">1467.074</td>
+<td align="right">429.2963</td>
 <td align="right">85.86667</td>
 <td align="right">61698.94</td>
 <td align="right">2.200000</td>
@@ -2493,7 +2144,7 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="left">Ohio</td>
 <td align="right">76.83371</td>
 <td align="right">3799.9326</td>
-<td align="right">13749.753</td>
+<td align="right">2877.6629</td>
 <td align="right">87.22472</td>
 <td align="right">58045.24</td>
 <td align="right">4.574468</td>
@@ -2506,7 +2157,7 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="left">Oklahoma</td>
 <td align="right">75.28077</td>
 <td align="right">1560.4359</td>
-<td align="right">11854.026</td>
+<td align="right">2109.5128</td>
 <td align="right">82.73333</td>
 <td align="right">49900.10</td>
 <td align="right">7.046512</td>
@@ -2519,7 +2170,7 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="left">Oregon</td>
 <td align="right">79.34444</td>
 <td align="right">2702.9429</td>
-<td align="right">13965.081</td>
+<td align="right">1639.6757</td>
 <td align="right">77.59375</td>
 <td align="right">58568.57</td>
 <td align="right">3.823529</td>
@@ -2532,7 +2183,7 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="left">Pennsylvania</td>
 <td align="right">78.28235</td>
 <td align="right">4866.4706</td>
-<td align="right">16755.059</td>
+<td align="right">3539.9412</td>
 <td align="right">89.49231</td>
 <td align="right">58940.63</td>
 <td align="right">3.577778</td>
@@ -2545,7 +2196,7 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="left">Rhode Island</td>
 <td align="right">80.41667</td>
 <td align="right">3894.3333</td>
-<td align="right">12120.333</td>
+<td align="right">1489.3333</td>
 <td align="right">87.00000</td>
 <td align="right">77002.67</td>
 <td align="right">2.333333</td>
@@ -2558,7 +2209,7 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="left">South Carolina</td>
 <td align="right">75.61064</td>
 <td align="right">3248.1277</td>
-<td align="right">19826.340</td>
+<td align="right">2322.3404</td>
 <td align="right">83.08696</td>
 <td align="right">49452.64</td>
 <td align="right">10.931818</td>
@@ -2571,7 +2222,7 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="left">South Dakota</td>
 <td align="right">78.00484</td>
 <td align="right">324.6452</td>
-<td align="right">2031.134</td>
+<td align="right">392.0597</td>
 <td align="right">80.26923</td>
 <td align="right">55070.91</td>
 <td align="right">10.166667</td>
@@ -2584,7 +2235,7 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="left">Tennessee</td>
 <td align="right">74.94479</td>
 <td align="right">2262.8125</td>
-<td align="right">12306.792</td>
+<td align="right">1641.6042</td>
 <td align="right">93.14894</td>
 <td align="right">50045.72</td>
 <td align="right">5.921569</td>
@@ -2597,7 +2248,7 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="left">Texas</td>
 <td align="right">77.48445</td>
 <td align="right">2478.4672</td>
-<td align="right">32209.686</td>
+<td align="right">6708.2667</td>
 <td align="right">92.84896</td>
 <td align="right">54993.81</td>
 <td align="right">5.376344</td>
@@ -2610,7 +2261,7 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="left">Utah</td>
 <td align="right">79.32500</td>
 <td align="right">1704.3793</td>
-<td align="right">14989.667</td>
+<td align="right">4633.3333</td>
 <td align="right">NaN</td>
 <td align="right">66796.87</td>
 <td align="right">2.500000</td>
@@ -2623,7 +2274,7 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="left">Vermont</td>
 <td align="right">79.43333</td>
 <td align="right">987.7333</td>
-<td align="right">2913.200</td>
+<td align="right">248.1333</td>
 <td align="right">85.07692</td>
 <td align="right">60085.87</td>
 <td align="right">2.250000</td>
@@ -2636,7 +2287,7 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="left">Virginia</td>
 <td align="right">77.40821</td>
 <td align="right">1423.0149</td>
-<td align="right">9232.119</td>
+<td align="right">1432.4925</td>
 <td align="right">87.74797</td>
 <td align="right">62534.67</td>
 <td align="right">7.140000</td>
@@ -2649,7 +2300,7 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="left">Washington</td>
 <td align="right">79.99000</td>
 <td align="right">3814.5500</td>
-<td align="right">21307.150</td>
+<td align="right">2405.6000</td>
 <td align="right">89.08571</td>
 <td align="right">63475.40</td>
 <td align="right">3.478261</td>
@@ -2662,7 +2313,7 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="left">West Virginia</td>
 <td align="right">75.17500</td>
 <td align="right">1238.8929</td>
-<td align="right">3495.571</td>
+<td align="right">448.8214</td>
 <td align="right">91.85714</td>
 <td align="right">46672.48</td>
 <td align="right">6.388889</td>
@@ -2675,7 +2326,7 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="left">Wisconsin</td>
 <td align="right">79.31233</td>
 <td align="right">1773.8356</td>
-<td align="right">7138.521</td>
+<td align="right">1389.2603</td>
 <td align="right">91.52174</td>
 <td align="right">61084.95</td>
 <td align="right">3.000000</td>
@@ -2688,7 +2339,7 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="left">Wyoming</td>
 <td align="right">79.37500</td>
 <td align="right">587.6667</td>
-<td align="right">4160.250</td>
+<td align="right">789.5833</td>
 <td align="right">83.68182</td>
 <td align="right">64830.75</td>
 <td align="right">5.750000</td>
@@ -2696,6 +2347,3938 @@ joineddata %&gt;% group_by(state) %&gt;% summarize(avg_LE = mean(`Life Expectanc
 <td align="right">13497.667</td>
 <td align="right">48229.92</td>
 <td align="right">22.50833</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>dim(joineddata)</code></pre>
+<pre><code>## [1] 3193   72</code></pre>
+<pre class="r"><code>joineddata %&gt;% group_by(state) %&gt;% summarize_all(mean, na.rm = TRUE) %&gt;% 
+    knitr::kable()</code></pre>
+<table style="width:100%;">
+<colgroup>
+<col width="1%"></col>
+<col width="0%"></col>
+<col width="0%"></col>
+<col width="0%"></col>
+<col width="1%"></col>
+<col width="1%"></col>
+<col width="1%"></col>
+<col width="0%"></col>
+<col width="0%"></col>
+<col width="0%"></col>
+<col width="1%"></col>
+<col width="0%"></col>
+<col width="1%"></col>
+<col width="1%"></col>
+<col width="2%"></col>
+<col width="1%"></col>
+<col width="1%"></col>
+<col width="0%"></col>
+<col width="1%"></col>
+<col width="1%"></col>
+<col width="1%"></col>
+<col width="1%"></col>
+<col width="2%"></col>
+<col width="1%"></col>
+<col width="2%"></col>
+<col width="1%"></col>
+<col width="2%"></col>
+<col width="1%"></col>
+<col width="0%"></col>
+<col width="0%"></col>
+<col width="2%"></col>
+<col width="2%"></col>
+<col width="0%"></col>
+<col width="1%"></col>
+<col width="1%"></col>
+<col width="1%"></col>
+<col width="1%"></col>
+<col width="2%"></col>
+<col width="1%"></col>
+<col width="1%"></col>
+<col width="0%"></col>
+<col width="1%"></col>
+<col width="1%"></col>
+<col width="1%"></col>
+<col width="1%"></col>
+<col width="1%"></col>
+<col width="0%"></col>
+<col width="0%"></col>
+<col width="2%"></col>
+<col width="2%"></col>
+<col width="1%"></col>
+<col width="0%"></col>
+<col width="1%"></col>
+<col width="0%"></col>
+<col width="0%"></col>
+<col width="0%"></col>
+<col width="2%"></col>
+<col width="2%"></col>
+<col width="0%"></col>
+<col width="0%"></col>
+<col width="2%"></col>
+<col width="2%"></col>
+<col width="0%"></col>
+<col width="0%"></col>
+<col width="1%"></col>
+<col width="1%"></col>
+<col width="1%"></col>
+<col width="1%"></col>
+<col width="0%"></col>
+<col width="0%"></col>
+<col width="0%"></col>
+<col width="0%"></col>
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">state</th>
+<th align="right">num_drivers</th>
+<th align="right">perc_speeding</th>
+<th align="right">perc_alcohol</th>
+<th align="right">perc_not_distracted</th>
+<th align="right">perc_no_previous</th>
+<th align="right">insurance_premiums</th>
+<th align="right">losses</th>
+<th align="right">FIPS</th>
+<th align="right">County</th>
+<th align="right">Life Expectancy</th>
+<th align="right"># Deaths</th>
+<th align="right">Child Mortality Rate</th>
+<th align="right">Infant Mortality Rate</th>
+<th align="right">% Frequent Physical Distress</th>
+<th align="right">% Frequent Mental Distress</th>
+<th align="right">% Adults with Diabetes</th>
+<th align="right"># HIV Cases</th>
+<th align="right">HIV Prevalence Rate</th>
+<th align="right"># Food Insecure</th>
+<th align="right">% Food Insecure</th>
+<th align="right"># Limited Access</th>
+<th align="right">% Limited Access to Healthy Foods</th>
+<th align="right"># Drug Overdose Deaths</th>
+<th align="right">Drug Overdose Mortality Rate</th>
+<th align="right"># Motor Vehicle Deaths</th>
+<th align="right">Motor Vehicle Mortality Rate</th>
+<th align="right">% Insufficient Sleep</th>
+<th align="right"># Uninsured</th>
+<th align="right">% Uninsured</th>
+<th align="right">Other Primary Care Provider Rate</th>
+<th align="right">Other Primary Care Provider Ratio</th>
+<th align="right">Cohort Size</th>
+<th align="right">High School Graduation Rate</th>
+<th align="right">% Disconnected Youth</th>
+<th align="right">Average Grade Performance</th>
+<th align="right">Median Household Income</th>
+<th align="right">% Enrolled in Free or Reduced Lunch</th>
+<th align="right">Segregation index</th>
+<th align="right">Segregation Index</th>
+<th align="right">Homicide Rate</th>
+<th align="right">Suicide Rate (Age-Adjusted)</th>
+<th align="right"># Firearm Fatalities</th>
+<th align="right">Firearm Fatalities Rate</th>
+<th align="right">Juvenile Arrest Rate</th>
+<th align="right">Traffic Volume</th>
+<th align="right"># Homeowners</th>
+<th align="right">% Homeowners</th>
+<th align="right"># Households with Severe Cost Burden</th>
+<th align="right">% Severe Housing Cost Burden</th>
+<th align="right">% Broadband Access</th>
+<th align="right">Population</th>
+<th align="right">% Less Than 18 Years of Age</th>
+<th align="right">% 65 and Over</th>
+<th align="right"># Black</th>
+<th align="right">% Black</th>
+<th align="right"># American Indian &amp; Alaska Native</th>
+<th align="right">% American Indian &amp; Alaska Native</th>
+<th align="right"># Asian</th>
+<th align="right">% Asian</th>
+<th align="right"># Native Hawaiian/Other Pacific Islander</th>
+<th align="right">% Native Hawaiian/Other Pacific Islander</th>
+<th align="right"># Hispanic</th>
+<th align="right">% Hispanic</th>
+<th align="right"># Non-Hispanic White</th>
+<th align="right">% Non-Hispanic White</th>
+<th align="right"># Not Proficient in English</th>
+<th align="right">% Not Proficient in English</th>
+<th align="right">% Female</th>
+<th align="right"># Rural</th>
+<th align="right">% Rural</th>
+<th align="right">X65</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Alabama</td>
+<td align="right">18.8</td>
+<td align="right">39</td>
+<td align="right">30</td>
+<td align="right">96</td>
+<td align="right">80</td>
+<td align="right">784.55</td>
+<td align="right">145.08</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">74.69706</td>
+<td align="right">2419.0882</td>
+<td align="right">74.58182</td>
+<td align="right">8.054054</td>
+<td align="right">15.72059</td>
+<td align="right">17.69118</td>
+<td align="right">16.985294</td>
+<td align="right">397.47059</td>
+<td align="right">251.76471</td>
+<td align="right">23657.794</td>
+<td align="right">17.794118</td>
+<td align="right">11135.926</td>
+<td align="right">7.323529</td>
+<td align="right">111.00000</td>
+<td align="right">16.309524</td>
+<td align="right">200.82353</td>
+<td align="right">27.117647</td>
+<td align="right">40.35294</td>
+<td align="right">1062.4412</td>
+<td align="right">3.411765</td>
+<td align="right">66.63235</td>
+<td align="right">NA</td>
+<td align="right">1622.0882</td>
+<td align="right">90.22059</td>
+<td align="right">9.527778</td>
+<td align="right">2.782353</td>
+<td align="right">46229.16</td>
+<td align="right">62.38235</td>
+<td align="right">38.23529</td>
+<td align="right">32.58824</td>
+<td align="right">10.436364</td>
+<td align="right">17.109091</td>
+<td align="right">159.45455</td>
+<td align="right">21.712121</td>
+<td align="right">19.346939</td>
+<td align="right">93.13235</td>
+<td align="right">37786.706</td>
+<td align="right">71.57353</td>
+<td align="right">6280.9118</td>
+<td align="right">11.382353</td>
+<td align="right">69.22059</td>
+<td align="right">144211.32</td>
+<td align="right">21.63529</td>
+<td align="right">19.07206</td>
+<td align="right">38169.8529</td>
+<td align="right">28.3176471</td>
+<td align="right">1023.5000</td>
+<td align="right">0.8602941</td>
+<td align="right">2168.0882</td>
+<td align="right">0.8647059</td>
+<td align="right">150.29412</td>
+<td align="right">0.1132353</td>
+<td align="right">6567.000</td>
+<td align="right">3.992647</td>
+<td align="right">94142.00</td>
+<td align="right">64.60882</td>
+<td align="right">1483.67647</td>
+<td align="right">0.8382353</td>
+<td align="right">51.42353</td>
+<td align="right">57586.235</td>
+<td align="right">66.69853</td>
+<td align="right">NaN</td>
+</tr>
+<tr class="even">
+<td align="left">Alaska</td>
+<td align="right">18.1</td>
+<td align="right">41</td>
+<td align="right">25</td>
+<td align="right">90</td>
+<td align="right">94</td>
+<td align="right">1053.48</td>
+<td align="right">133.93</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">79.43462</td>
+<td align="right">636.1154</td>
+<td align="right">106.00000</td>
+<td align="right">7.571429</td>
+<td align="right">14.33333</td>
+<td align="right">14.40000</td>
+<td align="right">9.533333</td>
+<td align="right">708.00000</td>
+<td align="right">118.00000</td>
+<td align="right">6309.333</td>
+<td align="right">14.766667</td>
+<td align="right">4333.067</td>
+<td align="right">18.666667</td>
+<td align="right">120.00000</td>
+<td align="right">19.500000</td>
+<td align="right">132.85714</td>
+<td align="right">12.142857</td>
+<td align="right">34.83333</td>
+<td align="right">1124.0667</td>
+<td align="right">10.666667</td>
+<td align="right">137.56667</td>
+<td align="right">NA</td>
+<td align="right">1269.2667</td>
+<td align="right">77.26667</td>
+<td align="right">16.000000</td>
+<td align="right">NaN</td>
+<td align="right">67924.17</td>
+<td align="right">47.76667</td>
+<td align="right">35.11111</td>
+<td align="right">30.10000</td>
+<td align="right">11.666667</td>
+<td align="right">41.071429</td>
+<td align="right">129.23077</td>
+<td align="right">30.153846</td>
+<td align="right">24.037037</td>
+<td align="right">61.83333</td>
+<td align="right">10866.400</td>
+<td align="right">64.20000</td>
+<td align="right">1998.0667</td>
+<td align="right">9.066667</td>
+<td align="right">76.66667</td>
+<td align="right">48769.67</td>
+<td align="right">23.57000</td>
+<td align="right">13.99000</td>
+<td align="right">1612.6667</td>
+<td align="right">1.8833333</td>
+<td align="right">7596.8667</td>
+<td align="right">31.8400000</td>
+<td align="right">3186.6000</td>
+<td align="right">6.6266667</td>
+<td align="right">699.86667</td>
+<td align="right">0.6566667</td>
+<td align="right">3547.467</td>
+<td align="right">5.873333</td>
+<td align="right">29338.53</td>
+<td align="right">47.46333</td>
+<td align="right">737.00000</td>
+<td align="right">1.6666667</td>
+<td align="right">46.19667</td>
+<td align="right">19181.500</td>
+<td align="right">68.84583</td>
+<td align="right">NaN</td>
+</tr>
+<tr class="odd">
+<td align="left">Arizona</td>
+<td align="right">18.6</td>
+<td align="right">35</td>
+<td align="right">28</td>
+<td align="right">84</td>
+<td align="right">96</td>
+<td align="right">899.47</td>
+<td align="right">110.35</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">78.66250</td>
+<td align="right">10204.7500</td>
+<td align="right">60.60000</td>
+<td align="right">6.214286</td>
+<td align="right">15.18750</td>
+<td align="right">14.81250</td>
+<td align="right">12.000000</td>
+<td align="right">2064.93750</td>
+<td align="right">174.87500</td>
+<td align="right">115771.250</td>
+<td align="right">15.687500</td>
+<td align="right">60274.875</td>
+<td align="right">16.750000</td>
+<td align="right">681.06667</td>
+<td align="right">21.866667</td>
+<td align="right">796.37500</td>
+<td align="right">21.250000</td>
+<td align="right">36.31250</td>
+<td align="right">17881.7500</td>
+<td align="right">9.250000</td>
+<td align="right">82.12500</td>
+<td align="right">NA</td>
+<td align="right">10927.7500</td>
+<td align="right">82.62500</td>
+<td align="right">9.714286</td>
+<td align="right">NaN</td>
+<td align="right">52174.12</td>
+<td align="right">59.75000</td>
+<td align="right">52.50000</td>
+<td align="right">45.18750</td>
+<td align="right">6.400000</td>
+<td align="right">24.733333</td>
+<td align="right">730.66667</td>
+<td align="right">19.200000</td>
+<td align="right">35.625000</td>
+<td align="right">179.81250</td>
+<td align="right">207094.500</td>
+<td align="right">67.93750</td>
+<td align="right">42802.3750</td>
+<td align="right">11.875000</td>
+<td align="right">74.87500</td>
+<td align="right">909839.62</td>
+<td align="right">22.35625</td>
+<td align="right">21.48125</td>
+<td align="right">40722.1250</td>
+<td align="right">2.0875000</td>
+<td align="right">48237.8750</td>
+<td align="right">14.4875000</td>
+<td align="right">33590.3750</td>
+<td align="right">1.6937500</td>
+<td align="right">2521.12500</td>
+<td align="right">0.2187500</td>
+<td align="right">288823.750</td>
+<td align="right">31.706250</td>
+<td align="right">492461.25</td>
+<td align="right">50.06250</td>
+<td align="right">38335.50000</td>
+<td align="right">4.5000000</td>
+<td align="right">49.67500</td>
+<td align="right">81419.750</td>
+<td align="right">32.61875</td>
+<td align="right">NaN</td>
+</tr>
+<tr class="even">
+<td align="left">Arkansas</td>
+<td align="right">22.4</td>
+<td align="right">18</td>
+<td align="right">26</td>
+<td align="right">94</td>
+<td align="right">95</td>
+<td align="right">827.34</td>
+<td align="right">142.39</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">75.01579</td>
+<td align="right">1269.8158</td>
+<td align="right">79.81132</td>
+<td align="right">8.166667</td>
+<td align="right">16.61842</td>
+<td align="right">17.05263</td>
+<td align="right">15.171053</td>
+<td align="right">155.61644</td>
+<td align="right">177.58904</td>
+<td align="right">13419.211</td>
+<td align="right">18.342105</td>
+<td align="right">6709.724</td>
+<td align="right">10.868421</td>
+<td align="right">75.87097</td>
+<td align="right">16.709677</td>
+<td align="right">102.86486</td>
+<td align="right">23.648649</td>
+<td align="right">36.76316</td>
+<td align="right">828.3421</td>
+<td align="right">4.381579</td>
+<td align="right">78.75000</td>
+<td align="right">NA</td>
+<td align="right">1057.0000</td>
+<td align="right">90.48485</td>
+<td align="right">11.769231</td>
+<td align="right">2.818421</td>
+<td align="right">44155.22</td>
+<td align="right">71.47368</td>
+<td align="right">39.64407</td>
+<td align="right">29.18421</td>
+<td align="right">9.868421</td>
+<td align="right">21.492064</td>
+<td align="right">88.28571</td>
+<td align="right">20.587302</td>
+<td align="right">20.016667</td>
+<td align="right">73.98684</td>
+<td align="right">19985.658</td>
+<td align="right">69.69737</td>
+<td align="right">3290.9737</td>
+<td align="right">10.447368</td>
+<td align="right">67.31579</td>
+<td align="right">79415.89</td>
+<td align="right">22.18684</td>
+<td align="right">20.16184</td>
+<td align="right">12242.3421</td>
+<td align="right">16.0776316</td>
+<td align="right">808.3421</td>
+<td align="right">0.9486842</td>
+<td align="right">1326.3947</td>
+<td align="right">0.8973684</td>
+<td align="right">310.15789</td>
+<td align="right">0.1776316</td>
+<td align="right">6227.132</td>
+<td align="right">5.715789</td>
+<td align="right">57206.53</td>
+<td align="right">74.72763</td>
+<td align="right">1174.02632</td>
+<td align="right">1.0000000</td>
+<td align="right">50.51842</td>
+<td align="right">33640.237</td>
+<td align="right">64.59868</td>
+<td align="right">NaN</td>
+</tr>
+<tr class="odd">
+<td align="left">California</td>
+<td align="right">12.0</td>
+<td align="right">35</td>
+<td align="right">28</td>
+<td align="right">91</td>
+<td align="right">89</td>
+<td align="right">878.41</td>
+<td align="right">165.63</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">80.53793</td>
+<td align="right">11885.1525</td>
+<td align="right">43.86538</td>
+<td align="right">4.568182</td>
+<td align="right">13.45763</td>
+<td align="right">13.77966</td>
+<td align="right">9.932203</td>
+<td align="right">4578.98246</td>
+<td align="right">234.29825</td>
+<td align="right">142676.949</td>
+<td align="right">11.949153</td>
+<td align="right">41557.627</td>
+<td align="right">6.101695</td>
+<td align="right">630.61538</td>
+<td align="right">17.288462</td>
+<td align="right">931.69643</td>
+<td align="right">14.517857</td>
+<td align="right">33.40678</td>
+<td align="right">10038.8136</td>
+<td align="right">3.237288</td>
+<td align="right">71.18644</td>
+<td align="right">NA</td>
+<td align="right">15256.1754</td>
+<td align="right">87.42105</td>
+<td align="right">7.255319</td>
+<td align="right">2.808772</td>
+<td align="right">71197.44</td>
+<td align="right">57.84746</td>
+<td align="right">51.74510</td>
+<td align="right">26.14035</td>
+<td align="right">5.117647</td>
+<td align="right">15.535714</td>
+<td align="right">571.59259</td>
+<td align="right">11.592593</td>
+<td align="right">NaN</td>
+<td align="right">753.88136</td>
+<td align="right">242528.136</td>
+<td align="right">61.98305</td>
+<td align="right">84840.9831</td>
+<td align="right">17.288136</td>
+<td align="right">83.55932</td>
+<td align="right">1339397.39</td>
+<td align="right">21.87288</td>
+<td align="right">18.40339</td>
+<td align="right">75300.4407</td>
+<td align="right">3.1000000</td>
+<td align="right">22029.2203</td>
+<td align="right">3.2169492</td>
+<td align="right">207150.6780</td>
+<td align="right">8.1847458</td>
+<td align="right">6773.05085</td>
+<td align="right">0.4203390</td>
+<td align="right">527962.034</td>
+<td align="right">31.357627</td>
+<td align="right">488940.61</td>
+<td align="right">52.76271</td>
+<td align="right">119444.10169</td>
+<td align="right">6.6271186</td>
+<td align="right">49.52034</td>
+<td align="right">63740.678</td>
+<td align="right">28.29153</td>
+<td align="right">NaN</td>
+</tr>
+<tr class="even">
+<td align="left">Colorado</td>
+<td align="right">13.6</td>
+<td align="right">37</td>
+<td align="right">28</td>
+<td align="right">79</td>
+<td align="right">95</td>
+<td align="right">835.50</td>
+<td align="right">139.91</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">81.08167</td>
+<td align="right">1766.5246</td>
+<td align="right">51.34615</td>
+<td align="right">4.533333</td>
+<td align="right">11.15385</td>
+<td align="right">12.55385</td>
+<td align="right">8.369231</td>
+<td align="right">547.67391</td>
+<td align="right">160.39130</td>
+<td align="right">17017.692</td>
+<td align="right">11.123077</td>
+<td align="right">8452.400</td>
+<td align="right">8.784615</td>
+<td align="right">216.14286</td>
+<td align="right">20.107143</td>
+<td align="right">187.81395</td>
+<td align="right">16.465116</td>
+<td align="right">31.32308</td>
+<td align="right">1922.8615</td>
+<td align="right">6.415385</td>
+<td align="right">89.75385</td>
+<td align="right">NA</td>
+<td align="right">3192.7805</td>
+<td align="right">83.65854</td>
+<td align="right">7.066667</td>
+<td align="right">3.062264</td>
+<td align="right">62882.68</td>
+<td align="right">45.58462</td>
+<td align="right">52.92857</td>
+<td align="right">23.16000</td>
+<td align="right">4.176471</td>
+<td align="right">26.391304</td>
+<td align="right">199.02500</td>
+<td align="right">19.450000</td>
+<td align="right">15.945455</td>
+<td align="right">176.60000</td>
+<td align="right">43130.308</td>
+<td align="right">70.20000</td>
+<td align="right">9030.8000</td>
+<td align="right">12.753846</td>
+<td align="right">81.09231</td>
+<td align="right">177191.88</td>
+<td align="right">19.99538</td>
+<td align="right">19.93538</td>
+<td align="right">7185.3231</td>
+<td align="right">1.7553846</td>
+<td align="right">2860.9846</td>
+<td align="right">2.2076923</td>
+<td align="right">6235.8154</td>
+<td align="right">1.5153846</td>
+<td align="right">348.58462</td>
+<td align="right">0.1369231</td>
+<td align="right">38673.969</td>
+<td align="right">20.178462</td>
+<td align="right">119880.09</td>
+<td align="right">73.87231</td>
+<td align="right">4742.06154</td>
+<td align="right">2.2923077</td>
+<td align="right">48.13385</td>
+<td align="right">21428.769</td>
+<td align="right">57.99077</td>
+<td align="right">NaN</td>
+</tr>
+<tr class="odd">
+<td align="left">Connecticut</td>
+<td align="right">10.8</td>
+<td align="right">46</td>
+<td align="right">36</td>
+<td align="right">87</td>
+<td align="right">82</td>
+<td align="right">1068.73</td>
+<td align="right">167.02</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">80.56667</td>
+<td align="right">7938.6667</td>
+<td align="right">32.22222</td>
+<td align="right">4.444444</td>
+<td align="right">10.22222</td>
+<td align="right">11.88889</td>
+<td align="right">9.000000</td>
+<td align="right">2328.55556</td>
+<td align="right">267.00000</td>
+<td align="right">91393.333</td>
+<td align="right">11.000000</td>
+<td align="right">34497.222</td>
+<td align="right">4.888889</td>
+<td align="right">745.55556</td>
+<td align="right">33.222222</td>
+<td align="right">434.44444</td>
+<td align="right">8.777778</td>
+<td align="right">34.88889</td>
+<td align="right">4362.2222</td>
+<td align="right">2.333333</td>
+<td align="right">109.66667</td>
+<td align="right">NA</td>
+<td align="right">9377.3333</td>
+<td align="right">89.33333</td>
+<td align="right">5.000000</td>
+<td align="right">3.222222</td>
+<td align="right">79151.22</td>
+<td align="right">39.11111</td>
+<td align="right">56.88889</td>
+<td align="right">43.11111</td>
+<td align="right">2.333333</td>
+<td align="right">11.444444</td>
+<td align="right">205.55556</td>
+<td align="right">5.666667</td>
+<td align="right">NaN</td>
+<td align="right">417.55556</td>
+<td align="right">201262.444</td>
+<td align="right">68.44444</td>
+<td align="right">48945.7778</td>
+<td align="right">15.111111</td>
+<td align="right">85.88889</td>
+<td align="right">792286.00</td>
+<td align="right">19.43333</td>
+<td align="right">18.28889</td>
+<td align="right">81963.1111</td>
+<td align="right">7.2888889</td>
+<td align="right">4570.4444</td>
+<td align="right">0.5666667</td>
+<td align="right">39239.7778</td>
+<td align="right">4.1777778</td>
+<td align="right">862.00000</td>
+<td align="right">0.1000000</td>
+<td align="right">133545.556</td>
+<td align="right">13.155556</td>
+<td align="right">522249.56</td>
+<td align="right">73.32222</td>
+<td align="right">28859.11111</td>
+<td align="right">2.6666667</td>
+<td align="right">50.85556</td>
+<td align="right">95367.778</td>
+<td align="right">22.81111</td>
+<td align="right">NaN</td>
+</tr>
+<tr class="even">
+<td align="left">Delaware</td>
+<td align="right">16.2</td>
+<td align="right">38</td>
+<td align="right">30</td>
+<td align="right">87</td>
+<td align="right">99</td>
+<td align="right">1137.87</td>
+<td align="right">151.48</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">78.35000</td>
+<td align="right">6428.5000</td>
+<td align="right">52.25000</td>
+<td align="right">6.750000</td>
+<td align="right">12.25000</td>
+<td align="right">13.75000</td>
+<td align="right">12.500000</td>
+<td align="right">1618.50000</td>
+<td align="right">367.25000</td>
+<td align="right">56695.000</td>
+<td align="right">12.000000</td>
+<td align="right">20987.500</td>
+<td align="right">4.750000</td>
+<td align="right">587.00000</td>
+<td align="right">38.500000</td>
+<td align="right">423.00000</td>
+<td align="right">13.750000</td>
+<td align="right">37.25000</td>
+<td align="right">3831.5000</td>
+<td align="right">4.000000</td>
+<td align="right">119.25000</td>
+<td align="right">NA</td>
+<td align="right">5034.5000</td>
+<td align="right">87.25000</td>
+<td align="right">6.750000</td>
+<td align="right">3.075000</td>
+<td align="right">67516.75</td>
+<td align="right">NaN</td>
+<td align="right">40.00000</td>
+<td align="right">34.25000</td>
+<td align="right">5.250000</td>
+<td align="right">12.000000</td>
+<td align="right">267.00000</td>
+<td align="right">10.750000</td>
+<td align="right">52.250000</td>
+<td align="right">424.50000</td>
+<td align="right">129390.000</td>
+<td align="right">72.00000</td>
+<td align="right">23748.5000</td>
+<td align="right">13.500000</td>
+<td align="right">84.50000</td>
+<td align="right">486882.00</td>
+<td align="right">20.85000</td>
+<td align="right">20.42500</td>
+<td align="right">107329.0000</td>
+<td align="right">21.2000000</td>
+<td align="right">3282.0000</td>
+<td align="right">0.7500000</td>
+<td align="right">19931.5000</td>
+<td align="right">3.4250000</td>
+<td align="right">529.50000</td>
+<td align="right">0.1250000</td>
+<td align="right">46695.500</td>
+<td align="right">9.175000</td>
+<td align="right">300174.50</td>
+<td align="right">63.45000</td>
+<td align="right">9480.00000</td>
+<td align="right">2.0000000</td>
+<td align="right">51.67500</td>
+<td align="right">74992.500</td>
+<td align="right">22.40000</td>
+<td align="right">NaN</td>
+</tr>
+<tr class="odd">
+<td align="left">District of Columbia</td>
+<td align="right">5.9</td>
+<td align="right">34</td>
+<td align="right">27</td>
+<td align="right">100</td>
+<td align="right">100</td>
+<td align="right">1273.89</td>
+<td align="right">136.05</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">79.00000</td>
+<td align="right">8280.0000</td>
+<td align="right">73.00000</td>
+<td align="right">7.000000</td>
+<td align="right">9.00000</td>
+<td align="right">13.00000</td>
+<td align="right">8.000000</td>
+<td align="right">14194.00000</td>
+<td align="right">2361.00000</td>
+<td align="right">81400.000</td>
+<td align="right">12.000000</td>
+<td align="right">4729.000</td>
+<td align="right">1.000000</td>
+<td align="right">875.00000</td>
+<td align="right">42.000000</td>
+<td align="right">258.00000</td>
+<td align="right">5.000000</td>
+<td align="right">36.00000</td>
+<td align="right">2220.0000</td>
+<td align="right">2.000000</td>
+<td align="right">189.00000</td>
+<td align="right">NA</td>
+<td align="right">4764.0000</td>
+<td align="right">70.00000</td>
+<td align="right">7.000000</td>
+<td align="right">2.900000</td>
+<td align="right">90395.00</td>
+<td align="right">NaN</td>
+<td align="right">67.00000</td>
+<td align="right">59.00000</td>
+<td align="right">18.000000</td>
+<td align="right">6.000000</td>
+<td align="right">593.00000</td>
+<td align="right">17.000000</td>
+<td align="right">28.000000</td>
+<td align="right">3580.00000</td>
+<td align="right">118367.000</td>
+<td align="right">42.00000</td>
+<td align="right">48230.0000</td>
+<td align="right">18.000000</td>
+<td align="right">83.00000</td>
+<td align="right">705749.00</td>
+<td align="right">18.20000</td>
+<td align="right">12.40000</td>
+<td align="right">313290.0000</td>
+<td align="right">44.4000000</td>
+<td align="right">4130.0000</td>
+<td align="right">0.6000000</td>
+<td align="right">31502.0000</td>
+<td align="right">4.5000000</td>
+<td align="right">923.00000</td>
+<td align="right">0.1000000</td>
+<td align="right">79477.000</td>
+<td align="right">11.300000</td>
+<td align="right">264400.00</td>
+<td align="right">37.50000</td>
+<td align="right">15825.00000</td>
+<td align="right">2.0000000</td>
+<td align="right">52.60000</td>
+<td align="right">0.000</td>
+<td align="right">0.00000</td>
+<td align="right">NaN</td>
+</tr>
+<tr class="even">
+<td align="left">Florida</td>
+<td align="right">17.9</td>
+<td align="right">21</td>
+<td align="right">29</td>
+<td align="right">92</td>
+<td align="right">94</td>
+<td align="right">1160.13</td>
+<td align="right">144.18</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">78.13529</td>
+<td align="right">7842.8529</td>
+<td align="right">59.50000</td>
+<td align="right">6.918367</td>
+<td align="right">14.54412</td>
+<td align="right">16.08824</td>
+<td align="right">12.926471</td>
+<td align="right">3250.69118</td>
+<td align="right">457.57353</td>
+<td align="right">78539.118</td>
+<td align="right">13.985294</td>
+<td align="right">39639.941</td>
+<td align="right">9.294118</td>
+<td align="right">536.01786</td>
+<td align="right">22.321429</td>
+<td align="right">600.47059</td>
+<td align="right">19.647059</td>
+<td align="right">39.54412</td>
+<td align="right">9740.6471</td>
+<td align="right">7.955882</td>
+<td align="right">92.17647</td>
+<td align="right">NA</td>
+<td align="right">6150.7647</td>
+<td align="right">85.10294</td>
+<td align="right">9.509804</td>
+<td align="right">3.204412</td>
+<td align="right">54362.15</td>
+<td align="right">54.30882</td>
+<td align="right">42.41176</td>
+<td align="right">32.73529</td>
+<td align="right">6.033333</td>
+<td align="right">17.046875</td>
+<td align="right">429.60938</td>
+<td align="right">15.250000</td>
+<td align="right">29.661765</td>
+<td align="right">217.83824</td>
+<td align="right">148789.441</td>
+<td align="right">71.69118</td>
+<td align="right">37220.8529</td>
+<td align="right">13.294118</td>
+<td align="right">77.69118</td>
+<td align="right">631698.15</td>
+<td align="right">19.17794</td>
+<td align="right">22.56324</td>
+<td align="right">98095.9706</td>
+<td align="right">14.1073529</td>
+<td align="right">3204.4118</td>
+<td align="right">0.7514706</td>
+<td align="right">18671.3824</td>
+<td align="right">1.8191176</td>
+<td align="right">724.73529</td>
+<td align="right">0.1073529</td>
+<td align="right">166584.118</td>
+<td align="right">15.051471</td>
+<td align="right">336373.09</td>
+<td align="right">66.79412</td>
+<td align="right">37958.20588</td>
+<td align="right">3.2205882</td>
+<td align="right">48.98235</td>
+<td align="right">48866.647</td>
+<td align="right">37.07941</td>
+<td align="right">NaN</td>
+</tr>
+<tr class="odd">
+<td align="left">Georgia</td>
+<td align="right">15.6</td>
+<td align="right">19</td>
+<td align="right">25</td>
+<td align="right">95</td>
+<td align="right">93</td>
+<td align="right">913.15</td>
+<td align="right">142.80</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">76.30314</td>
+<td align="right">1663.5625</td>
+<td align="right">68.32990</td>
+<td align="right">8.034483</td>
+<td align="right">14.78125</td>
+<td align="right">15.73750</td>
+<td align="right">14.593750</td>
+<td align="right">670.27215</td>
+<td align="right">348.90506</td>
+<td align="right">16287.062</td>
+<td align="right">14.906250</td>
+<td align="right">11021.327</td>
+<td align="right">7.660377</td>
+<td align="right">105.82278</td>
+<td align="right">15.544304</td>
+<td align="right">136.05517</td>
+<td align="right">20.413793</td>
+<td align="right">40.28125</td>
+<td align="right">2583.0250</td>
+<td align="right">8.156250</td>
+<td align="right">81.67089</td>
+<td align="right">NA</td>
+<td align="right">1785.5959</td>
+<td align="right">86.98630</td>
+<td align="right">13.164179</td>
+<td align="right">2.897484</td>
+<td align="right">50282.28</td>
+<td align="right">73.19375</td>
+<td align="right">30.96000</td>
+<td align="right">27.16026</td>
+<td align="right">7.818182</td>
+<td align="right">17.034188</td>
+<td align="right">129.75410</td>
+<td align="right">17.483607</td>
+<td align="right">32.846154</td>
+<td align="right">99.13750</td>
+<td align="right">29722.162</td>
+<td align="right">68.12500</td>
+<td align="right">6326.1750</td>
+<td align="right">13.006250</td>
+<td align="right">70.62500</td>
+<td align="right">132717.79</td>
+<td align="right">22.21000</td>
+<td align="right">17.93875</td>
+<td align="right">41993.1125</td>
+<td align="right">28.0143750</td>
+<td align="right">700.1000</td>
+<td align="right">0.5612500</td>
+<td align="right">5799.5750</td>
+<td align="right">1.4981250</td>
+<td align="right">155.13750</td>
+<td align="right">0.1275000</td>
+<td align="right">13109.050</td>
+<td align="right">7.016875</td>
+<td align="right">69041.98</td>
+<td align="right">61.63125</td>
+<td align="right">3392.72500</td>
+<td align="right">1.5375000</td>
+<td align="right">50.39813</td>
+<td align="right">30193.775</td>
+<td align="right">60.26750</td>
+<td align="right">NaN</td>
+</tr>
+<tr class="even">
+<td align="left">Hawaii</td>
+<td align="right">17.5</td>
+<td align="right">54</td>
+<td align="right">41</td>
+<td align="right">82</td>
+<td align="right">87</td>
+<td align="right">861.18</td>
+<td align="right">120.92</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">82.06000</td>
+<td align="right">5766.0000</td>
+<td align="right">50.40000</td>
+<td align="right">5.600000</td>
+<td align="right">10.83333</td>
+<td align="right">11.33333</td>
+<td align="right">10.666667</td>
+<td align="right">1159.00000</td>
+<td align="right">204.50000</td>
+<td align="right">51835.000</td>
+<td align="right">12.166667</td>
+<td align="right">31478.333</td>
+<td align="right">7.333333</td>
+<td align="right">263.20000</td>
+<td align="right">14.800000</td>
+<td align="right">307.20000</td>
+<td align="right">9.400000</td>
+<td align="right">40.50000</td>
+<td align="right">3320.8000</td>
+<td align="right">2.800000</td>
+<td align="right">48.00000</td>
+<td align="right">NA</td>
+<td align="right">5234.8000</td>
+<td align="right">85.00000</td>
+<td align="right">9.800000</td>
+<td align="right">2.860000</td>
+<td align="right">77202.60</td>
+<td align="right">48.20000</td>
+<td align="right">56.80000</td>
+<td align="right">34.00000</td>
+<td align="right">2.200000</td>
+<td align="right">17.000000</td>
+<td align="right">112.40000</td>
+<td align="right">5.200000</td>
+<td align="right">20.500000</td>
+<td align="right">568.16667</td>
+<td align="right">90125.667</td>
+<td align="right">51.16667</td>
+<td align="right">32478.0000</td>
+<td align="right">17.400000</td>
+<td align="right">80.83333</td>
+<td align="right">471957.33</td>
+<td align="right">17.81667</td>
+<td align="right">24.01667</td>
+<td align="right">9260.0000</td>
+<td align="right">1.0833333</td>
+<td align="right">1856.6667</td>
+<td align="right">0.4000000</td>
+<td align="right">177396.6667</td>
+<td align="right">28.3000000</td>
+<td align="right">47849.66667</td>
+<td align="right">16.8333333</td>
+<td align="right">50288.000</td>
+<td align="right">9.633333</td>
+<td align="right">102207.33</td>
+<td align="right">25.98333</td>
+<td align="right">20583.33333</td>
+<td align="right">3.6666667</td>
+<td align="right">50.61667</td>
+<td align="right">36604.000</td>
+<td align="right">29.08333</td>
+<td align="right">NaN</td>
+</tr>
+<tr class="odd">
+<td align="left">Idaho</td>
+<td align="right">15.3</td>
+<td align="right">36</td>
+<td align="right">29</td>
+<td align="right">85</td>
+<td align="right">98</td>
+<td align="right">641.96</td>
+<td align="right">82.75</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">79.22558</td>
+<td align="right">830.2955</td>
+<td align="right">59.04762</td>
+<td align="right">5.636364</td>
+<td align="right">13.00000</td>
+<td align="right">14.46667</td>
+<td align="right">10.244444</td>
+<td align="right">95.11765</td>
+<td align="right">41.47059</td>
+<td align="right">8203.556</td>
+<td align="right">11.622222</td>
+<td align="right">4919.244</td>
+<td align="right">11.644444</td>
+<td align="right">94.00000</td>
+<td align="right">17.200000</td>
+<td align="right">84.60526</td>
+<td align="right">20.236842</td>
+<td align="right">34.44444</td>
+<td align="right">1248.4889</td>
+<td align="right">7.600000</td>
+<td align="right">81.77778</td>
+<td align="right">NA</td>
+<td align="right">1292.7714</td>
+<td align="right">82.45714</td>
+<td align="right">10.333333</td>
+<td align="right">2.971429</td>
+<td align="right">55355.73</td>
+<td align="right">42.91111</td>
+<td align="right">58.88889</td>
+<td align="right">22.47222</td>
+<td align="right">2.250000</td>
+<td align="right">24.909091</td>
+<td align="right">88.13793</td>
+<td align="right">19.000000</td>
+<td align="right">NaN</td>
+<td align="right">112.15556</td>
+<td align="right">19587.378</td>
+<td align="right">72.77778</td>
+<td align="right">3072.0444</td>
+<td align="right">10.355556</td>
+<td align="right">79.40000</td>
+<td align="right">79425.11</td>
+<td align="right">24.31556</td>
+<td align="right">19.51333</td>
+<td align="right">603.7333</td>
+<td align="right">0.5222222</td>
+<td align="right">1383.1111</td>
+<td align="right">2.1577778</td>
+<td align="right">1231.6000</td>
+<td align="right">0.9511111</td>
+<td align="right">175.28889</td>
+<td align="right">0.1844444</td>
+<td align="right">10199.556</td>
+<td align="right">13.308889</td>
+<td align="right">64812.31</td>
+<td align="right">81.88444</td>
+<td align="right">1366.40000</td>
+<td align="right">2.7111111</td>
+<td align="right">49.18667</td>
+<td align="right">20498.311</td>
+<td align="right">60.75333</td>
+<td align="right">NaN</td>
+</tr>
+<tr class="even">
+<td align="left">Illinois</td>
+<td align="right">12.8</td>
+<td align="right">36</td>
+<td align="right">34</td>
+<td align="right">94</td>
+<td align="right">96</td>
+<td align="right">803.11</td>
+<td align="right">139.15</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">77.99320</td>
+<td align="right">2800.6019</td>
+<td align="right">58.36667</td>
+<td align="right">6.702703</td>
+<td align="right">12.45631</td>
+<td align="right">14.42718</td>
+<td align="right">11.038835</td>
+<td align="right">855.08750</td>
+<td align="right">120.20000</td>
+<td align="right">24273.786</td>
+<td align="right">10.980583</td>
+<td align="right">11235.510</td>
+<td align="right">6.578431</td>
+<td align="right">292.41071</td>
+<td align="right">20.875000</td>
+<td align="right">161.32632</td>
+<td align="right">15.873684</td>
+<td align="right">35.02913</td>
+<td align="right">1927.2039</td>
+<td align="right">3.087379</td>
+<td align="right">78.42157</td>
+<td align="right">NA</td>
+<td align="right">3271.0543</td>
+<td align="right">88.90217</td>
+<td align="right">7.600000</td>
+<td align="right">2.966990</td>
+<td align="right">59044.76</td>
+<td align="right">47.90291</td>
+<td align="right">54.69355</td>
+<td align="right">34.67778</td>
+<td align="right">5.323529</td>
+<td align="right">16.024691</td>
+<td align="right">225.88525</td>
+<td align="right">10.327869</td>
+<td align="right">11.054945</td>
+<td align="right">127.21359</td>
+<td align="right">62188.641</td>
+<td align="right">74.75728</td>
+<td align="right">13120.1942</td>
+<td align="right">9.495146</td>
+<td align="right">77.68932</td>
+<td align="right">246054.78</td>
+<td align="right">21.35049</td>
+<td align="right">19.86796</td>
+<td align="right">34629.9612</td>
+<td align="right">5.2776699</td>
+<td align="right">1466.0194</td>
+<td align="right">0.4194175</td>
+<td align="right">14518.2524</td>
+<td align="right">1.4067961</td>
+<td align="right">162.81553</td>
+<td align="right">0.0475728</td>
+<td align="right">43104.505</td>
+<td align="right">5.427185</td>
+<td align="right">149566.04</td>
+<td align="right">86.20388</td>
+<td align="right">9621.10680</td>
+<td align="right">0.8834951</td>
+<td align="right">49.90291</td>
+<td align="right">28681.146</td>
+<td align="right">50.70680</td>
+<td align="right">NaN</td>
+</tr>
+<tr class="odd">
+<td align="left">Indiana</td>
+<td align="right">14.5</td>
+<td align="right">25</td>
+<td align="right">29</td>
+<td align="right">95</td>
+<td align="right">95</td>
+<td align="right">710.46</td>
+<td align="right">108.92</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">76.99785</td>
+<td align="right">1983.4624</td>
+<td align="right">62.44000</td>
+<td align="right">7.395833</td>
+<td align="right">13.20430</td>
+<td align="right">15.72043</td>
+<td align="right">12.817204</td>
+<td align="right">263.86047</td>
+<td align="right">112.30233</td>
+<td align="right">18625.054</td>
+<td align="right">12.677419</td>
+<td align="right">9873.275</td>
+<td align="right">5.032967</td>
+<td align="right">142.19444</td>
+<td align="right">26.708333</td>
+<td align="right">126.65556</td>
+<td align="right">16.277778</td>
+<td align="right">37.16129</td>
+<td align="right">2286.7097</td>
+<td align="right">6.623656</td>
+<td align="right">71.01075</td>
+<td align="right">NA</td>
+<td align="right">1687.1319</td>
+<td align="right">92.48352</td>
+<td align="right">8.088889</td>
+<td align="right">3.161290</td>
+<td align="right">58535.41</td>
+<td align="right">47.90323</td>
+<td align="right">59.40351</td>
+<td align="right">37.10870</td>
+<td align="right">4.843750</td>
+<td align="right">16.761905</td>
+<td align="right">118.86250</td>
+<td align="right">12.975000</td>
+<td align="right">NaN</td>
+<td align="right">190.51613</td>
+<td align="right">38197.462</td>
+<td align="right">74.41935</td>
+<td align="right">5844.4086</td>
+<td align="right">8.989247</td>
+<td align="right">76.82796</td>
+<td align="right">144778.90</td>
+<td align="right">22.68925</td>
+<td align="right">18.13333</td>
+<td align="right">13879.0323</td>
+<td align="right">2.9784946</td>
+<td align="right">609.4624</td>
+<td align="right">0.4096774</td>
+<td align="right">3758.0645</td>
+<td align="right">1.2612903</td>
+<td align="right">97.61290</td>
+<td align="right">0.0505376</td>
+<td align="right">10523.720</td>
+<td align="right">4.370968</td>
+<td align="right">113526.49</td>
+<td align="right">89.71290</td>
+<td align="right">1972.60215</td>
+<td align="right">0.7956989</td>
+<td align="right">50.12796</td>
+<td align="right">38423.699</td>
+<td align="right">54.16452</td>
+<td align="right">NaN</td>
+</tr>
+<tr class="even">
+<td align="left">Iowa</td>
+<td align="right">15.7</td>
+<td align="right">17</td>
+<td align="right">25</td>
+<td align="right">97</td>
+<td align="right">87</td>
+<td align="right">649.06</td>
+<td align="right">114.47</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">79.13000</td>
+<td align="right">715.5800</td>
+<td align="right">53.03448</td>
+<td align="right">5.600000</td>
+<td align="right">10.24000</td>
+<td align="right">11.89000</td>
+<td align="right">10.770000</td>
+<td align="right">77.98571</td>
+<td align="right">76.75714</td>
+<td align="right">5822.400</td>
+<td align="right">9.020000</td>
+<td align="right">3399.460</td>
+<td align="right">5.770000</td>
+<td align="right">86.35000</td>
+<td align="right">11.450000</td>
+<td align="right">56.65476</td>
+<td align="right">15.726190</td>
+<td align="right">32.45000</td>
+<td align="right">408.2800</td>
+<td align="right">3.160000</td>
+<td align="right">87.97000</td>
+<td align="right">NA</td>
+<td align="right">809.0116</td>
+<td align="right">92.34884</td>
+<td align="right">5.800000</td>
+<td align="right">3.079000</td>
+<td align="right">59755.50</td>
+<td align="right">43.56000</td>
+<td align="right">53.65854</td>
+<td align="right">35.15054</td>
+<td align="right">3.666667</td>
+<td align="right">17.203390</td>
+<td align="right">72.14706</td>
+<td align="right">10.500000</td>
+<td align="right">34.960526</td>
+<td align="right">92.36000</td>
+<td align="right">17984.460</td>
+<td align="right">74.71000</td>
+<td align="right">2486.4800</td>
+<td align="right">8.500000</td>
+<td align="right">78.00000</td>
+<td align="right">63101.40</td>
+<td align="right">22.77000</td>
+<td align="right">20.53600</td>
+<td align="right">2447.7600</td>
+<td align="right">1.6540000</td>
+<td align="right">341.2000</td>
+<td align="right">0.5550000</td>
+<td align="right">1682.3800</td>
+<td align="right">1.3420000</td>
+<td align="right">96.08000</td>
+<td align="right">0.1320000</td>
+<td align="right">3971.000</td>
+<td align="right">5.203000</td>
+<td align="right">53653.92</td>
+<td align="right">90.14600</td>
+<td align="right">992.86000</td>
+<td align="right">1.2100000</td>
+<td align="right">49.91700</td>
+<td align="right">21921.980</td>
+<td align="right">61.06900</td>
+<td align="right">NaN</td>
+</tr>
+<tr class="odd">
+<td align="left">Kansas</td>
+<td align="right">17.8</td>
+<td align="right">27</td>
+<td align="right">24</td>
+<td align="right">77</td>
+<td align="right">85</td>
+<td align="right">780.45</td>
+<td align="right">133.80</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">77.58252</td>
+<td align="right">668.5238</td>
+<td align="right">56.21429</td>
+<td align="right">6.529412</td>
+<td align="right">12.09434</td>
+<td align="right">14.22642</td>
+<td align="right">11.783019</td>
+<td align="right">140.51163</td>
+<td align="right">100.02326</td>
+<td align="right">6798.302</td>
+<td align="right">12.330189</td>
+<td align="right">4454.245</td>
+<td align="right">11.160377</td>
+<td align="right">90.63636</td>
+<td align="right">13.000000</td>
+<td align="right">82.57143</td>
+<td align="right">21.587302</td>
+<td align="right">34.28302</td>
+<td align="right">685.4151</td>
+<td align="right">6.537736</td>
+<td align="right">114.90476</td>
+<td align="right">NA</td>
+<td align="right">1260.7857</td>
+<td align="right">87.51786</td>
+<td align="right">7.538462</td>
+<td align="right">3.090625</td>
+<td align="right">55039.05</td>
+<td align="right">49.50943</td>
+<td align="right">42.88889</td>
+<td align="right">22.59155</td>
+<td align="right">5.388889</td>
+<td align="right">21.466667</td>
+<td align="right">116.40625</td>
+<td align="right">16.343750</td>
+<td align="right">NaN</td>
+<td align="right">84.10377</td>
+<td align="right">14115.528</td>
+<td align="right">72.34906</td>
+<td align="right">2194.4906</td>
+<td align="right">8.660377</td>
+<td align="right">76.89623</td>
+<td align="right">54968.19</td>
+<td align="right">23.50472</td>
+<td align="right">20.65849</td>
+<td align="right">3157.0755</td>
+<td align="right">1.9915094</td>
+<td align="right">661.5660</td>
+<td align="right">1.3584906</td>
+<td align="right">1752.1132</td>
+<td align="right">1.1132075</td>
+<td align="right">69.56604</td>
+<td align="right">0.0962264</td>
+<td align="right">6718.358</td>
+<td align="right">10.520755</td>
+<td align="right">41450.25</td>
+<td align="right">83.42830</td>
+<td align="right">1179.86792</td>
+<td align="right">1.6320755</td>
+<td align="right">49.67925</td>
+<td align="right">13889.755</td>
+<td align="right">66.50189</td>
+<td align="right">NaN</td>
+</tr>
+<tr class="even">
+<td align="left">Kentucky</td>
+<td align="right">21.4</td>
+<td align="right">19</td>
+<td align="right">23</td>
+<td align="right">78</td>
+<td align="right">76</td>
+<td align="right">872.51</td>
+<td align="right">137.13</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">74.63306</td>
+<td align="right">1228.7769</td>
+<td align="right">61.53030</td>
+<td align="right">6.857143</td>
+<td align="right">17.24793</td>
+<td align="right">18.38843</td>
+<td align="right">13.495868</td>
+<td align="right">797.68750</td>
+<td align="right">176.43750</td>
+<td align="right">10819.008</td>
+<td align="right">16.396694</td>
+<td align="right">4105.975</td>
+<td align="right">4.805085</td>
+<td align="right">104.79747</td>
+<td align="right">32.329114</td>
+<td align="right">88.33051</td>
+<td align="right">23.110170</td>
+<td align="right">42.79339</td>
+<td align="right">639.8347</td>
+<td align="right">4.115703</td>
+<td align="right">109.16529</td>
+<td align="right">NA</td>
+<td align="right">846.8087</td>
+<td align="right">93.95652</td>
+<td align="right">11.121212</td>
+<td align="right">3.095868</td>
+<td align="right">47490.40</td>
+<td align="right">62.04959</td>
+<td align="right">44.18293</td>
+<td align="right">33.62385</td>
+<td align="right">5.647059</td>
+<td align="right">18.897959</td>
+<td align="right">74.94737</td>
+<td align="right">18.305263</td>
+<td align="right">NaN</td>
+<td align="right">90.85950</td>
+<td align="right">19273.240</td>
+<td align="right">71.77686</td>
+<td align="right">3169.8843</td>
+<td align="right">10.768595</td>
+<td align="right">72.34711</td>
+<td align="right">73845.83</td>
+<td align="right">22.23388</td>
+<td align="right">18.22397</td>
+<td align="right">6080.9752</td>
+<td align="right">3.7727273</td>
+<td align="right">221.5537</td>
+<td align="right">0.3429752</td>
+<td align="right">1181.8843</td>
+<td align="right">0.6586777</td>
+<td align="right">69.28926</td>
+<td align="right">0.0652893</td>
+<td align="right">2887.702</td>
+<td align="right">2.684298</td>
+<td align="right">62139.88</td>
+<td align="right">91.11901</td>
+<td align="right">710.87603</td>
+<td align="right">0.4132231</td>
+<td align="right">50.21157</td>
+<td align="right">29851.636</td>
+<td align="right">71.40000</td>
+<td align="right">NaN</td>
+</tr>
+<tr class="odd">
+<td align="left">Louisiana</td>
+<td align="right">20.5</td>
+<td align="right">35</td>
+<td align="right">33</td>
+<td align="right">73</td>
+<td align="right">98</td>
+<td align="right">1281.55</td>
+<td align="right">194.78</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">75.54462</td>
+<td align="right">2218.4308</td>
+<td align="right">75.58929</td>
+<td align="right">8.076923</td>
+<td align="right">15.43077</td>
+<td align="right">17.44615</td>
+<td align="right">14.307692</td>
+<td align="right">661.12698</td>
+<td align="right">389.69841</td>
+<td align="right">22519.846</td>
+<td align="right">16.600000</td>
+<td align="right">13288.615</td>
+<td align="right">9.892308</td>
+<td align="right">164.57143</td>
+<td align="right">24.714286</td>
+<td align="right">168.42188</td>
+<td align="right">21.625000</td>
+<td align="right">39.95385</td>
+<td align="right">1148.0308</td>
+<td align="right">3.415385</td>
+<td align="right">79.40000</td>
+<td align="right">NA</td>
+<td align="right">1541.9048</td>
+<td align="right">86.38095</td>
+<td align="right">14.390244</td>
+<td align="right">NaN</td>
+<td align="right">48126.60</td>
+<td align="right">56.07692</td>
+<td align="right">43.90769</td>
+<td align="right">40.64615</td>
+<td align="right">11.083333</td>
+<td align="right">15.836364</td>
+<td align="right">169.94828</td>
+<td align="right">19.793103</td>
+<td align="right">NaN</td>
+<td align="right">135.41538</td>
+<td align="right">35114.000</td>
+<td align="right">69.63077</td>
+<td align="right">7197.9077</td>
+<td align="right">12.138462</td>
+<td align="right">69.23077</td>
+<td align="right">143039.82</td>
+<td align="right">23.16615</td>
+<td align="right">16.92308</td>
+<td align="right">46184.3385</td>
+<td align="right">31.7123077</td>
+<td align="right">1126.0308</td>
+<td align="right">0.9153846</td>
+<td align="right">2590.5231</td>
+<td align="right">0.9707692</td>
+<td align="right">87.81538</td>
+<td align="right">0.0538462</td>
+<td align="right">7599.138</td>
+<td align="right">3.856923</td>
+<td align="right">83547.14</td>
+<td align="right">61.20769</td>
+<td align="right">1957.04615</td>
+<td align="right">0.8769231</td>
+<td align="right">49.99692</td>
+<td align="right">37402.062</td>
+<td align="right">50.71231</td>
+<td align="right">NaN</td>
+</tr>
+<tr class="even">
+<td align="left">Maine</td>
+<td align="right">15.1</td>
+<td align="right">38</td>
+<td align="right">30</td>
+<td align="right">87</td>
+<td align="right">84</td>
+<td align="right">661.88</td>
+<td align="right">96.57</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">78.37647</td>
+<td align="right">2158.8235</td>
+<td align="right">46.13333</td>
+<td align="right">6.375000</td>
+<td align="right">12.94118</td>
+<td align="right">15.35294</td>
+<td align="right">10.764706</td>
+<td align="right">187.41176</td>
+<td align="right">105.88235</td>
+<td align="right">20159.412</td>
+<td align="right">13.588235</td>
+<td align="right">5990.235</td>
+<td align="right">3.529412</td>
+<td align="right">134.11765</td>
+<td align="right">25.117647</td>
+<td align="right">126.47059</td>
+<td align="right">13.411765</td>
+<td align="right">34.70588</td>
+<td align="right">1715.5294</td>
+<td align="right">6.411765</td>
+<td align="right">129.82353</td>
+<td align="right">NA</td>
+<td align="right">1722.6667</td>
+<td align="right">85.20000</td>
+<td align="right">6.272727</td>
+<td align="right">2.976471</td>
+<td align="right">54490.18</td>
+<td align="right">48.88235</td>
+<td align="right">65.63636</td>
+<td align="right">31.76471</td>
+<td align="right">2.000000</td>
+<td align="right">19.823529</td>
+<td align="right">89.52941</td>
+<td align="right">13.294118</td>
+<td align="right">NaN</td>
+<td align="right">104.52941</td>
+<td align="right">47618.706</td>
+<td align="right">74.47059</td>
+<td align="right">7661.4118</td>
+<td align="right">11.823529</td>
+<td align="right">79.58824</td>
+<td align="right">158142.59</td>
+<td align="right">18.30000</td>
+<td align="right">22.85882</td>
+<td align="right">2535.7647</td>
+<td align="right">1.1294118</td>
+<td align="right">1149.0588</td>
+<td align="right">0.9235294</td>
+<td align="right">2049.4118</td>
+<td align="right">0.9705882</td>
+<td align="right">53.52941</td>
+<td align="right">0.0000000</td>
+<td align="right">2788.235</td>
+<td align="right">1.670588</td>
+<td align="right">147011.41</td>
+<td align="right">93.74118</td>
+<td align="right">760.00000</td>
+<td align="right">0.2352941</td>
+<td align="right">50.87059</td>
+<td align="right">95861.059</td>
+<td align="right">73.43529</td>
+<td align="right">NaN</td>
+</tr>
+<tr class="odd">
+<td align="left">Maryland</td>
+<td align="right">12.5</td>
+<td align="right">34</td>
+<td align="right">32</td>
+<td align="right">71</td>
+<td align="right">99</td>
+<td align="right">1048.78</td>
+<td align="right">192.70</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">78.51200</td>
+<td align="right">5671.8400</td>
+<td align="right">52.62500</td>
+<td align="right">6.954546</td>
+<td align="right">11.20000</td>
+<td align="right">13.04000</td>
+<td align="right">12.120000</td>
+<td align="right">2412.12000</td>
+<td align="right">350.76000</td>
+<td align="right">51970.000</td>
+<td align="right">11.200000</td>
+<td align="right">15653.920</td>
+<td align="right">4.360000</td>
+<td align="right">555.20000</td>
+<td align="right">37.840000</td>
+<td align="right">292.00000</td>
+<td align="right">11.440000</td>
+<td align="right">37.48000</td>
+<td align="right">3542.5600</td>
+<td align="right">3.400000</td>
+<td align="right">106.36000</td>
+<td align="right">NA</td>
+<td align="right">5207.1200</td>
+<td align="right">89.44000</td>
+<td align="right">6.555556</td>
+<td align="right">NaN</td>
+<td align="right">79316.04</td>
+<td align="right">47.88000</td>
+<td align="right">41.87500</td>
+<td align="right">35.36000</td>
+<td align="right">6.444444</td>
+<td align="right">12.166667</td>
+<td align="right">314.21739</td>
+<td align="right">11.217391</td>
+<td align="right">40.560000</td>
+<td align="right">374.92000</td>
+<td align="right">118011.920</td>
+<td align="right">70.80000</td>
+<td align="right">24357.2800</td>
+<td align="right">13.440000</td>
+<td align="right">83.68000</td>
+<td align="right">483654.40</td>
+<td align="right">21.14000</td>
+<td align="right">18.07200</td>
+<td align="right">144821.3600</td>
+<td align="right">21.0160000</td>
+<td align="right">2947.2000</td>
+<td align="right">0.4880000</td>
+<td align="right">32504.2400</td>
+<td align="right">3.7720000</td>
+<td align="right">536.40000</td>
+<td align="right">0.1080000</td>
+<td align="right">51505.760</td>
+<td align="right">6.784000</td>
+<td align="right">242062.48</td>
+<td align="right">65.84800</td>
+<td align="right">15018.08000</td>
+<td align="right">1.8400000</td>
+<td align="right">50.94800</td>
+<td align="right">59137.680</td>
+<td align="right">33.73200</td>
+<td align="right">NaN</td>
+</tr>
+<tr class="even">
+<td align="left">Massachusetts</td>
+<td align="right">8.2</td>
+<td align="right">23</td>
+<td align="right">35</td>
+<td align="right">87</td>
+<td align="right">80</td>
+<td align="right">1011.14</td>
+<td align="right">135.63</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">80.44667</td>
+<td align="right">9129.7333</td>
+<td align="right">34.69231</td>
+<td align="right">4.166667</td>
+<td align="right">11.13333</td>
+<td align="right">13.46667</td>
+<td align="right">9.000000</td>
+<td align="right">2755.06667</td>
+<td align="right">305.53333</td>
+<td align="right">79180.000</td>
+<td align="right">8.533333</td>
+<td align="right">35746.467</td>
+<td align="right">4.600000</td>
+<td align="right">945.14286</td>
+<td align="right">32.357143</td>
+<td align="right">420.53846</td>
+<td align="right">6.769231</td>
+<td align="right">35.26667</td>
+<td align="right">2260.1333</td>
+<td align="right">1.133333</td>
+<td align="right">125.40000</td>
+<td align="right">NA</td>
+<td align="right">9963.4667</td>
+<td align="right">86.93333</td>
+<td align="right">4.250000</td>
+<td align="right">3.293333</td>
+<td align="right">80279.07</td>
+<td align="right">NaN</td>
+<td align="right">55.73333</td>
+<td align="right">40.20000</td>
+<td align="right">2.363636</td>
+<td align="right">10.428571</td>
+<td align="right">187.23077</td>
+<td align="right">4.153846</td>
+<td align="right">NaN</td>
+<td align="right">973.26667</td>
+<td align="right">217702.000</td>
+<td align="right">65.73333</td>
+<td align="right">53646.6667</td>
+<td align="right">16.266667</td>
+<td align="right">85.53333</td>
+<td align="right">919000.40</td>
+<td align="right">18.86000</td>
+<td align="right">19.02000</td>
+<td align="right">67434.2667</td>
+<td align="right">6.4600000</td>
+<td align="right">4574.6667</td>
+<td align="right">0.5466667</td>
+<td align="right">66335.6000</td>
+<td align="right">4.7666667</td>
+<td align="right">988.00000</td>
+<td align="right">0.1266667</td>
+<td align="right">113987.600</td>
+<td align="right">10.680000</td>
+<td align="right">653040.00</td>
+<td align="right">75.94667</td>
+<td align="right">39551.33333</td>
+<td align="right">3.3333333</td>
+<td align="right">51.41333</td>
+<td align="right">70085.333</td>
+<td align="right">16.16000</td>
+<td align="right">NaN</td>
+</tr>
+<tr class="odd">
+<td align="left">Michigan</td>
+<td align="right">14.1</td>
+<td align="right">24</td>
+<td align="right">28</td>
+<td align="right">95</td>
+<td align="right">77</td>
+<td align="right">1110.61</td>
+<td align="right">152.26</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">78.10000</td>
+<td align="right">3148.1190</td>
+<td align="right">51.39286</td>
+<td align="right">5.947368</td>
+<td align="right">14.19048</td>
+<td align="right">15.78571</td>
+<td align="right">12.178571</td>
+<td align="right">428.68919</td>
+<td align="right">91.90541</td>
+<td align="right">31641.190</td>
+<td align="right">13.702381</td>
+<td align="right">14989.229</td>
+<td align="right">6.000000</td>
+<td align="right">242.12698</td>
+<td align="right">20.873016</td>
+<td align="right">176.47368</td>
+<td align="right">12.986842</td>
+<td align="right">39.05952</td>
+<td align="right">1779.6905</td>
+<td align="right">4.035714</td>
+<td align="right">96.96429</td>
+<td align="right">NA</td>
+<td align="right">3327.0833</td>
+<td align="right">81.48611</td>
+<td align="right">8.169491</td>
+<td align="right">2.975610</td>
+<td align="right">53695.44</td>
+<td align="right">54.53571</td>
+<td align="right">60.72917</td>
+<td align="right">32.51807</td>
+<td align="right">4.307692</td>
+<td align="right">18.285714</td>
+<td align="right">176.95588</td>
+<td align="right">12.294118</td>
+<td align="right">NaN</td>
+<td align="right">184.86905</td>
+<td align="right">66730.929</td>
+<td align="right">77.83333</td>
+<td align="right">11384.6190</td>
+<td align="right">10.928571</td>
+<td align="right">77.55952</td>
+<td align="right">237782.31</td>
+<td align="right">19.58690</td>
+<td align="right">22.32857</td>
+<td align="right">32735.3810</td>
+<td align="right">4.0380952</td>
+<td align="right">1758.6905</td>
+<td align="right">1.7738095</td>
+<td align="right">8009.1429</td>
+<td align="right">1.2023810</td>
+<td align="right">99.66667</td>
+<td align="right">0.0369048</td>
+<td align="right">12576.310</td>
+<td align="right">3.803571</td>
+<td align="right">177730.05</td>
+<td align="right">87.34524</td>
+<td align="right">3351.71429</td>
+<td align="right">0.5357143</td>
+<td align="right">49.62976</td>
+<td align="right">59849.595</td>
+<td align="right">61.21190</td>
+<td align="right">NaN</td>
+</tr>
+<tr class="even">
+<td align="left">Minnesota</td>
+<td align="right">9.6</td>
+<td align="right">23</td>
+<td align="right">29</td>
+<td align="right">88</td>
+<td align="right">88</td>
+<td align="right">777.18</td>
+<td align="right">133.35</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">80.18068</td>
+<td align="right">1184.6591</td>
+<td align="right">46.23810</td>
+<td align="right">5.150000</td>
+<td align="right">10.75000</td>
+<td align="right">12.28409</td>
+<td align="right">10.329546</td>
+<td align="right">264.76562</td>
+<td align="right">81.06250</td>
+<td align="right">10184.205</td>
+<td align="right">8.693182</td>
+<td align="right">6775.636</td>
+<td align="right">7.284091</td>
+<td align="right">117.77143</td>
+<td align="right">14.257143</td>
+<td align="right">85.20290</td>
+<td align="right">12.840580</td>
+<td align="right">30.54545</td>
+<td align="right">997.5909</td>
+<td align="right">3.965909</td>
+<td align="right">87.21839</td>
+<td align="right">NA</td>
+<td align="right">1878.8429</td>
+<td align="right">86.12857</td>
+<td align="right">5.607143</td>
+<td align="right">3.143182</td>
+<td align="right">64448.90</td>
+<td align="right">38.53409</td>
+<td align="right">55.00000</td>
+<td align="right">34.80723</td>
+<td align="right">2.666667</td>
+<td align="right">16.730159</td>
+<td align="right">84.88000</td>
+<td align="right">10.040000</td>
+<td align="right">28.569767</td>
+<td align="right">105.43182</td>
+<td align="right">35565.227</td>
+<td align="right">76.76136</td>
+<td align="right">5291.8182</td>
+<td align="right">9.590909</td>
+<td align="right">79.15909</td>
+<td align="right">128173.45</td>
+<td align="right">22.95227</td>
+<td align="right">20.17614</td>
+<td align="right">8695.9318</td>
+<td align="right">2.0363636</td>
+<td align="right">1760.8864</td>
+<td align="right">2.4034091</td>
+<td align="right">6647.8864</td>
+<td align="right">1.7613636</td>
+<td align="right">95.77273</td>
+<td align="right">0.0909091</td>
+<td align="right">7162.045</td>
+<td align="right">4.930682</td>
+<td align="right">101367.02</td>
+<td align="right">87.41250</td>
+<td align="right">2470.68182</td>
+<td align="right">1.2045455</td>
+<td align="right">49.68750</td>
+<td align="right">32218.500</td>
+<td align="right">60.94545</td>
+<td align="right">NaN</td>
+</tr>
+<tr class="odd">
+<td align="left">Mississippi</td>
+<td align="right">17.6</td>
+<td align="right">15</td>
+<td align="right">31</td>
+<td align="right">10</td>
+<td align="right">100</td>
+<td align="right">896.07</td>
+<td align="right">155.77</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">74.15000</td>
+<td align="right">1242.6265</td>
+<td align="right">85.47619</td>
+<td align="right">9.731707</td>
+<td align="right">16.34940</td>
+<td align="right">17.48193</td>
+<td align="right">16.132530</td>
+<td align="right">231.56790</td>
+<td align="right">319.88889</td>
+<td align="right">13079.880</td>
+<td align="right">19.337349</td>
+<td align="right">7714.585</td>
+<td align="right">10.890244</td>
+<td align="right">64.23333</td>
+<td align="right">15.833333</td>
+<td align="right">120.56098</td>
+<td align="right">30.121951</td>
+<td align="right">39.45783</td>
+<td align="right">813.0361</td>
+<td align="right">4.891566</td>
+<td align="right">100.96386</td>
+<td align="right">NA</td>
+<td align="right">858.8537</td>
+<td align="right">83.73171</td>
+<td align="right">11.333333</td>
+<td align="right">2.896296</td>
+<td align="right">41753.66</td>
+<td align="right">81.60976</td>
+<td align="right">33.01220</td>
+<td align="right">31.51220</td>
+<td align="right">14.517241</td>
+<td align="right">14.896552</td>
+<td align="right">86.75342</td>
+<td align="right">23.246575</td>
+<td align="right">27.060606</td>
+<td align="right">60.09639</td>
+<td align="right">18140.747</td>
+<td align="right">70.50602</td>
+<td align="right">3227.1084</td>
+<td align="right">12.493976</td>
+<td align="right">64.67470</td>
+<td align="right">71714.43</td>
+<td align="right">22.99518</td>
+<td align="right">17.59880</td>
+<td align="right">26834.7711</td>
+<td align="right">41.1819277</td>
+<td align="right">450.7229</td>
+<td align="right">0.7602410</td>
+<td align="right">795.9518</td>
+<td align="right">0.6493976</td>
+<td align="right">43.51807</td>
+<td align="right">0.0397590</td>
+<td align="right">2412.289</td>
+<td align="right">2.846988</td>
+<td align="right">40439.33</td>
+<td align="right">53.64699</td>
+<td align="right">538.60241</td>
+<td align="right">0.6024096</td>
+<td align="right">51.07108</td>
+<td align="right">36218.627</td>
+<td align="right">70.38675</td>
+<td align="right">NaN</td>
+</tr>
+<tr class="even">
+<td align="left">Missouri</td>
+<td align="right">16.1</td>
+<td align="right">43</td>
+<td align="right">34</td>
+<td align="right">92</td>
+<td align="right">84</td>
+<td align="right">790.32</td>
+<td align="right">144.45</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">76.76638</td>
+<td align="right">1501.3793</td>
+<td align="right">66.81356</td>
+<td align="right">7.000000</td>
+<td align="right">14.93103</td>
+<td align="right">16.51724</td>
+<td align="right">12.318965</td>
+<td align="right">281.62921</td>
+<td align="right">139.23596</td>
+<td align="right">13753.190</td>
+<td align="right">14.224138</td>
+<td align="right">7054.517</td>
+<td align="right">8.448276</td>
+<td align="right">159.05357</td>
+<td align="right">23.071429</td>
+<td align="right">114.32710</td>
+<td align="right">20.700935</td>
+<td align="right">35.66379</td>
+<td align="right">1404.4655</td>
+<td align="right">7.293103</td>
+<td align="right">73.87826</td>
+<td align="right">NA</td>
+<td align="right">1419.4396</td>
+<td align="right">91.74725</td>
+<td align="right">8.709677</td>
+<td align="right">3.037391</td>
+<td align="right">49391.31</td>
+<td align="right">56.02586</td>
+<td align="right">49.23438</td>
+<td align="right">30.78302</td>
+<td align="right">7.368421</td>
+<td align="right">21.139785</td>
+<td align="right">137.29545</td>
+<td align="right">19.034091</td>
+<td align="right">31.850575</td>
+<td align="right">96.98276</td>
+<td align="right">27792.862</td>
+<td align="right">71.89655</td>
+<td align="right">4570.5690</td>
+<td align="right">9.784483</td>
+<td align="right">73.60345</td>
+<td align="right">105817.72</td>
+<td align="right">22.34138</td>
+<td align="right">19.97328</td>
+<td align="right">12270.7241</td>
+<td align="right">3.7637931</td>
+<td align="right">617.9138</td>
+<td align="right">0.7198276</td>
+<td align="right">2298.4828</td>
+<td align="right">0.8525862</td>
+<td align="right">169.94828</td>
+<td align="right">0.1387931</td>
+<td align="right">4632.897</td>
+<td align="right">3.190517</td>
+<td align="right">83750.21</td>
+<td align="right">89.73966</td>
+<td align="right">979.87931</td>
+<td align="right">0.5086207</td>
+<td align="right">50.07069</td>
+<td align="right">30526.828</td>
+<td align="right">66.48362</td>
+<td align="right">NaN</td>
+</tr>
+<tr class="odd">
+<td align="left">Montana</td>
+<td align="right">21.4</td>
+<td align="right">39</td>
+<td align="right">44</td>
+<td align="right">84</td>
+<td align="right">85</td>
+<td align="right">816.21</td>
+<td align="right">85.15</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">78.97000</td>
+<td align="right">537.7551</td>
+<td align="right">73.87500</td>
+<td align="right">5.750000</td>
+<td align="right">12.26316</td>
+<td align="right">14.22807</td>
+<td align="right">10.807018</td>
+<td align="right">58.00000</td>
+<td align="right">77.61905</td>
+<td align="right">3796.667</td>
+<td align="right">10.894737</td>
+<td align="right">2874.772</td>
+<td align="right">15.947368</td>
+<td align="right">68.00000</td>
+<td align="right">12.800000</td>
+<td align="right">74.70588</td>
+<td align="right">25.588235</td>
+<td align="right">33.47368</td>
+<td align="right">510.4561</td>
+<td align="right">8.666667</td>
+<td align="right">105.31579</td>
+<td align="right">NA</td>
+<td align="right">877.3182</td>
+<td align="right">83.45455</td>
+<td align="right">11.750000</td>
+<td align="right">3.045000</td>
+<td align="right">51629.21</td>
+<td align="right">43.85965</td>
+<td align="right">71.87500</td>
+<td align="right">32.65789</td>
+<td align="right">6.818182</td>
+<td align="right">30.620690</td>
+<td align="right">84.26087</td>
+<td align="right">24.217391</td>
+<td align="right">35.391304</td>
+<td align="right">70.12281</td>
+<td align="right">10227.053</td>
+<td align="right">71.56140</td>
+<td align="right">1802.7719</td>
+<td align="right">10.649123</td>
+<td align="right">75.24561</td>
+<td align="right">37500.98</td>
+<td align="right">21.29474</td>
+<td align="right">22.97193</td>
+<td align="right">202.3158</td>
+<td align="right">0.4280702</td>
+<td align="right">2494.5965</td>
+<td align="right">8.5017544</td>
+<td align="right">345.0175</td>
+<td align="right">0.6017544</td>
+<td align="right">32.28070</td>
+<td align="right">0.0508772</td>
+<td align="right">1518.912</td>
+<td align="right">3.440351</td>
+<td align="right">32200.39</td>
+<td align="right">85.24737</td>
+<td align="right">93.12281</td>
+<td align="right">0.2456140</td>
+<td align="right">49.06667</td>
+<td align="right">15312.316</td>
+<td align="right">74.57368</td>
+<td align="right">NaN</td>
+</tr>
+<tr class="even">
+<td align="left">Nebraska</td>
+<td align="right">14.9</td>
+<td align="right">13</td>
+<td align="right">35</td>
+<td align="right">93</td>
+<td align="right">90</td>
+<td align="right">732.28</td>
+<td align="right">114.82</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">79.25875</td>
+<td align="right">507.3625</td>
+<td align="right">58.47059</td>
+<td align="right">6.111111</td>
+<td align="right">10.55319</td>
+<td align="right">12.09574</td>
+<td align="right">10.670213</td>
+<td align="right">256.80000</td>
+<td align="right">49.50000</td>
+<td align="right">4914.149</td>
+<td align="right">12.000000</td>
+<td align="right">2193.606</td>
+<td align="right">12.829787</td>
+<td align="right">111.85714</td>
+<td align="right">8.571429</td>
+<td align="right">71.72727</td>
+<td align="right">21.068182</td>
+<td align="right">31.36170</td>
+<td align="right">527.8723</td>
+<td align="right">7.138298</td>
+<td align="right">84.70213</td>
+<td align="right">NA</td>
+<td align="right">1279.2353</td>
+<td align="right">88.73529</td>
+<td align="right">5.666667</td>
+<td align="right">3.147436</td>
+<td align="right">56105.59</td>
+<td align="right">44.64894</td>
+<td align="right">52.43478</td>
+<td align="right">28.75472</td>
+<td align="right">3.250000</td>
+<td align="right">16.923077</td>
+<td align="right">83.36842</td>
+<td align="right">11.105263</td>
+<td align="right">25.636364</td>
+<td align="right">64.70213</td>
+<td align="right">10674.021</td>
+<td align="right">72.78723</td>
+<td align="right">1616.5957</td>
+<td align="right">8.393617</td>
+<td align="right">77.40426</td>
+<td align="right">41157.62</td>
+<td align="right">22.93723</td>
+<td align="right">22.28298</td>
+<td align="right">2017.6596</td>
+<td align="right">1.0542553</td>
+<td align="right">623.0851</td>
+<td align="right">1.9393617</td>
+<td align="right">1131.6383</td>
+<td align="right">0.7372340</td>
+<td align="right">49.97872</td>
+<td align="right">0.0829787</td>
+<td align="right">4673.298</td>
+<td align="right">7.406383</td>
+<td align="right">32195.15</td>
+<td align="right">88.12234</td>
+<td align="right">993.76596</td>
+<td align="right">1.4468085</td>
+<td align="right">49.69362</td>
+<td align="right">10439.468</td>
+<td align="right">74.14468</td>
+<td align="right">NaN</td>
+</tr>
+<tr class="odd">
+<td align="left">Nevada</td>
+<td align="right">14.7</td>
+<td align="right">37</td>
+<td align="right">32</td>
+<td align="right">95</td>
+<td align="right">99</td>
+<td align="right">1029.87</td>
+<td align="right">138.71</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">78.42353</td>
+<td align="right">4544.3529</td>
+<td align="right">56.10000</td>
+<td align="right">6.750000</td>
+<td align="right">14.00000</td>
+<td align="right">14.83333</td>
+<td align="right">11.000000</td>
+<td align="right">1558.76923</td>
+<td align="right">216.15385</td>
+<td align="right">41955.000</td>
+<td align="right">12.444444</td>
+<td align="right">16083.111</td>
+<td align="right">14.666667</td>
+<td align="right">400.00000</td>
+<td align="right">24.500000</td>
+<td align="right">318.42857</td>
+<td align="right">17.857143</td>
+<td align="right">37.77778</td>
+<td align="right">6360.6667</td>
+<td align="right">9.555556</td>
+<td align="right">68.47059</td>
+<td align="right">NA</td>
+<td align="right">5416.9231</td>
+<td align="right">83.15385</td>
+<td align="right">10.000000</td>
+<td align="right">2.900000</td>
+<td align="right">64713.17</td>
+<td align="right">50.83333</td>
+<td align="right">48.40000</td>
+<td align="right">25.61538</td>
+<td align="right">5.125000</td>
+<td align="right">27.666667</td>
+<td align="right">450.54545</td>
+<td align="right">22.000000</td>
+<td align="right">NaN</td>
+<td align="right">183.38889</td>
+<td align="right">68733.889</td>
+<td align="right">68.27778</td>
+<td align="right">18161.0000</td>
+<td align="right">9.777778</td>
+<td align="right">79.05556</td>
+<td align="right">342239.56</td>
+<td align="right">20.59444</td>
+<td align="right">21.16111</td>
+<td align="right">31829.5556</td>
+<td align="right">3.2055556</td>
+<td align="right">5771.7778</td>
+<td align="right">4.4611111</td>
+<td align="right">29796.2222</td>
+<td align="right">2.7666667</td>
+<td align="right">2731.66667</td>
+<td align="right">0.3777778</td>
+<td align="right">100066.667</td>
+<td align="right">19.444444</td>
+<td align="right">164881.44</td>
+<td align="right">68.40556</td>
+<td align="right">18320.66667</td>
+<td align="right">2.5000000</td>
+<td align="right">47.49444</td>
+<td align="right">17417.111</td>
+<td align="right">47.07222</td>
+<td align="right">NaN</td>
+</tr>
+<tr class="even">
+<td align="left">New Hampshire</td>
+<td align="right">11.6</td>
+<td align="right">35</td>
+<td align="right">30</td>
+<td align="right">87</td>
+<td align="right">83</td>
+<td align="right">746.54</td>
+<td align="right">120.21</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">79.26364</td>
+<td align="right">2888.9091</td>
+<td align="right">36.22222</td>
+<td align="right">4.000000</td>
+<td align="right">10.90909</td>
+<td align="right">13.90909</td>
+<td align="right">10.272727</td>
+<td align="right">210.90909</td>
+<td align="right">78.09091</td>
+<td align="right">21957.273</td>
+<td align="right">9.545454</td>
+<td align="right">11897.091</td>
+<td align="right">4.454546</td>
+<td align="right">241.09091</td>
+<td align="right">30.181818</td>
+<td align="right">146.00000</td>
+<td align="right">10.363636</td>
+<td align="right">34.27273</td>
+<td align="right">1142.0000</td>
+<td align="right">2.363636</td>
+<td align="right">144.09091</td>
+<td align="right">NA</td>
+<td align="right">2581.0909</td>
+<td align="right">88.27273</td>
+<td align="right">5.000000</td>
+<td align="right">3.181818</td>
+<td align="right">70350.00</td>
+<td align="right">32.00000</td>
+<td align="right">61.11111</td>
+<td align="right">35.63636</td>
+<td align="right">1.714286</td>
+<td align="right">19.272727</td>
+<td align="right">129.09091</td>
+<td align="right">12.272727</td>
+<td align="right">NaN</td>
+<td align="right">275.00000</td>
+<td align="right">68759.636</td>
+<td align="right">71.81818</td>
+<td align="right">11833.0909</td>
+<td align="right">12.636364</td>
+<td align="right">85.72727</td>
+<td align="right">247220.18</td>
+<td align="right">17.93636</td>
+<td align="right">20.70000</td>
+<td align="right">3646.1818</td>
+<td align="right">1.1272727</td>
+<td align="right">748.0000</td>
+<td align="right">0.3363636</td>
+<td align="right">7327.2727</td>
+<td align="right">2.2545455</td>
+<td align="right">122.18182</td>
+<td align="right">0.0181818</td>
+<td align="right">9925.273</td>
+<td align="right">2.836364</td>
+<td align="right">221897.64</td>
+<td align="right">92.00909</td>
+<td align="right">2309.63636</td>
+<td align="right">0.5454545</td>
+<td align="right">50.30909</td>
+<td align="right">95017.818</td>
+<td align="right">53.94545</td>
+<td align="right">NaN</td>
+</tr>
+<tr class="odd">
+<td align="left">New Jersey</td>
+<td align="right">11.2</td>
+<td align="right">16</td>
+<td align="right">28</td>
+<td align="right">86</td>
+<td align="right">78</td>
+<td align="right">1301.52</td>
+<td align="right">159.85</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">79.90455</td>
+<td align="right">8325.9091</td>
+<td align="right">35.90909</td>
+<td align="right">4.590909</td>
+<td align="right">11.59091</td>
+<td align="right">12.90909</td>
+<td align="right">10.272727</td>
+<td align="right">3097.36364</td>
+<td align="right">374.04545</td>
+<td align="right">70081.364</td>
+<td align="right">8.727273</td>
+<td align="right">29136.864</td>
+<td align="right">4.636364</td>
+<td align="right">762.72727</td>
+<td align="right">35.045454</td>
+<td align="right">371.72727</td>
+<td align="right">7.818182</td>
+<td align="right">38.09091</td>
+<td align="right">6980.3636</td>
+<td align="right">3.545454</td>
+<td align="right">63.40909</td>
+<td align="right">NA</td>
+<td align="right">9646.9091</td>
+<td align="right">91.36364</td>
+<td align="right">6.095238</td>
+<td align="right">3.263636</td>
+<td align="right">85192.68</td>
+<td align="right">36.31818</td>
+<td align="right">53.04545</td>
+<td align="right">39.31818</td>
+<td align="right">4.368421</td>
+<td align="right">8.818182</td>
+<td align="right">202.36364</td>
+<td align="right">5.545454</td>
+<td align="right">19.136364</td>
+<td align="right">630.40909</td>
+<td align="right">187658.182</td>
+<td align="right">67.68182</td>
+<td align="right">51940.4545</td>
+<td align="right">17.363636</td>
+<td align="right">85.63636</td>
+<td align="right">807471.82</td>
+<td align="right">21.38182</td>
+<td align="right">17.38182</td>
+<td align="right">104414.9091</td>
+<td align="right">11.6863636</td>
+<td align="right">5039.0000</td>
+<td align="right">0.6090909</td>
+<td align="right">80619.0909</td>
+<td align="right">7.7272727</td>
+<td align="right">930.90909</td>
+<td align="right">0.1045455</td>
+<td align="right">168804.000</td>
+<td align="right">18.304545</td>
+<td align="right">440999.55</td>
+<td align="right">60.60455</td>
+<td align="right">46811.90909</td>
+<td align="right">5.0909091</td>
+<td align="right">51.01818</td>
+<td align="right">42524.364</td>
+<td align="right">12.42273</td>
+<td align="right">NaN</td>
+</tr>
+<tr class="even">
+<td align="left">New Mexico</td>
+<td align="right">18.4</td>
+<td align="right">19</td>
+<td align="right">27</td>
+<td align="right">67</td>
+<td align="right">98</td>
+<td align="right">869.85</td>
+<td align="right">120.75</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">77.53030</td>
+<td align="right">1731.3030</td>
+<td align="right">59.35000</td>
+<td align="right">5.769231</td>
+<td align="right">14.58824</td>
+<td align="right">15.05882</td>
+<td align="right">11.088235</td>
+<td align="right">245.55172</td>
+<td align="right">160.55172</td>
+<td align="right">18015.294</td>
+<td align="right">15.470588</td>
+<td align="right">17013.206</td>
+<td align="right">18.235294</td>
+<td align="right">129.48000</td>
+<td align="right">27.120000</td>
+<td align="right">183.10714</td>
+<td align="right">21.892857</td>
+<td align="right">33.47059</td>
+<td align="right">1598.8235</td>
+<td align="right">5.676471</td>
+<td align="right">98.50000</td>
+<td align="right">NA</td>
+<td align="right">2038.4615</td>
+<td align="right">76.07692</td>
+<td align="right">12.411765</td>
+<td align="right">NaN</td>
+<td align="right">46632.91</td>
+<td align="right">77.61765</td>
+<td align="right">49.00000</td>
+<td align="right">28.42857</td>
+<td align="right">8.863636</td>
+<td align="right">29.068966</td>
+<td align="right">158.19231</td>
+<td align="right">23.307692</td>
+<td align="right">48.400000</td>
+<td align="right">136.20588</td>
+<td align="right">31052.706</td>
+<td align="right">70.29412</td>
+<td align="right">5932.8235</td>
+<td align="right">11.441176</td>
+<td align="right">66.79412</td>
+<td align="right">123342.88</td>
+<td align="right">21.48529</td>
+<td align="right">22.02941</td>
+<td align="right">2328.4118</td>
+<td align="right">1.3794118</td>
+<td align="right">13517.2941</td>
+<td align="right">9.3676471</td>
+<td align="right">2208.8235</td>
+<td align="right">1.2588235</td>
+<td align="right">196.52941</td>
+<td align="right">0.1441176</td>
+<td align="right">60761.294</td>
+<td align="right">48.711765</td>
+<td align="right">45448.82</td>
+<td align="right">40.10882</td>
+<td align="right">4893.11765</td>
+<td align="right">3.5294118</td>
+<td align="right">49.53235</td>
+<td align="right">27342.235</td>
+<td align="right">47.67353</td>
+<td align="right">NaN</td>
+</tr>
+<tr class="odd">
+<td align="left">New York</td>
+<td align="right">12.3</td>
+<td align="right">32</td>
+<td align="right">29</td>
+<td align="right">88</td>
+<td align="right">80</td>
+<td align="right">1234.31</td>
+<td align="right">150.01</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">79.67937</td>
+<td align="right">6069.6825</td>
+<td align="right">45.26316</td>
+<td align="right">5.577778</td>
+<td align="right">12.15873</td>
+<td align="right">13.77778</td>
+<td align="right">11.380952</td>
+<td align="right">4147.42623</td>
+<td align="right">335.00000</td>
+<td align="right">68125.556</td>
+<td align="right">10.888889</td>
+<td align="right">14080.651</td>
+<td align="right">4.285714</td>
+<td align="right">368.26230</td>
+<td align="right">19.098361</td>
+<td align="right">251.19355</td>
+<td align="right">8.322581</td>
+<td align="right">38.26984</td>
+<td align="right">3278.6349</td>
+<td align="right">2.539683</td>
+<td align="right">109.63492</td>
+<td align="right">NA</td>
+<td align="right">6673.6935</td>
+<td align="right">85.19355</td>
+<td align="right">7.622642</td>
+<td align="right">NaN</td>
+<td align="right">64162.84</td>
+<td align="right">47.52381</td>
+<td align="right">57.27586</td>
+<td align="right">38.70968</td>
+<td align="right">3.000000</td>
+<td align="right">11.596774</td>
+<td align="right">140.16949</td>
+<td align="right">6.135593</td>
+<td align="right">7.846154</td>
+<td align="right">502.34921</td>
+<td align="right">125644.508</td>
+<td align="right">68.41270</td>
+<td align="right">44192.1587</td>
+<td align="right">14.333333</td>
+<td align="right">80.79365</td>
+<td align="right">617573.37</td>
+<td align="right">19.88730</td>
+<td align="right">19.13175</td>
+<td align="right">89326.1270</td>
+<td align="right">6.1460317</td>
+<td align="right">6023.7460</td>
+<td align="right">0.7492063</td>
+<td align="right">55657.1111</td>
+<td align="right">3.2111111</td>
+<td align="right">858.22222</td>
+<td align="right">0.0714286</td>
+<td align="right">119081.206</td>
+<td align="right">8.360318</td>
+<td align="right">341441.90</td>
+<td align="right">80.10952</td>
+<td align="right">40531.49206</td>
+<td align="right">2.2857143</td>
+<td align="right">50.20476</td>
+<td align="right">74603.079</td>
+<td align="right">43.78413</td>
+<td align="right">NaN</td>
+</tr>
+<tr class="even">
+<td align="left">North Carolina</td>
+<td align="right">16.8</td>
+<td align="right">39</td>
+<td align="right">31</td>
+<td align="right">94</td>
+<td align="right">81</td>
+<td align="right">708.24</td>
+<td align="right">127.82</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">77.08416</td>
+<td align="right">2691.5248</td>
+<td align="right">62.39241</td>
+<td align="right">7.714286</td>
+<td align="right">13.67327</td>
+<td align="right">15.34653</td>
+<td align="right">13.871287</td>
+<td align="right">623.86869</td>
+<td align="right">255.93939</td>
+<td align="right">28242.376</td>
+<td align="right">15.217822</td>
+<td align="right">12982.859</td>
+<td align="right">5.686869</td>
+<td align="right">158.50575</td>
+<td align="right">24.264368</td>
+<td align="right">209.32990</td>
+<td align="right">18.010309</td>
+<td align="right">37.35644</td>
+<td align="right">2527.6238</td>
+<td align="right">5.821782</td>
+<td align="right">100.35354</td>
+<td align="right">NA</td>
+<td align="right">2426.6869</td>
+<td align="right">86.30303</td>
+<td align="right">9.438596</td>
+<td align="right">3.062376</td>
+<td align="right">51698.40</td>
+<td align="right">64.62376</td>
+<td align="right">35.97849</td>
+<td align="right">30.59596</td>
+<td align="right">7.283784</td>
+<td align="right">15.741936</td>
+<td align="right">147.30851</td>
+<td align="right">15.968085</td>
+<td align="right">19.375000</td>
+<td align="right">101.74257</td>
+<td align="right">51206.614</td>
+<td align="right">69.79208</td>
+<td align="right">9670.5941</td>
+<td align="right">12.940594</td>
+<td align="right">74.68317</td>
+<td align="right">207684.83</td>
+<td align="right">20.46436</td>
+<td align="right">20.48614</td>
+<td align="right">44368.4950</td>
+<td align="right">20.1712871</td>
+<td align="right">3279.1485</td>
+<td align="right">2.0485149</td>
+<td align="right">6619.7822</td>
+<td align="right">1.4386139</td>
+<td align="right">260.00000</td>
+<td align="right">0.1198020</td>
+<td align="right">20313.465</td>
+<td align="right">7.742574</td>
+<td align="right">130041.62</td>
+<td align="right">67.36238</td>
+<td align="right">4573.78218</td>
+<td align="right">1.6831683</td>
+<td align="right">50.90297</td>
+<td align="right">64034.198</td>
+<td align="right">60.93168</td>
+<td align="right">NaN</td>
+</tr>
+<tr class="odd">
+<td align="left">North Dakota</td>
+<td align="right">23.9</td>
+<td align="right">23</td>
+<td align="right">42</td>
+<td align="right">99</td>
+<td align="right">86</td>
+<td align="right">688.75</td>
+<td align="right">109.72</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">79.74510</td>
+<td align="right">331.2553</td>
+<td align="right">71.23077</td>
+<td align="right">6.333333</td>
+<td align="right">10.88889</td>
+<td align="right">12.37037</td>
+<td align="right">10.907407</td>
+<td align="right">56.06667</td>
+<td align="right">92.20000</td>
+<td align="right">1840.741</td>
+<td align="right">6.481482</td>
+<td align="right">1752.630</td>
+<td align="right">11.814815</td>
+<td align="right">47.62500</td>
+<td align="right">11.375000</td>
+<td align="right">62.59091</td>
+<td align="right">22.363636</td>
+<td align="right">32.77778</td>
+<td align="right">429.2963</td>
+<td align="right">8.981481</td>
+<td align="right">119.03704</td>
+<td align="right">NA</td>
+<td align="right">894.3333</td>
+<td align="right">85.86667</td>
+<td align="right">13.500000</td>
+<td align="right">3.031250</td>
+<td align="right">61698.94</td>
+<td align="right">33.57407</td>
+<td align="right">47.27273</td>
+<td align="right">33.06897</td>
+<td align="right">2.200000</td>
+<td align="right">23.473684</td>
+<td align="right">58.50000</td>
+<td align="right">16.285714</td>
+<td align="right">NaN</td>
+<td align="right">60.37037</td>
+<td align="right">7351.185</td>
+<td align="right">72.62963</td>
+<td align="right">1134.5926</td>
+<td align="right">8.037037</td>
+<td align="right">75.38889</td>
+<td align="right">28224.52</td>
+<td align="right">23.27963</td>
+<td align="right">21.43519</td>
+<td align="right">920.9630</td>
+<td align="right">1.1537037</td>
+<td align="right">1572.7778</td>
+<td align="right">7.0370370</td>
+<td align="right">476.2963</td>
+<td align="right">0.8111111</td>
+<td align="right">22.77778</td>
+<td align="right">0.0592593</td>
+<td align="right">1167.852</td>
+<td align="right">3.577778</td>
+<td align="right">23611.59</td>
+<td align="right">86.18148</td>
+<td align="right">174.37037</td>
+<td align="right">0.4629630</td>
+<td align="right">48.71111</td>
+<td align="right">9989.593</td>
+<td align="right">81.77593</td>
+<td align="right">NaN</td>
+</tr>
+<tr class="even">
+<td align="left">Ohio</td>
+<td align="right">14.1</td>
+<td align="right">28</td>
+<td align="right">34</td>
+<td align="right">99</td>
+<td align="right">82</td>
+<td align="right">697.73</td>
+<td align="right">133.52</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">76.83371</td>
+<td align="right">3799.9326</td>
+<td align="right">55.08642</td>
+<td align="right">6.753846</td>
+<td align="right">13.52809</td>
+<td align="right">16.25843</td>
+<td align="right">13.033708</td>
+<td align="right">512.03448</td>
+<td align="right">116.37931</td>
+<td align="right">36096.629</td>
+<td align="right">13.651685</td>
+<td align="right">17567.618</td>
+<td align="right">5.988764</td>
+<td align="right">320.92771</td>
+<td align="right">33.445783</td>
+<td align="right">185.64045</td>
+<td align="right">13.640449</td>
+<td align="right">40.43820</td>
+<td align="right">2877.6629</td>
+<td align="right">5.415730</td>
+<td align="right">77.35955</td>
+<td align="right">NA</td>
+<td align="right">3073.9326</td>
+<td align="right">87.22472</td>
+<td align="right">6.750000</td>
+<td align="right">3.193258</td>
+<td align="right">58045.24</td>
+<td align="right">43.03488</td>
+<td align="right">56.13514</td>
+<td align="right">39.69318</td>
+<td align="right">4.574468</td>
+<td align="right">15.770115</td>
+<td align="right">187.93827</td>
+<td align="right">12.111111</td>
+<td align="right">39.067416</td>
+<td align="right">173.87640</td>
+<td align="right">69416.764</td>
+<td align="right">72.03371</td>
+<td align="right">12067.8876</td>
+<td align="right">9.966292</td>
+<td align="right">78.70787</td>
+<td align="right">262676.40</td>
+<td align="right">22.17640</td>
+<td align="right">18.72360</td>
+<td align="right">33288.8090</td>
+<td align="right">4.3719101</td>
+<td align="right">764.2697</td>
+<td align="right">0.3202247</td>
+<td align="right">6550.0674</td>
+<td align="right">1.1741573</td>
+<td align="right">158.53933</td>
+<td align="right">0.0460674</td>
+<td align="right">10572.180</td>
+<td align="right">2.965168</td>
+<td align="right">206047.01</td>
+<td align="right">89.46404</td>
+<td align="right">2637.61798</td>
+<td align="right">0.4382022</td>
+<td align="right">50.28202</td>
+<td align="right">57231.685</td>
+<td align="right">47.93371</td>
+<td align="right">NaN</td>
+</tr>
+<tr class="odd">
+<td align="left">Oklahoma</td>
+<td align="right">19.9</td>
+<td align="right">32</td>
+<td align="right">29</td>
+<td align="right">92</td>
+<td align="right">94</td>
+<td align="right">881.51</td>
+<td align="right">178.86</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">75.28077</td>
+<td align="right">1560.4359</td>
+<td align="right">70.64706</td>
+<td align="right">8.108108</td>
+<td align="right">15.38462</td>
+<td align="right">16.93590</td>
+<td align="right">13.435897</td>
+<td align="right">196.34921</td>
+<td align="right">124.12698</td>
+<td align="right">14835.128</td>
+<td align="right">15.012821</td>
+<td align="right">8289.641</td>
+<td align="right">11.217949</td>
+<td align="right">93.56818</td>
+<td align="right">19.909091</td>
+<td align="right">133.64789</td>
+<td align="right">25.943662</td>
+<td align="right">38.67949</td>
+<td align="right">2109.5128</td>
+<td align="right">9.858974</td>
+<td align="right">76.89744</td>
+<td align="right">NA</td>
+<td align="right">1628.0667</td>
+<td align="right">82.73333</td>
+<td align="right">9.785714</td>
+<td align="right">3.014103</td>
+<td align="right">49900.10</td>
+<td align="right">63.19231</td>
+<td align="right">43.31579</td>
+<td align="right">17.73333</td>
+<td align="right">7.046512</td>
+<td align="right">23.062500</td>
+<td align="right">118.76271</td>
+<td align="right">20.271186</td>
+<td align="right">25.092308</td>
+<td align="right">77.08974</td>
+<td align="right">24900.564</td>
+<td align="right">71.48718</td>
+<td align="right">4073.8205</td>
+<td align="right">9.294872</td>
+<td align="right">71.79487</td>
+<td align="right">101460.79</td>
+<td align="right">23.68718</td>
+<td align="right">18.60256</td>
+<td align="right">7524.5641</td>
+<td align="right">3.5961538</td>
+<td align="right">9515.4872</td>
+<td align="right">11.7602564</td>
+<td align="right">2416.7436</td>
+<td align="right">1.0000000</td>
+<td align="right">220.02564</td>
+<td align="right">0.1858974</td>
+<td align="right">11233.590</td>
+<td align="right">9.730769</td>
+<td align="right">65958.67</td>
+<td align="right">69.39359</td>
+<td align="right">1911.20513</td>
+<td align="right">1.4230769</td>
+<td align="right">49.78205</td>
+<td align="right">32469.795</td>
+<td align="right">63.25513</td>
+<td align="right">NaN</td>
+</tr>
+<tr class="even">
+<td align="left">Oregon</td>
+<td align="right">12.8</td>
+<td align="right">33</td>
+<td align="right">26</td>
+<td align="right">67</td>
+<td align="right">90</td>
+<td align="right">804.71</td>
+<td align="right">104.61</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">79.34444</td>
+<td align="right">2702.9429</td>
+<td align="right">48.92308</td>
+<td align="right">5.200000</td>
+<td align="right">14.70270</td>
+<td align="right">15.78378</td>
+<td align="right">11.270270</td>
+<td align="right">466.10000</td>
+<td align="right">127.43333</td>
+<td align="right">26494.595</td>
+<td align="right">13.189189</td>
+<td align="right">11147.595</td>
+<td align="right">10.297297</td>
+<td align="right">134.24000</td>
+<td align="right">13.240000</td>
+<td align="right">189.54545</td>
+<td align="right">16.363636</td>
+<td align="right">34.56757</td>
+<td align="right">1639.6757</td>
+<td align="right">3.810811</td>
+<td align="right">101.75676</td>
+<td align="right">NA</td>
+<td align="right">2850.7812</td>
+<td align="right">77.59375</td>
+<td align="right">8.210526</td>
+<td align="right">2.887097</td>
+<td align="right">58568.57</td>
+<td align="right">52.37838</td>
+<td align="right">60.60000</td>
+<td align="right">23.61765</td>
+<td align="right">3.823529</td>
+<td align="right">23.181818</td>
+<td align="right">172.83333</td>
+<td align="right">17.033333</td>
+<td align="right">34.363636</td>
+<td align="right">208.18919</td>
+<td align="right">54372.757</td>
+<td align="right">66.08108</td>
+<td align="right">13125.4595</td>
+<td align="right">13.783784</td>
+<td align="right">81.27027</td>
+<td align="right">227985.78</td>
+<td align="right">20.31351</td>
+<td align="right">22.46216</td>
+<td align="right">4465.4054</td>
+<td align="right">0.8864865</td>
+<td align="right">4168.3784</td>
+<td align="right">2.6027027</td>
+<td align="right">11066.9730</td>
+<td align="right">2.0783784</td>
+<td align="right">1040.27027</td>
+<td align="right">0.3270270</td>
+<td align="right">30640.378</td>
+<td align="right">12.529730</td>
+<td align="right">171107.24</td>
+<td align="right">79.58108</td>
+<td align="right">6046.48649</td>
+<td align="right">2.1621622</td>
+<td align="right">49.91892</td>
+<td align="right">39280.649</td>
+<td align="right">43.68649</td>
+<td align="right">NaN</td>
+</tr>
+<tr class="odd">
+<td align="left">Pennsylvania</td>
+<td align="right">18.2</td>
+<td align="right">50</td>
+<td align="right">31</td>
+<td align="right">96</td>
+<td align="right">88</td>
+<td align="right">905.99</td>
+<td align="right">153.86</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">78.28235</td>
+<td align="right">4866.4706</td>
+<td align="right">49.65000</td>
+<td align="right">6.208333</td>
+<td align="right">12.72059</td>
+<td align="right">15.75000</td>
+<td align="right">12.117647</td>
+<td align="right">1015.25000</td>
+<td align="right">113.96875</td>
+<td align="right">40489.853</td>
+<td align="right">10.911765</td>
+<td align="right">17091.515</td>
+<td align="right">4.823529</td>
+<td align="right">464.39344</td>
+<td align="right">31.098361</td>
+<td align="right">260.50769</td>
+<td align="right">13.200000</td>
+<td align="right">39.51471</td>
+<td align="right">3539.9412</td>
+<td align="right">4.720588</td>
+<td align="right">129.08824</td>
+<td align="right">NA</td>
+<td align="right">4270.9231</td>
+<td align="right">89.49231</td>
+<td align="right">6.830508</td>
+<td align="right">3.159702</td>
+<td align="right">58940.63</td>
+<td align="right">48.66176</td>
+<td align="right">58.43103</td>
+<td align="right">40.12308</td>
+<td align="right">3.577778</td>
+<td align="right">16.954545</td>
+<td align="right">241.95385</td>
+<td align="right">12.723077</td>
+<td align="right">18.210526</td>
+<td align="right">254.79412</td>
+<td align="right">102381.706</td>
+<td align="right">72.97059</td>
+<td align="right">18836.7059</td>
+<td align="right">11.044118</td>
+<td align="right">78.52941</td>
+<td align="right">376529.09</td>
+<td align="right">19.60882</td>
+<td align="right">20.76618</td>
+<td align="right">41018.5294</td>
+<td align="right">4.6764706</td>
+<td align="right">1490.7941</td>
+<td align="right">0.3279412</td>
+<td align="right">14172.8529</td>
+<td align="right">1.7014706</td>
+<td align="right">293.94118</td>
+<td align="right">0.0500000</td>
+<td align="right">29416.176</td>
+<td align="right">4.851471</td>
+<td align="right">285105.24</td>
+<td align="right">87.26029</td>
+<td align="right">7212.44118</td>
+<td align="right">0.9264706</td>
+<td align="right">49.90735</td>
+<td align="right">79738.000</td>
+<td align="right">47.05147</td>
+<td align="right">NaN</td>
+</tr>
+<tr class="even">
+<td align="left">Rhode Island</td>
+<td align="right">11.1</td>
+<td align="right">34</td>
+<td align="right">38</td>
+<td align="right">92</td>
+<td align="right">79</td>
+<td align="right">1148.99</td>
+<td align="right">148.58</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">80.41667</td>
+<td align="right">3894.3333</td>
+<td align="right">38.80000</td>
+<td align="right">4.800000</td>
+<td align="right">11.66667</td>
+<td align="right">13.16667</td>
+<td align="right">9.666667</td>
+<td align="right">632.50000</td>
+<td align="right">118.00000</td>
+<td align="right">38888.333</td>
+<td align="right">9.500000</td>
+<td align="right">16553.333</td>
+<td align="right">6.500000</td>
+<td align="right">314.66667</td>
+<td align="right">26.833333</td>
+<td align="right">159.66667</td>
+<td align="right">6.000000</td>
+<td align="right">35.83333</td>
+<td align="right">1489.3333</td>
+<td align="right">2.000000</td>
+<td align="right">92.33333</td>
+<td align="right">NA</td>
+<td align="right">3510.3333</td>
+<td align="right">87.00000</td>
+<td align="right">4.250000</td>
+<td align="right">3.283333</td>
+<td align="right">77002.67</td>
+<td align="right">34.83333</td>
+<td align="right">57.83333</td>
+<td align="right">41.16667</td>
+<td align="right">2.333333</td>
+<td align="right">11.833333</td>
+<td align="right">90.20000</td>
+<td align="right">4.400000</td>
+<td align="right">22.000000</td>
+<td align="right">565.83333</td>
+<td align="right">83164.000</td>
+<td align="right">65.50000</td>
+<td align="right">20407.6667</td>
+<td align="right">14.666667</td>
+<td align="right">85.66667</td>
+<td align="right">353120.33</td>
+<td align="right">18.31667</td>
+<td align="right">19.53333</td>
+<td align="right">21655.3333</td>
+<td align="right">3.8666667</td>
+<td align="right">3817.6667</td>
+<td align="right">0.8000000</td>
+<td align="right">13178.6667</td>
+<td align="right">2.9500000</td>
+<td align="right">708.33333</td>
+<td align="right">0.1333333</td>
+<td align="right">57548.000</td>
+<td align="right">9.750000</td>
+<td align="right">251977.00</td>
+<td align="right">81.05000</td>
+<td align="right">13772.33333</td>
+<td align="right">2.3333333</td>
+<td align="right">51.35000</td>
+<td align="right">32508.000</td>
+<td align="right">11.13333</td>
+<td align="right">NaN</td>
+</tr>
+<tr class="odd">
+<td align="left">South Carolina</td>
+<td align="right">23.9</td>
+<td align="right">38</td>
+<td align="right">41</td>
+<td align="right">96</td>
+<td align="right">81</td>
+<td align="right">858.97</td>
+<td align="right">116.29</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">75.61064</td>
+<td align="right">3248.1277</td>
+<td align="right">68.18182</td>
+<td align="right">7.666667</td>
+<td align="right">14.27660</td>
+<td align="right">15.93617</td>
+<td align="right">15.787234</td>
+<td align="right">734.48936</td>
+<td align="right">434.63830</td>
+<td align="right">24330.426</td>
+<td align="right">12.893617</td>
+<td align="right">17962.128</td>
+<td align="right">7.914894</td>
+<td align="right">179.72222</td>
+<td align="right">20.388889</td>
+<td align="right">280.72340</td>
+<td align="right">23.723404</td>
+<td align="right">39.40426</td>
+<td align="right">2322.3404</td>
+<td align="right">4.723404</td>
+<td align="right">74.78723</td>
+<td align="right">NA</td>
+<td align="right">2552.1087</td>
+<td align="right">83.08696</td>
+<td align="right">8.933333</td>
+<td align="right">2.676596</td>
+<td align="right">49452.64</td>
+<td align="right">78.59574</td>
+<td align="right">32.63830</td>
+<td align="right">29.91489</td>
+<td align="right">10.931818</td>
+<td align="right">15.704546</td>
+<td align="right">193.23404</td>
+<td align="right">20.127660</td>
+<td align="right">28.818182</td>
+<td align="right">92.57447</td>
+<td align="right">56759.106</td>
+<td align="right">71.25532</td>
+<td align="right">9984.7660</td>
+<td align="right">12.765957</td>
+<td align="right">70.97872</td>
+<td align="right">219094.21</td>
+<td align="right">21.04255</td>
+<td align="right">19.93191</td>
+<td align="right">57886.8936</td>
+<td align="right">34.8446809</td>
+<td align="right">1201.5319</td>
+<td align="right">0.6723404</td>
+<td align="right">4004.7234</td>
+<td align="right">1.1297872</td>
+<td align="right">215.53191</td>
+<td align="right">0.0914894</td>
+<td align="right">13068.851</td>
+<td align="right">4.934043</td>
+<td align="right">139469.87</td>
+<td align="right">57.08298</td>
+<td align="right">2912.76596</td>
+<td align="right">1.2340426</td>
+<td align="right">51.27660</td>
+<td align="right">66278.936</td>
+<td align="right">54.52979</td>
+<td align="right">NaN</td>
+</tr>
+<tr class="even">
+<td align="left">South Dakota</td>
+<td align="right">19.4</td>
+<td align="right">31</td>
+<td align="right">33</td>
+<td align="right">98</td>
+<td align="right">86</td>
+<td align="right">669.31</td>
+<td align="right">96.87</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">78.00484</td>
+<td align="right">324.6452</td>
+<td align="right">81.46667</td>
+<td align="right">8.142857</td>
+<td align="right">11.50746</td>
+<td align="right">11.85075</td>
+<td align="right">11.701493</td>
+<td align="right">63.00000</td>
+<td align="right">85.50000</td>
+<td align="right">2786.269</td>
+<td align="right">11.641791</td>
+<td align="right">2563.313</td>
+<td align="right">18.820895</td>
+<td align="right">81.00000</td>
+<td align="right">8.500000</td>
+<td align="right">58.00000</td>
+<td align="right">25.741936</td>
+<td align="right">31.16418</td>
+<td align="right">392.0597</td>
+<td align="right">7.626866</td>
+<td align="right">122.79104</td>
+<td align="right">NA</td>
+<td align="right">703.6154</td>
+<td align="right">80.26923</td>
+<td align="right">17.222222</td>
+<td align="right">3.089831</td>
+<td align="right">55070.91</td>
+<td align="right">39.37879</td>
+<td align="right">57.18182</td>
+<td align="right">30.61538</td>
+<td align="right">10.166667</td>
+<td align="right">33.083333</td>
+<td align="right">74.41667</td>
+<td align="right">14.500000</td>
+<td align="right">17.440000</td>
+<td align="right">65.07463</td>
+<td align="right">6973.343</td>
+<td align="right">71.00000</td>
+<td align="right">944.0299</td>
+<td align="right">8.567164</td>
+<td align="right">74.07463</td>
+<td align="right">26407.73</td>
+<td align="right">25.22985</td>
+<td align="right">19.88507</td>
+<td align="right">580.5075</td>
+<td align="right">0.8552239</td>
+<td align="right">2388.1791</td>
+<td align="right">14.5223881</td>
+<td align="right">408.9254</td>
+<td align="right">0.8492537</td>
+<td align="right">23.49254</td>
+<td align="right">0.0492537</td>
+<td align="right">1114.955</td>
+<td align="right">3.562687</td>
+<td align="right">21523.97</td>
+<td align="right">79.00149</td>
+<td align="right">233.85075</td>
+<td align="right">0.5074627</td>
+<td align="right">49.27612</td>
+<td align="right">10530.303</td>
+<td align="right">77.62121</td>
+<td align="right">NaN</td>
+</tr>
+<tr class="odd">
+<td align="left">Tennessee</td>
+<td align="right">19.5</td>
+<td align="right">21</td>
+<td align="right">29</td>
+<td align="right">82</td>
+<td align="right">81</td>
+<td align="right">767.91</td>
+<td align="right">155.57</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">74.94479</td>
+<td align="right">2262.8125</td>
+<td align="right">64.52941</td>
+<td align="right">7.046512</td>
+<td align="right">16.39583</td>
+<td align="right">18.11458</td>
+<td align="right">14.302083</td>
+<td align="right">387.29070</td>
+<td align="right">147.18605</td>
+<td align="right">18965.625</td>
+<td align="right">14.479167</td>
+<td align="right">11303.147</td>
+<td align="right">5.842105</td>
+<td align="right">144.53846</td>
+<td align="right">27.243590</td>
+<td align="right">153.82796</td>
+<td align="right">20.118280</td>
+<td align="right">41.89583</td>
+<td align="right">1641.6042</td>
+<td align="right">5.291667</td>
+<td align="right">109.12500</td>
+<td align="right">NA</td>
+<td align="right">1529.6702</td>
+<td align="right">93.14894</td>
+<td align="right">7.975000</td>
+<td align="right">2.967368</td>
+<td align="right">50045.72</td>
+<td align="right">NaN</td>
+<td align="right">43.06410</td>
+<td align="right">31.68085</td>
+<td align="right">5.921569</td>
+<td align="right">20.057471</td>
+<td align="right">139.68235</td>
+<td align="right">18.517647</td>
+<td align="right">NaN</td>
+<td align="right">81.62500</td>
+<td align="right">35880.146</td>
+<td align="right">72.43750</td>
+<td align="right">6246.6667</td>
+<td align="right">10.302083</td>
+<td align="right">72.35417</td>
+<td align="right">142274.46</td>
+<td align="right">21.03958</td>
+<td align="right">19.49167</td>
+<td align="right">23787.2917</td>
+<td align="right">7.5166667</td>
+<td align="right">680.4375</td>
+<td align="right">0.5250000</td>
+<td align="right">2793.2500</td>
+<td align="right">0.8604167</td>
+<td align="right">137.04167</td>
+<td align="right">0.0677083</td>
+<td align="right">8153.792</td>
+<td align="right">3.951042</td>
+<td align="right">104573.75</td>
+<td align="right">85.74271</td>
+<td align="right">2019.08333</td>
+<td align="right">0.6979167</td>
+<td align="right">50.29167</td>
+<td align="right">44434.583</td>
+<td align="right">66.09583</td>
+<td align="right">NaN</td>
+</tr>
+<tr class="even">
+<td align="left">Texas</td>
+<td align="right">19.4</td>
+<td align="right">40</td>
+<td align="right">38</td>
+<td align="right">91</td>
+<td align="right">87</td>
+<td align="right">1004.75</td>
+<td align="right">156.83</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">77.48445</td>
+<td align="right">2478.4672</td>
+<td align="right">59.97015</td>
+<td align="right">6.078947</td>
+<td align="right">13.98039</td>
+<td align="right">14.72941</td>
+<td align="right">11.690196</td>
+<td align="right">935.97949</td>
+<td align="right">229.30256</td>
+<td align="right">32649.020</td>
+<td align="right">15.349020</td>
+<td align="right">17168.622</td>
+<td align="right">11.669291</td>
+<td align="right">193.01087</td>
+<td align="right">11.880435</td>
+<td align="right">254.38308</td>
+<td align="right">23.562189</td>
+<td align="right">36.85882</td>
+<td align="right">6708.2667</td>
+<td align="right">12.925490</td>
+<td align="right">64.40637</td>
+<td align="right">NA</td>
+<td align="right">3837.2031</td>
+<td align="right">92.84896</td>
+<td align="right">10.655556</td>
+<td align="right">2.794958</td>
+<td align="right">54993.81</td>
+<td align="right">61.16929</td>
+<td align="right">39.33136</td>
+<td align="right">25.68750</td>
+<td align="right">5.376344</td>
+<td align="right">18.129630</td>
+<td align="right">225.92715</td>
+<td align="right">15.496689</td>
+<td align="right">17.497297</td>
+<td align="right">118.97647</td>
+<td align="right">47096.486</td>
+<td align="right">71.67451</td>
+<td align="right">9839.8656</td>
+<td align="right">10.015810</td>
+<td align="right">73.14510</td>
+<td align="right">227418.67</td>
+<td align="right">23.75451</td>
+<td align="right">18.53255</td>
+<td align="right">27463.6078</td>
+<td align="right">6.2905882</td>
+<td align="right">2312.9569</td>
+<td align="right">1.2749020</td>
+<td align="right">11846.8235</td>
+<td align="right">1.3658824</td>
+<td align="right">338.91765</td>
+<td align="right">0.1027451</td>
+<td align="right">90396.690</td>
+<td align="right">35.475686</td>
+<td align="right">93731.56</td>
+<td align="right">55.14196</td>
+<td align="right">15183.67059</td>
+<td align="right">5.0313725</td>
+<td align="right">49.12824</td>
+<td align="right">30176.643</td>
+<td align="right">55.36314</td>
+<td align="right">NaN</td>
+</tr>
+<tr class="odd">
+<td align="left">Utah</td>
+<td align="right">11.3</td>
+<td align="right">43</td>
+<td align="right">16</td>
+<td align="right">88</td>
+<td align="right">96</td>
+<td align="right">809.38</td>
+<td align="right">109.48</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">79.32500</td>
+<td align="right">1704.3793</td>
+<td align="right">49.12500</td>
+<td align="right">5.454546</td>
+<td align="right">12.10000</td>
+<td align="right">13.26667</td>
+<td align="right">9.100000</td>
+<td align="right">290.45000</td>
+<td align="right">74.65000</td>
+<td align="right">22866.333</td>
+<td align="right">12.566667</td>
+<td align="right">10714.000</td>
+<td align="right">11.600000</td>
+<td align="right">182.85000</td>
+<td align="right">21.550000</td>
+<td align="right">156.40909</td>
+<td align="right">13.818182</td>
+<td align="right">33.43333</td>
+<td align="right">4633.3333</td>
+<td align="right">8.100000</td>
+<td align="right">68.96667</td>
+<td align="right">NA</td>
+<td align="right">NaN</td>
+<td align="right">NaN</td>
+<td align="right">6.928571</td>
+<td align="right">3.157692</td>
+<td align="right">66796.87</td>
+<td align="right">40.53333</td>
+<td align="right">65.90909</td>
+<td align="right">31.16667</td>
+<td align="right">2.500000</td>
+<td align="right">27.640000</td>
+<td align="right">167.34783</td>
+<td align="right">18.304348</td>
+<td align="right">37.884615</td>
+<td align="right">192.56667</td>
+<td align="right">45713.267</td>
+<td align="right">75.00000</td>
+<td align="right">6589.9333</td>
+<td align="right">8.866667</td>
+<td align="right">83.73333</td>
+<td align="right">213730.53</td>
+<td align="right">28.47000</td>
+<td align="right">15.64000</td>
+<td align="right">2537.0667</td>
+<td align="right">0.6133333</td>
+<td align="right">3314.6667</td>
+<td align="right">3.4233333</td>
+<td align="right">5715.1333</td>
+<td align="right">1.1666667</td>
+<td align="right">2265.26667</td>
+<td align="right">0.4066667</td>
+<td align="right">30803.400</td>
+<td align="right">9.750000</td>
+<td align="right">166250.60</td>
+<td align="right">83.83000</td>
+<td align="right">4441.20000</td>
+<td align="right">1.5666667</td>
+<td align="right">48.98667</td>
+<td align="right">17352.667</td>
+<td align="right">47.05000</td>
+<td align="right">NaN</td>
+</tr>
+<tr class="even">
+<td align="left">Vermont</td>
+<td align="right">13.6</td>
+<td align="right">30</td>
+<td align="right">30</td>
+<td align="right">96</td>
+<td align="right">95</td>
+<td align="right">716.20</td>
+<td align="right">109.61</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">79.43333</td>
+<td align="right">987.7333</td>
+<td align="right">42.71429</td>
+<td align="right">4.500000</td>
+<td align="right">11.66667</td>
+<td align="right">14.00000</td>
+<td align="right">9.533333</td>
+<td align="right">79.38462</td>
+<td align="right">64.15385</td>
+<td align="right">9103.333</td>
+<td align="right">10.933333</td>
+<td align="right">2746.933</td>
+<td align="right">3.666667</td>
+<td align="right">69.08333</td>
+<td align="right">24.666667</td>
+<td align="right">59.42857</td>
+<td align="right">11.785714</td>
+<td align="right">31.86667</td>
+<td align="right">248.1333</td>
+<td align="right">1.733333</td>
+<td align="right">104.13333</td>
+<td align="right">NA</td>
+<td align="right">888.8462</td>
+<td align="right">85.07692</td>
+<td align="right">7.000000</td>
+<td align="right">NaN</td>
+<td align="right">60085.87</td>
+<td align="right">41.66667</td>
+<td align="right">65.54545</td>
+<td align="right">30.46667</td>
+<td align="right">2.250000</td>
+<td align="right">18.571429</td>
+<td align="right">55.38462</td>
+<td align="right">12.461538</td>
+<td align="right">15.666667</td>
+<td align="right">99.73333</td>
+<td align="right">24533.200</td>
+<td align="right">73.93333</td>
+<td align="right">5034.0000</td>
+<td align="right">14.866667</td>
+<td align="right">80.06667</td>
+<td align="right">83198.53</td>
+<td align="right">18.41333</td>
+<td align="right">21.38000</td>
+<td align="right">1086.9333</td>
+<td align="right">1.0200000</td>
+<td align="right">325.4667</td>
+<td align="right">0.4933333</td>
+<td align="right">1595.2000</td>
+<td align="right">1.2266667</td>
+<td align="right">32.93333</td>
+<td align="right">0.0200000</td>
+<td align="right">1695.867</td>
+<td align="right">1.913333</td>
+<td align="right">77005.20</td>
+<td align="right">93.57333</td>
+<td align="right">486.93333</td>
+<td align="right">0.2000000</td>
+<td align="right">50.34000</td>
+<td align="right">50980.800</td>
+<td align="right">74.41333</td>
+<td align="right">NaN</td>
+</tr>
+<tr class="odd">
+<td align="left">Virginia</td>
+<td align="right">12.7</td>
+<td align="right">19</td>
+<td align="right">27</td>
+<td align="right">87</td>
+<td align="right">88</td>
+<td align="right">768.95</td>
+<td align="right">153.72</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">77.40821</td>
+<td align="right">1423.0149</td>
+<td align="right">62.65385</td>
+<td align="right">6.979167</td>
+<td align="right">12.98507</td>
+<td align="right">14.58955</td>
+<td align="right">12.888060</td>
+<td align="right">332.21094</td>
+<td align="right">222.16406</td>
+<td align="right">11977.239</td>
+<td align="right">11.141791</td>
+<td align="right">5307.752</td>
+<td align="right">6.015504</td>
+<td align="right">104.16667</td>
+<td align="right">22.892857</td>
+<td align="right">96.46154</td>
+<td align="right">15.512821</td>
+<td align="right">39.18657</td>
+<td align="right">1432.4925</td>
+<td align="right">5.589552</td>
+<td align="right">104.62308</td>
+<td align="right">NA</td>
+<td align="right">1592.4797</td>
+<td align="right">87.74797</td>
+<td align="right">6.970588</td>
+<td align="right">3.119847</td>
+<td align="right">62534.67</td>
+<td align="right">55.32090</td>
+<td align="right">29.86179</td>
+<td align="right">25.37795</td>
+<td align="right">7.140000</td>
+<td align="right">17.535714</td>
+<td align="right">98.07843</td>
+<td align="right">15.833333</td>
+<td align="right">40.293578</td>
+<td align="right">253.25373</td>
+<td align="right">31159.866</td>
+<td align="right">69.51493</td>
+<td align="right">5799.5970</td>
+<td align="right">12.388060</td>
+<td align="right">75.77612</td>
+<td align="right">127395.81</td>
+<td align="right">19.91642</td>
+<td align="right">19.92537</td>
+<td align="right">24361.5821</td>
+<td align="right">18.4679104</td>
+<td align="right">695.5522</td>
+<td align="right">0.5679104</td>
+<td align="right">8801.6418</td>
+<td align="right">2.3358209</td>
+<td align="right">150.62687</td>
+<td align="right">0.0940299</td>
+<td align="right">12454.060</td>
+<td align="right">5.913433</td>
+<td align="right">78028.42</td>
+<td align="right">70.80821</td>
+<td align="right">3179.08955</td>
+<td align="right">1.2089552</td>
+<td align="right">50.59104</td>
+<td align="right">29311.433</td>
+<td align="right">52.15448</td>
+<td align="right">NaN</td>
+</tr>
+<tr class="even">
+<td align="left">Washington</td>
+<td align="right">10.6</td>
+<td align="right">42</td>
+<td align="right">33</td>
+<td align="right">82</td>
+<td align="right">86</td>
+<td align="right">890.03</td>
+<td align="right">111.62</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">79.99000</td>
+<td align="right">3814.5500</td>
+<td align="right">39.69231</td>
+<td align="right">4.714286</td>
+<td align="right">13.20000</td>
+<td align="right">13.87500</td>
+<td align="right">10.500000</td>
+<td align="right">748.72222</td>
+<td align="right">122.52778</td>
+<td align="right">40196.000</td>
+<td align="right">12.875000</td>
+<td align="right">18624.600</td>
+<td align="right">9.725000</td>
+<td align="right">237.90000</td>
+<td align="right">15.166667</td>
+<td align="right">221.70270</td>
+<td align="right">12.405405</td>
+<td align="right">33.07500</td>
+<td align="right">2405.6000</td>
+<td align="right">3.425000</td>
+<td align="right">93.50000</td>
+<td align="right">NA</td>
+<td align="right">4300.9429</td>
+<td align="right">89.08571</td>
+<td align="right">7.857143</td>
+<td align="right">2.897143</td>
+<td align="right">63475.40</td>
+<td align="right">50.62500</td>
+<td align="right">53.75862</td>
+<td align="right">30.29730</td>
+<td align="right">3.478261</td>
+<td align="right">19.666667</td>
+<td align="right">235.48485</td>
+<td align="right">13.333333</td>
+<td align="right">34.216216</td>
+<td align="right">228.60000</td>
+<td align="right">89661.950</td>
+<td align="right">68.32500</td>
+<td align="right">18907.6500</td>
+<td align="right">12.550000</td>
+<td align="right">82.97500</td>
+<td align="right">380744.65</td>
+<td align="right">21.09000</td>
+<td align="right">21.14750</td>
+<td align="right">15211.2000</td>
+<td align="right">1.5475000</td>
+<td align="right">7339.9500</td>
+<td align="right">3.1000000</td>
+<td align="right">36399.3000</td>
+<td align="right">3.2925000</td>
+<td align="right">3017.45000</td>
+<td align="right">0.4475000</td>
+<td align="right">49586.050</td>
+<td align="right">14.837500</td>
+<td align="right">257029.45</td>
+<td align="right">74.74000</td>
+<td align="right">12593.30000</td>
+<td align="right">3.4000000</td>
+<td align="right">49.86500</td>
+<td align="right">53633.550</td>
+<td align="right">44.07250</td>
+<td align="right">NaN</td>
+</tr>
+<tr class="odd">
+<td align="left">West Virginia</td>
+<td align="right">23.8</td>
+<td align="right">34</td>
+<td align="right">28</td>
+<td align="right">97</td>
+<td align="right">87</td>
+<td align="right">992.61</td>
+<td align="right">152.56</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">75.17500</td>
+<td align="right">1238.8929</td>
+<td align="right">63.09375</td>
+<td align="right">7.692308</td>
+<td align="right">17.01786</td>
+<td align="right">19.50000</td>
+<td align="right">15.535714</td>
+<td align="right">75.12245</td>
+<td align="right">100.32653</td>
+<td align="right">8852.857</td>
+<td align="right">14.089286</td>
+<td align="right">4336.071</td>
+<td align="right">6.303571</td>
+<td align="right">121.47727</td>
+<td align="right">45.000000</td>
+<td align="right">78.75000</td>
+<td align="right">19.423077</td>
+<td align="right">43.33929</td>
+<td align="right">448.8214</td>
+<td align="right">3.535714</td>
+<td align="right">117.05357</td>
+<td align="right">NA</td>
+<td align="right">696.7857</td>
+<td align="right">91.85714</td>
+<td align="right">11.047619</td>
+<td align="right">2.866071</td>
+<td align="right">46672.48</td>
+<td align="right">51.05357</td>
+<td align="right">54.13889</td>
+<td align="right">40.45833</td>
+<td align="right">6.388889</td>
+<td align="right">20.413044</td>
+<td align="right">66.82979</td>
+<td align="right">19.170213</td>
+<td align="right">12.666667</td>
+<td align="right">111.50000</td>
+<td align="right">19148.321</td>
+<td align="right">76.33929</td>
+<td align="right">2464.6786</td>
+<td align="right">8.785714</td>
+<td align="right">73.41071</td>
+<td align="right">64005.25</td>
+<td align="right">19.59107</td>
+<td align="right">21.87143</td>
+<td align="right">2241.9643</td>
+<td align="right">2.2785714</td>
+<td align="right">163.7500</td>
+<td align="right">0.2821429</td>
+<td align="right">525.1071</td>
+<td align="right">0.5142857</td>
+<td align="right">18.92857</td>
+<td align="right">0.0125000</td>
+<td align="right">1112.929</td>
+<td align="right">1.487500</td>
+<td align="right">58875.43</td>
+<td align="right">94.05357</td>
+<td align="right">205.17857</td>
+<td align="right">0.1964286</td>
+<td align="right">49.98214</td>
+<td align="right">33935.143</td>
+<td align="right">68.88750</td>
+<td align="right">NaN</td>
+</tr>
+<tr class="even">
+<td align="left">Wisconsin</td>
+<td align="right">13.8</td>
+<td align="right">36</td>
+<td align="right">33</td>
+<td align="right">39</td>
+<td align="right">84</td>
+<td align="right">670.31</td>
+<td align="right">106.62</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">79.31233</td>
+<td align="right">1773.8356</td>
+<td align="right">50.46000</td>
+<td align="right">5.709677</td>
+<td align="right">12.20548</td>
+<td align="right">13.45205</td>
+<td align="right">10.397260</td>
+<td align="right">193.69643</td>
+<td align="right">57.05357</td>
+<td align="right">13979.452</td>
+<td align="right">8.972603</td>
+<td align="right">7552.097</td>
+<td align="right">5.388889</td>
+<td align="right">147.13043</td>
+<td align="right">18.652174</td>
+<td align="right">114.84286</td>
+<td align="right">13.971429</td>
+<td align="right">33.10959</td>
+<td align="right">1389.2603</td>
+<td align="right">5.013699</td>
+<td align="right">86.26027</td>
+<td align="right">NA</td>
+<td align="right">1923.2029</td>
+<td align="right">91.52174</td>
+<td align="right">6.404762</td>
+<td align="right">3.037500</td>
+<td align="right">61084.95</td>
+<td align="right">42.15068</td>
+<td align="right">60.76744</td>
+<td align="right">32.70423</td>
+<td align="right">3.000000</td>
+<td align="right">16.636364</td>
+<td align="right">97.69841</td>
+<td align="right">11.269841</td>
+<td align="right">19.385714</td>
+<td align="right">205.50685</td>
+<td align="right">43313.397</td>
+<td align="right">73.87671</td>
+<td align="right">7327.0137</td>
+<td align="right">10.260274</td>
+<td align="right">79.42466</td>
+<td align="right">159518.74</td>
+<td align="right">20.94795</td>
+<td align="right">20.72329</td>
+<td align="right">10199.2603</td>
+<td align="right">1.8273973</td>
+<td align="right">1880.2192</td>
+<td align="right">3.0438356</td>
+<td align="right">4802.1644</td>
+<td align="right">1.4657534</td>
+<td align="right">93.67123</td>
+<td align="right">0.0589041</td>
+<td align="right">11320.767</td>
+<td align="right">4.113699</td>
+<td align="right">129015.48</td>
+<td align="right">88.39178</td>
+<td align="right">2066.65753</td>
+<td align="right">0.7123288</td>
+<td align="right">49.52740</td>
+<td align="right">46502.685</td>
+<td align="right">59.69315</td>
+<td align="right">NaN</td>
+</tr>
+<tr class="odd">
+<td align="left">Wyoming</td>
+<td align="right">17.4</td>
+<td align="right">42</td>
+<td align="right">32</td>
+<td align="right">81</td>
+<td align="right">90</td>
+<td align="right">791.14</td>
+<td align="right">122.04</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">79.37500</td>
+<td align="right">587.6667</td>
+<td align="right">51.62500</td>
+<td align="right">5.750000</td>
+<td align="right">11.58333</td>
+<td align="right">13.08333</td>
+<td align="right">9.416667</td>
+<td align="right">43.26667</td>
+<td align="right">66.13333</td>
+<td align="right">5877.083</td>
+<td align="right">12.333333</td>
+<td align="right">4081.125</td>
+<td align="right">7.291667</td>
+<td align="right">41.77778</td>
+<td align="right">14.777778</td>
+<td align="right">67.33333</td>
+<td align="right">19.857143</td>
+<td align="right">33.66667</td>
+<td align="right">789.5833</td>
+<td align="right">7.416667</td>
+<td align="right">93.08333</td>
+<td align="right">NA</td>
+<td align="right">623.5909</td>
+<td align="right">83.68182</td>
+<td align="right">10.333333</td>
+<td align="right">3.304167</td>
+<td align="right">64830.75</td>
+<td align="right">34.83333</td>
+<td align="right">58.42857</td>
+<td align="right">22.85714</td>
+<td align="right">5.750000</td>
+<td align="right">28.952381</td>
+<td align="right">66.05882</td>
+<td align="right">20.941177</td>
+<td align="right">NaN</td>
+<td align="right">134.66667</td>
+<td align="right">13497.667</td>
+<td align="right">72.91667</td>
+<td align="right">1864.2500</td>
+<td align="right">9.750000</td>
+<td align="right">81.08333</td>
+<td align="right">48229.92</td>
+<td align="right">22.50833</td>
+<td align="right">19.37917</td>
+<td align="right">543.3333</td>
+<td align="right">0.8666667</td>
+<td align="right">1314.8333</td>
+<td align="right">2.2833333</td>
+<td align="right">547.5833</td>
+<td align="right">0.9750000</td>
+<td align="right">49.66667</td>
+<td align="right">0.0875000</td>
+<td align="right">4884.083</td>
+<td align="right">8.787500</td>
+<td align="right">40365.00</td>
+<td align="right">85.98333</td>
+<td align="right">394.58333</td>
+<td align="right">0.8333333</td>
+<td align="right">49.10833</td>
+<td align="right">16552.750</td>
+<td align="right">49.88333</td>
+<td align="right">NaN</td>
 </tr>
 </tbody>
 </table>
