@@ -89,7 +89,7 @@ clean_joineddata2 %>% group_by(state) %>% summarize(count=n())
 clean_joineddata2 %>% group_by(Rural) %>% summarize(count=n())
 clean_joineddata2 %>% group_by(Diverse) %>% summarize(count=n())
 ```
-This is a table of my numeric variables, which shows the mean, standard deviation, maximum, minimum, and distinct counts for each state in the United States. This is one big table that prints out these values for the states. I then found the counts for each of my categorical variables. As expected, there is only one count for each of the states. Surprisingly, the amount of states that were considered to be rural were almost even (with 20 being no and 31 being yes). Furthermore, very surprising to see that there were only 6 states that were considered to have high diversity (having a percentage of BIPOC greater than 50). 
+This is a table of my numeric variables, which shows the mean, standard deviation, maximum, minimum, and distinct counts as well as the five number summary for each state in the United States. This is one big table that prints out these values for the states. I then found the counts for each of my categorical variables. As expected, there is only one count for each of the states. Surprisingly, the amount of states that were considered to be rural were almost even (with 20 being no and 31 being yes). Furthermore, very surprising to see that there were only 6 states that were considered to have high diversity (having a percentage of BIPOC greater than 50). 
 ```{R}
 # Some more summary statistics for my variables
 clean_joineddata2 %>% group_by(state, Diverse) %>% summarize(HouseholdIncome=mean(HouseholdIncome)) %>% arrange(desc((HouseholdIncome)))
@@ -110,15 +110,16 @@ clean_joineddata2 %>% ggplot(aes(x=DriverDeaths, y=`HouseholdIncome`))+geom_poin
 For the first ggplot, we're looking at the relationship between the number of drivers that have died from a car accident and median household income in each of the 50 U.S. states. Furthermore, i added points that are colored by state to help visualize the differences in each state for driver fatalities and median income. When looking at this plot, we can tell that there seems to be a relatively strong relationship between median household income and driver fatalities. As the median household income in each state decreased, there was a greater number of traffic fatalities that occurred. This could be from various different factors, but I thought it was interesting to see this possible relationship. 
 
 ```{R}
-# Plot of driver fatalities in each state in the United States
-clean_joineddata2 %>% ggplot(aes(x=`Diverse`, y=Premiums))+geom_boxplot()+scale_y_continuous(breaks=seq(0,1400,200))+ggtitle("Insurance Premiums vs. Diverse Areas")+xlab("Diverse Areas")+ylab("Insurance Premium")+geom_jitter(alpha=0.5, aes(color=Uninsured))
-```
-For the next plot, I wanted to do a boxplot looking at the relationship between the diversity of the areas and the costs of insurance premiums across the state. I also wanted to overly the points with number of people uninsured to look at how these are all related to each other. There seems to be a positive skew for this plot. In states where there was low diversity, there seemed to be a range of various values of people uninsured and lower median insurance premium than those with high diversity. This could be due to a variety of reasons. In this case, we are only comparing the diversity areas based off of the percentages calculated in the wrangling section; therefore, this could be different if we looked at it from a county point of view. Just as in other boxplots, this plot gives us insight into the visualization of the minimum, first quartile, median, third quartile, and maximum, essentially the summary of the distribution. 
-```{R}
-# your plot 3
+# Plot of Driver Deaths vs. Rural Areas
 clean_joineddata2 %>% filter(!is.na(Rural)) %>% ggplot(aes(x=Rural, y=DriverDeaths))+geom_bar(aes(fill=Rural), stat="summary", fun=mean)+ggtitle("Driver Deaths vs. Rural Areas")+geom_errorbar(stat="summary", width=0.5)+xlab("Rural Areas")+ylab("Driver Deaths")+scale_fill_manual(values=c("pink", "light blue"))+scale_y_continuous(breaks=seq(0,20,5))+geom_jitter(alpha=0.5, aes(color=Diverse))
 ```
 For my last plot, I wanted to take a look at the number of driver deaths in rural areas with an overlay of Diversity on the points. This was very interesting because we see that in cases of rural states, there is very lower diversity. Both rural and not rural have relatively similar error bars. In this case, rural areas seemed to have a higher amount of driver fatalities than states that weren't considered to be rural. In cases that aren't rural, there is still more states that are not as diverse. This could also be because states in the United States in general aren't super diverse. 
+
+```{R}
+# Plot of driver fatalities in each state in the United States
+clean_joineddata2 %>% ggplot(aes(x=`Diverse`, y=Premiums))+geom_boxplot()+scale_y_continuous(breaks=seq(0,1400,200))+ggtitle("Insurance Premiums vs. Diverse Areas")+xlab("Diverse Areas")+ylab("Insurance Premium")+geom_jitter(alpha=0.5, aes(color=Uninsured))
+```
+For the last plot, I wanted to do a boxplot looking at the relationship between the diversity of the areas and the costs of insurance premiums across the state. I also wanted to overly the points with number of people uninsured to look at how these are all related to each other. There seems to be a positive skew for this plot. There also seems to be an outlier for high diversity around 1300 for insurance premiums. In states where there was low diversity, there seemed to be a range of various values of people uninsured and lower median insurance premium than those with high diversity. This could be due to a variety of reasons. In this case, we are only comparing the diversity areas based off of the percentages calculated in the wrangling section; therefore, this could be different if we looked at it from a county point of view. Just as in other boxplots, this plot gives us insight into the visualization of the minimum, first quartile, median, third quartile, and maximum, essentially the summary of the distribution.
 
 #### Concluding Remarks
 
